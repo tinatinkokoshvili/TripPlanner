@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "765616449129",
+    "project_id": "sightsee-34d7e",
+    "storage_bucket": "sightsee-34d7e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765616449129:android:c7412bb47b858074af24f8",
+        "android_client_info": {
+          "package_name": "com.example.tripplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765616449129-clldl45qafviji8aquvr37hoou4tborq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tripplanner",
+            "certificate_hash": "361760dee04503e6bb5022a2055c2f7f02387909"
+          }
+        },
+        {
+          "client_id": "765616449129-qupufi52me77ic70eos7r7nujmf7ah6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJpeJ_eUXGj6hmL7ooVpSxDDcP4XXT8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765616449129-qupufi52me77ic70eos7r7nujmf7ah6v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
