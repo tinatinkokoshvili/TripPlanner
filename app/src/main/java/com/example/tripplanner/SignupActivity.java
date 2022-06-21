@@ -9,9 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,30 +20,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SignupActivity";
-    //private FirebaseFirestore firestore;
+    private FirebaseFirestore firestore;
     private FirebaseAuth mAuth;
     private EditText etEmail, etFullName, etUsername, etPassword;
     private Button btnSignup;
     //private ProgressBar progressBar;
     private TextView tvUploadPic;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+
 //        firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        mAuth.signOut();
+        if (mAuth.getCurrentUser() != null) {
+            finish();
+            return;
+        }
 
         etEmail = findViewById(R.id.etEmail);
         etFullName = findViewById(R.id.etFullName);
-        etUsername = findViewById(R.id.etPassword);
-        etPassword = findViewById(R.id.etPassword);
+        etUsername = findViewById(R.id.etLoginEmail);
+        etPassword = findViewById(R.id.etLoginPassword);
         btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(this);
         tvUploadPic = findViewById(R.id.tvUpladPic);
@@ -78,7 +81,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             etEmail.setError("Invalid email format");
             etEmail.requestFocus();
             return;
@@ -108,7 +111,33 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-
+        //progressBar.setVisibility(View.VISIBLE);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "createUserWithEmail:success");
+                            User user = new User(email,  password, fullName, username);
+                            userID = mAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = firestore.collection("testUsers").document(userID);
+//                            Map<String, Object> userMap = new HashMap<>();
+//                            userMap.put("fullName", fullName);
+//                            userMap.put("email", email);
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.i(TAG, "user info signup successful");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "user info signup failed");
+                                }
+                            });
+                        }
+                    }
+                });
 
 
     }

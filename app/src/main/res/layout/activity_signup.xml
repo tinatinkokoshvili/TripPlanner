@@ -61,7 +61,7 @@
     </RadioGroup>
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etLoginEmail"
         android:layout_width="377dp"
         android:layout_height="46dp"
         android:layout_marginTop="308dp"
@@ -73,7 +73,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/etLoginPassword"
         android:layout_width="380dp"
         android:layout_height="49dp"
         android:layout_marginTop="368dp"
@@ -149,7 +149,7 @@
         android:layout_marginTop="16dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/btnUploadPic"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
         app:layout_constraintVertical_bias="0.058"
         tools:layout_editor_absoluteX="16dp"
         tools:text="Upload Profile Picture" />
@@ -161,7 +161,7 @@
         android:layout_marginTop="52dp"
         android:backgroundTint="#F4F4F4"
         android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
         tools:layout_editor_absoluteX="16dp"
         tools:text="UPLOAD" />
 
