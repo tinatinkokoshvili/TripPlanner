@@ -38,7 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Log.i(TAG, "someone logged in!");
-            mAuth.signOut();
+            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+            startActivity(intent);
         }
         etLoginEmail = findViewById(R.id.etUsername);
         etLoginPassword = findViewById(R.id.etPassword);

@@ -64,8 +64,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 //        firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        mAuth.signOut();                     // -----TOBECHanged--------
         if (mAuth.getCurrentUser() != null) {
+            Toast.makeText(SignupActivity.this, "User is already signed in.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
