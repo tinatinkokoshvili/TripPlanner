@@ -8,7 +8,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -29,15 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-
-import java.net.URI;
-
-import io.grpc.Context;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "SignupActivity";
@@ -79,11 +74,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         ivUploadPic = findViewById(R.id.ivUploadPic);
         etEmail = findViewById(R.id.etEmail);
         etFullName = findViewById(R.id.etFullName);
-        etUsername = findViewById(R.id.etLoginEmail);
-        etPassword = findViewById(R.id.etLoginPassword);
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
         btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(this);
-        tvUploadPic = findViewById(R.id.tvUpladPic);
+        tvUploadPic = findViewById(R.id.tvUploadPic);
         progressBar = findViewById(R.id.progressbar_cp);
 
         //documentReference = db.collection("user").document("profile");
@@ -91,6 +86,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
     }
+
 
     @Override
     public void onClick(View v) {
