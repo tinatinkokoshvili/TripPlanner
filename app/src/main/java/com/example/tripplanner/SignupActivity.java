@@ -28,7 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -59,31 +58,24 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-
-
-//        firestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
         if (mAuth.getCurrentUser() != null) {
             Toast.makeText(SignupActivity.this, "User is already signed in.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+        storageReference = firebaseStorage.getInstance().getReference("profile image");
 
         ivPicture = findViewById(R.id.ivPicture);
         ivUploadPic = findViewById(R.id.ivUploadPic);
         etEmail = findViewById(R.id.etEmail);
         etFullName = findViewById(R.id.etFullName);
-        etUsername = findViewById(R.id.etUsername);
+        etUsername = findViewById(R.id.etUpdateUsername);
         etPassword = findViewById(R.id.etPassword);
-        btnSignup = findViewById(R.id.btnSignup);
+        btnSignup = findViewById(R.id.btnUpdateInfo);
         btnSignup.setOnClickListener(this);
         tvUploadPic = findViewById(R.id.tvUploadPic);
         progressBar = findViewById(R.id.progressbar_cp);
-
-        //documentReference = db.collection("user").document("profile");
-        storageReference = firebaseStorage.getInstance().getReference("profile image");
-
 
     }
 
@@ -91,7 +83,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnSignup:
+            case R.id.btnUpdateInfo:
                 Log.i(TAG, "signup clicked");
                 registerUser();
                 break;

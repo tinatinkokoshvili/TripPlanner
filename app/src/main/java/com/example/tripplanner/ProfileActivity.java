@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fbtnNewTrip) {
-            Intent updateInfoIntent = new Intent(this, SignupActivity.class);
+            Intent updateInfoIntent = new Intent(this, UpdateActivity.class);
             startActivity(updateInfoIntent);
         }
         if (v.getId() == R.id.btnLogout) {

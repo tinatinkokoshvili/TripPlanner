@@ -24,7 +24,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etUpdateUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="308dp"
@@ -38,7 +38,7 @@
 
 
     <Button
-        android:id="@+id/btnSignup"
+        android:id="@+id/btnUpdateInfo"
         android:layout_width="140dp"
         android:layout_height="42dp"
         android:layout_marginStart="120dp"
@@ -63,16 +63,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
         app:layout_constraintVertical_bias="0.0"
         tools:text="Update Profile Picture" />
 
     <ImageView
-        android:id="@+id/ivUploadPic"
+        android:id="@+id/ivUploadNewPic"
         android:layout_width="55dp"
         android:layout_height="47dp"
         android:layout_marginBottom="168dp"
-        android:onClick="chooseImage"
+        android:onClick="chooseNewImage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +84,16 @@
         android:visibility="invisible"
         android:id="@+id/progressbar_cp"
         />
+
+    <ImageView
+        android:id="@+id/ivNewPicture"
+        android:layout_width="149dp"
+        android:layout_height="109dp"
+        android:layout_marginBottom="140dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
