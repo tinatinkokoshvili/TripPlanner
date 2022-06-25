@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class AttractionsActivity extends AppCompatActivity {
-    AmadeusClient amClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
