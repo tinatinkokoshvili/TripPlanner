@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TripPlanner"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU" />
+
+
+        <activity
+            android:name=".PermissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AttractionsActivity"
+            android:exported="false" />
         <activity
             android:name=".UpdateActivity"
             android:exported="false" />

@@ -72,7 +72,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         etFullName = findViewById(R.id.etFullName);
         etUsername = findViewById(R.id.etUpdateUsername);
         etPassword = findViewById(R.id.etPassword);
-        btnSignup = findViewById(R.id.btnUpdateInfo);
+        btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(this);
         tvUploadPic = findViewById(R.id.tvUploadPic);
         progressBar = findViewById(R.id.progressbar_cp);

@@ -67,5 +67,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/btnNewTrip"
+        android:layout_width="238dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/material_dynamic_primary30"
+        android:text="Create New Trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfValUsername" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

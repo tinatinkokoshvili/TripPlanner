@@ -41,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     TextView tvProfValUsername;
     FloatingActionButton fbtnNewTrip;
     Button btnLogout;
+    Button btnNewTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         fbtnNewTrip.setOnClickListener(this);
         btnLogout = findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
+        btnNewTrip = findViewById(R.id.btnNewTrip);
+        btnNewTrip.setOnClickListener(this);
     }
 
     @Override
@@ -96,6 +99,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (v.getId() == R.id.btnLogout) {
             onLogout();
         }
+        if (v.getId() == R.id.btnNewTrip) {
+            Intent attractionsintent = new Intent(this, AttractionsActivity.class);
+            startActivity(attractionsintent);
+        }
+
     }
 
     private void onLogout() {
