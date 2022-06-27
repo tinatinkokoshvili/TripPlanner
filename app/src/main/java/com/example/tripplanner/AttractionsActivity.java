@@ -77,6 +77,26 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
         // Create a new PlacesClient instance
         placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                //Search state changed
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text.toString(), true, null, true);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+                if (buttonCode == MaterialSearchBar.BUTTON_NAVIGATION) {
+                    //opening or closing a navigation
+                } else if (buttonCode == MaterialSearchBar.BUTTON_BACK) {
+                    materialSearchBar.closeSearch();
+                }
+            }
+        });
 
     }
 
@@ -138,7 +158,7 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                     materialSearchBar.clearSuggestions();
                 }
 //                if (materialSearchBar.isSearchEnabled()) {
-//                    materialSearchBar.disableSearch();
+//                    materialSearchBar.closeSearch();
 //                }
                 return false;
             }
