@@ -25,8 +25,10 @@ public class PickAttractionsActivity extends AppCompatActivity {
     void fetchPlaces(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
-        stringBuilder.append("&radius=" + "1500");
+        stringBuilder.append("&radius=" + "6000");
         stringBuilder.append("&type=" + "tourist_attraction");
+        //ranks by prominence by default
+        stringBuilder.append("&rankby");
         stringBuilder.append("&key=" + API_KEY);
         String url = stringBuilder.toString();
         Object dataTransfer[] = new Object[1];

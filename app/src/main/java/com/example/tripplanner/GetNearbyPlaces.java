@@ -25,6 +25,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     BufferedReader bufferedReader;
     StringBuilder stringBuilder;
     String data;
+    private static final String nextPlacesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
 
 
     @Override
@@ -72,7 +73,27 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                 String place_id = jsonObject.getString("place_id");
                 Log.i(TAG, "latitude " + latitude + " longitude " + longitude
                     + " name " + name + " vicinity " + vicinity + " place_id " + place_id);
+
+                //Make a call to GetPlaceDetails for each place
+                //TODO
+
             }
+            try {
+                String next_page_token = parentObject.getString("next_page_token");
+                if (next_page_token != null) {
+                    Log.i(TAG, "next_page_token is not null");
+                    StringBuilder stringBuilder = new StringBuilder(nextPlacesBaseUrl);
+                    stringBuilder.append("pagetoken=" + next_page_token);
+                    String url = stringBuilder.toString();
+                    Object dataTransfer[] = new Object[1];
+                    dataTransfer[0] = url;
+                    new GetNearbyPlaces().execute(dataTransfer);
+                }
+            } catch (Exception ex) {
+                //No next_page_token exists
+                Log.i(TAG, "No next_page_token");
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
