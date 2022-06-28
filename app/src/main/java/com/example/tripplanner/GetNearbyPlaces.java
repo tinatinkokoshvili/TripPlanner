@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     private static final String TAG = "GetNearbyPlaces";
@@ -26,6 +27,8 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     StringBuilder stringBuilder;
     String data;
     private static final String nextPlacesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    private static final String placeDetailsBaseUrl = "https://maps.googleapis.com/maps/api/place/details/json?";
+    private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
 
 
     @Override
@@ -67,15 +70,20 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                 JSONObject locationObj = jsonObject.getJSONObject("geometry").getJSONObject("location");
                 String latitude = locationObj.getString("lat");
                 String longitude = locationObj.getString("lng");
-                //JSONObject nameObject = resultsArray.getJSONObject(i);
                 String name = jsonObject.getString("name");
                 String vicinity = jsonObject.getString("vicinity");
                 String place_id = jsonObject.getString("place_id");
                 Log.i(TAG, "latitude " + latitude + " longitude " + longitude
                     + " name " + name + " vicinity " + vicinity + " place_id " + place_id);
 
-                //Make a call to GetPlaceDetails for each place
-                //TODO
+                //Make API calls for each place
+                StringBuilder detailsStringBuilder = new StringBuilder(placeDetailsBaseUrl);
+                detailsStringBuilder.append("place_id=" + place_id);
+                detailsStringBuilder.append("&key=" + API_KEY);
+                String detailsUrl = detailsStringBuilder.toString();
+                Object detailsDataTransfer[] = new Object[1];
+                detailsDataTransfer[0] = detailsUrl;
+                new GetPlaceDetails().execute(detailsDataTransfer);
 
             }
             try {
@@ -97,6 +105,8 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
+
+
+
 }

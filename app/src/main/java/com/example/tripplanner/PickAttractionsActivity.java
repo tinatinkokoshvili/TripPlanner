@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PickAttractionsActivity extends AppCompatActivity {
     private static final String TAG = "PickAttractionsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
@@ -33,8 +36,9 @@ public class PickAttractionsActivity extends AppCompatActivity {
         String url = stringBuilder.toString();
         Object dataTransfer[] = new Object[1];
         dataTransfer[0] = url;
-        new GetNearbyPlaces().execute(dataTransfer);
-    }
 
+        GetNearbyPlaces getPlaces = new GetNearbyPlaces();
+        getPlaces.execute(dataTransfer);
+    }
 
 }
