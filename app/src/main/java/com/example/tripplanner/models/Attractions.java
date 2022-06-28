@@ -1,4 +1,6 @@
-package com.example.tripplanner;
+package com.example.tripplanner.models;
+
+import com.example.tripplanner.models.Attraction;
 
 import java.util.ArrayList;
 import java.util.List;

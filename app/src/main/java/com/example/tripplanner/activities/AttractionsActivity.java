@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.tripplanner.R;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -232,7 +233,7 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                     public void run() {
                         rippleBg.stopRippleAnimation();
                         //Pass the geocoordinates of the location of interest to the pickattraction intent
-                        Intent intent = new Intent(AttractionsActivity.this ,PickAttractionsActivity.class);
+                        Intent intent = new Intent(AttractionsActivity.this , PickAttractionsActivity.class);
                         Log.i(TAG, "latlong while passing " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
                         intent.putExtra("latitude", latLngOfPlace.latitude);
                         intent.putExtra("longitude", latLngOfPlace.longitude);

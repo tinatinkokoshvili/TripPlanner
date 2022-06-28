@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.models;
 
 public class User {
     public String email, fullName, username, password, picUrl;

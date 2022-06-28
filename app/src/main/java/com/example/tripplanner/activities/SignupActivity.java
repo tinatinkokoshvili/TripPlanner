@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tripplanner.R;
+import com.example.tripplanner.models.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -100,7 +102,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
         if (email.isEmpty()) {
-            etEmail.setError("Full name is required");
+            etEmail.setError("Email is required");
             etEmail.requestFocus();
             return;
         }
@@ -118,13 +120,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if (username.isEmpty()) {
-            etUsername.setError("Full name is required");
+            etUsername.setError("Username is required");
             etUsername.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("Full name is required");
+            etPassword.setError("Password is required");
             etPassword.requestFocus();
             return;
         }
@@ -214,7 +216,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             imageUri = data.getData();
             Glide.with(this).load(imageUri).into(ivPicture);
             ivUploadPic.setVisibility(View.GONE);
-           // Picasso.get().load(imageUri).into(ivPicture);
         }
     }
 

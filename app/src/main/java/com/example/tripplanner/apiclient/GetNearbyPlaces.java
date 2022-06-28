@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.apiclient;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     private static final String TAG = "GetNearbyPlaces";

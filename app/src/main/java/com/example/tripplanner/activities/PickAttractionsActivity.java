@@ -1,13 +1,12 @@
-package com.example.tripplanner;
+package com.example.tripplanner.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.tripplanner.R;
+import com.example.tripplanner.apiclient.GetNearbyPlaces;
 
 public class PickAttractionsActivity extends AppCompatActivity {
     private static final String TAG = "PickAttractionsActivity";

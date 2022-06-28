@@ -1,11 +1,10 @@
-package com.example.tripplanner;
+package com.example.tripplanner.apiclient;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
+import com.example.tripplanner.models.Attraction;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

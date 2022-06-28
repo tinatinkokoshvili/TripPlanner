@@ -19,7 +19,7 @@
         android:theme="@style/Theme.TripPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".PickAttractionsActivity"
+            android:name=".activities.PickAttractionsActivity"
             android:exported="false" />
 
         <meta-data
@@ -30,22 +30,22 @@
             android:name=".PermissionActivity"
             android:exported="false" />
         <activity
-            android:name=".AttractionsActivity"
+            android:name=".activities.AttractionsActivity"
             android:exported="false" />
         <activity
-            android:name=".UpdateActivity"
+            android:name=".activities.UpdateActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".activities.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
