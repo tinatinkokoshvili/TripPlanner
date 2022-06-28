@@ -73,7 +73,6 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
     private LatLng latLngOfPlace;
 
     private final float DEFAULT_ZOOM = 18;
-    private String placesRequestBase = "https://maps.googleapis.com/maps/api/place/nearbysearch?json?";
 
 
     @Override

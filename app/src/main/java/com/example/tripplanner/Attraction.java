@@ -12,6 +12,13 @@ import java.util.List;
 @Parcel
 public class Attraction {
     private static final String TAG = "Attraction";
+    private String place_id;
+    private String name;
+    private String business_status;
+    private String opening_hours;
+    private String address;
+    private String location;
+    private String picture;
 
     public Attraction() {}
 

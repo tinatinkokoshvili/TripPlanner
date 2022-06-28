@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,10 +25,6 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     BufferedReader bufferedReader;
     StringBuilder stringBuilder;
     String data;
-
-//    GetNearbyPlaces(Object data[]) {
-//        doInBackground(data);
-//    }
 
 
     @Override
@@ -57,5 +57,25 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.i(TAG, "received" + s);
+        try {
+            JSONObject parentObject = new JSONObject(s);
+            JSONArray resultsArray = parentObject.getJSONArray("results");
+
+            for (int i = 0; i < resultsArray.length(); i++) {
+                JSONObject jsonObject = resultsArray.getJSONObject(i);
+                JSONObject locationObj = jsonObject.getJSONObject("geometry").getJSONObject("location");
+                String latitude = locationObj.getString("lat");
+                String longitude = locationObj.getString("lng");
+                //JSONObject nameObject = resultsArray.getJSONObject(i);
+                String name = jsonObject.getString("name");
+                String vicinity = jsonObject.getString("vicinity");
+                String place_id = jsonObject.getString("place_id");
+                Log.i(TAG, "latitude " + latitude + " longitude " + longitude
+                    + " name " + name + " vicinity " + vicinity + " place_id " + place_id);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
