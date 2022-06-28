@@ -86,7 +86,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                 new GetPlaceDetails().execute(detailsDataTransfer);
 
             }
-            try {
+            if (parentObject.has("next_page_token")) {
                 String next_page_token = parentObject.getString("next_page_token");
                 if (next_page_token != null) {
                     Log.i(TAG, "next_page_token is not null");
@@ -97,9 +97,6 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                     dataTransfer[0] = url;
                     new GetNearbyPlaces().execute(dataTransfer);
                 }
-            } catch (Exception ex) {
-                //No next_page_token exists
-                Log.i(TAG, "No next_page_token");
             }
 
         } catch (JSONException e) {

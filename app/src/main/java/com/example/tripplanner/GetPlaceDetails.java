@@ -53,8 +53,17 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.i(TAG, "JSON from getDetails " + s);
-        //TODO Create an attraction object
+
+        //Create an attraction object
+        try {
+            JSONObject parentObject = new JSONObject(s);
+            JSONObject resultObject = parentObject.getJSONObject("result");
+            Attraction attraction = Attraction.fromJson(resultObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
