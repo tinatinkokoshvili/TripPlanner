@@ -70,7 +70,10 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
     private Button btnFind;
     private RippleBackground rippleBg;
 
+    private LatLng latLngOfPlace;
+
     private final float DEFAULT_ZOOM = 18;
+    private String placesRequestBase = "https://maps.googleapis.com/maps/api/place/nearbysearch?json?";
 
 
     @Override
@@ -193,10 +196,11 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                     public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
                         Place place = fetchPlaceResponse.getPlace();
                         Log.i("mytag", "Place found: " + place.getName());
-                        LatLng latLngOfPlace = place.getLatLng();
+                        latLngOfPlace = place.getLatLng();
                         if (latLngOfPlace != null) {
                             // Move map to location of place
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
+                            Log.i(TAG, "latlong in fetchplace success " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -218,6 +222,7 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
 
             }
         });
+
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,12 +232,21 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                     @Override
                     public void run() {
                         rippleBg.stopRippleAnimation();
-                        startActivity(new Intent(AttractionsActivity.this, MainActivity.class));
+                        //Pass the geocoordinates of the location of interest to the pickattraction intent
+                        Intent intent = new Intent(AttractionsActivity.this ,PickAttractionsActivity.class);
+                        Log.i(TAG, "latlong while passing " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
+                        intent.putExtra("latitude", latLngOfPlace.latitude);
+                        intent.putExtra("longitude", latLngOfPlace.longitude);
+                        startActivity(intent);
                     }
                 }, 3000);
             }
         });
+
     }
+
+
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -320,9 +334,13 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                             mLastKnownLocation = task.getResult();
                             if (mLastKnownLocation != null) {
                                 //Move map to the current location
+                                LatLng mLastKnownLocationCoord = new LatLng(mLastKnownLocation.getLatitude(),
+                                        mLastKnownLocation.getLongitude());
+                                //Set the variable so that we can pass it into pickActivity intent if searchbar not used
+                                latLngOfPlace = mLastKnownLocationCoord;
+                                Log.i(TAG, "latlong in getDeviceLocatoin " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
                                 mMap.moveCamera(CameraUpdateFactory
-                                        .newLatLngZoom(new LatLng(mLastKnownLocation.getLatitude(),
-                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                        .newLatLngZoom(mLastKnownLocationCoord, DEFAULT_ZOOM));
                             } else {
                                 //Request for updated location
                                 final LocationRequest locationRequest = LocationRequest.create();

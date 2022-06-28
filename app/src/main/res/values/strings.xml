@@ -2,4 +2,5 @@
     <string name="app_name">Trip Planner</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="find_places">Find Places</string>
+    <string name="google_places_key">AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU</string>
 </resources>
