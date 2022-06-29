@@ -33,8 +33,11 @@ public class Attraction {
     public int user_ratings_total;
     public String vicinity;
     public String website;
+    public Boolean picked;
 
-    public Attraction() {}
+    public Attraction() {
+        picked = false;
+    }
 
     public static Attraction fromJson(JSONObject resultObject) throws JSONException {
         Attraction attraction = new Attraction();

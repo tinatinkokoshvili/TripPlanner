@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
@@ -22,15 +24,26 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     private static final String TAG = "PickAttractionsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
+    private Button btnGenerate;
     private RecyclerView rvPlaces;
     private PlacesAdapter placesAdapter;
     private List<Attraction> attractionsList;
+    private List<Attraction> pickedAttractionsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_attractions);
 
+        pickedAttractionsList = new ArrayList<>();
+        btnGenerate = findViewById(R.id.btnGenerate);
+        btnGenerate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finalizePickedList();
+            }
+        });
         rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);
         attractionsList = new ArrayList<>();
         placesAdapter = new PlacesAdapter(this, attractionsList);
@@ -42,6 +55,17 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
         double longitude = getIntent().getDoubleExtra("longitude", 0);
         Log.i(TAG, "latlang " + latitude + " long " + longitude);
         fetchPlaces(latitude, longitude);
+    }
+
+    private void finalizePickedList() {
+        pickedAttractionsList.clear();
+        for (int i = 0; i < attractionsList.size(); i++) {
+            Attraction currAtr = attractionsList.get(i);
+            if (currAtr.picked) {
+                pickedAttractionsList.add(currAtr);
+            }
+        }
+        Log.i(TAG, "finalizedList Size " + pickedAttractionsList.size());
     }
 
     void fetchPlaces(double latitude, double longitude) {

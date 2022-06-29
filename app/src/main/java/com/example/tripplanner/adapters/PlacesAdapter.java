@@ -1,6 +1,8 @@
 package com.example.tripplanner.adapters;
 import com.example.tripplanner.R;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,19 +62,46 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvName;
         TextView tvVicinity;
+        CardView cdAttraction;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvVicinity = itemView.findViewById(R.id.tvVicinity);
+            cdAttraction = itemView.findViewById(R.id.cdAttraction);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Attraction attraction) {
             tvName.setText(attraction.name);
             tvVicinity.setText(attraction.vicinity);
+            if (attraction.picked) {
+                cdAttraction.setBackgroundColor(Color.BLUE);
+            } else {
+                cdAttraction.setBackgroundColor(Color.WHITE);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Attraction atr = attractionsList.get(position);
+                atr.picked = !atr.picked;
+                Log.i("adapter", "clicked " + atr.name);
+                if (atr.picked) {
+                    cdAttraction.setBackgroundColor(Color.BLUE);
+                } else {
+                    cdAttraction.setBackgroundColor(Color.WHITE);
+                }
+               // notifyItemChanged(position);
+//                Intent intent = new Intent(context, AtrDetailsActivity.class);
+//                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(atr));
+//                context.startActivity(intent);
+            }
         }
     }
 }
