@@ -12,27 +12,27 @@ import java.util.List;
 @Parcel
 public class Attraction {
     private static final String TAG = "Attraction";
-    String formatted_address;
-    String formatted_phone_number;
-    String latitude;
-    String longitude;
-    String icon;
-    String icon_background_color;
-    String icon_mask_base_uri;
-    String international_phone_number;
-    String name;
-    Boolean open_now;
+    public String formatted_address;
+    public String formatted_phone_number;
+    public String latitude;
+    public String longitude;
+    public String icon;
+    public String icon_background_color;
+    public String icon_mask_base_uri;
+    public String international_phone_number;
+    public String name;
+    //Boolean open_now;
     //JSONArray weekday_text;
     //JSONArray photos;
-    String place_id;
-    int price_level;
-    int rating;
+    public String place_id;
+    public int price_level;
+    public int rating;
     //JSONArray reviews;
    // JSONArray types;
-    String url;
-    int user_ratings_total;
-    String vicinity;
-    String website;
+    public String url;
+    public int user_ratings_total;
+    public String vicinity;
+    public String website;
 
     public Attraction() {}
 

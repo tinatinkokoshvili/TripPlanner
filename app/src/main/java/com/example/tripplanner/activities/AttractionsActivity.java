@@ -210,8 +210,8 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                             ApiException apiException = (ApiException) e;
                             apiException.printStackTrace();
                             int statusCode = apiException.getStatusCode();
-                            Log.i("mytag", "place not found: " + e.getMessage());
-                            Log.i("mytag", "status code: " + statusCode);
+                            Log.e("mytag", "place not found: " + e.getMessage());
+                            Log.e("mytag", "status code: " + statusCode);
                         }
                     }
                 });

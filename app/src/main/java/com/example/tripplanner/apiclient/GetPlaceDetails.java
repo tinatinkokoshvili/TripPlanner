@@ -3,6 +3,7 @@ package com.example.tripplanner.apiclient;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.models.Attraction;
 
 import org.json.JSONException;
@@ -18,11 +19,16 @@ import java.net.URL;
 
 public class GetPlaceDetails extends AsyncTask<Object, String, String> {
     private static final String TAG = "GetPlaceDetails";
-    String url;
-    InputStream is;
-    BufferedReader bufferedReader;
-    StringBuilder stringBuilder;
-    String data;
+    private OnTaskCompleted listener;
+    private String url;
+    private InputStream is;
+    private BufferedReader bufferedReader;
+    private StringBuilder stringBuilder;
+    private String data;
+
+    public GetPlaceDetails(OnTaskCompleted listener){
+        this.listener=listener;
+    }
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -33,13 +39,14 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
             httpURLConnection.connect();
             is = httpURLConnection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(is));
-            Log.i(TAG, "doing in b ackgorund");
+            Log.i(TAG, "doing in backgorund");
             String line="";
             stringBuilder = new StringBuilder();
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
             data = stringBuilder.toString();
+            bufferedReader.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException ex) {
@@ -58,12 +65,10 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
             JSONObject parentObject = new JSONObject(s);
             JSONObject resultObject = parentObject.getJSONObject("result");
             Attraction attraction = Attraction.fromJson(resultObject);
-
+            Log.i(TAG, "onTaskCompleted from GetDetails " + attraction.name);
+            listener.onTaskCompleted(attraction);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
     }
 }

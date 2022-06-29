@@ -1,22 +1,42 @@
 package com.example.tripplanner.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
+import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.apiclient.GetNearbyPlaces;
+import com.example.tripplanner.models.Attraction;
 
-public class PickAttractionsActivity extends AppCompatActivity {
+import org.w3c.dom.Attr;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PickAttractionsActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "PickAttractionsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
+    private RecyclerView rvPlaces;
+    private PlacesAdapter placesAdapter;
+    private List<Attraction> attractionsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_attractions);
+
+        rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);
+        attractionsList = new ArrayList<>();
+        placesAdapter = new PlacesAdapter(this, attractionsList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvPlaces.setLayoutManager(linearLayoutManager);
+        rvPlaces.setAdapter(placesAdapter);
 
         double latitude = getIntent().getDoubleExtra("latitude", 0);
         double longitude = getIntent().getDoubleExtra("longitude", 0);
@@ -36,8 +56,18 @@ public class PickAttractionsActivity extends AppCompatActivity {
         Object dataTransfer[] = new Object[1];
         dataTransfer[0] = url;
 
-        GetNearbyPlaces getPlaces = new GetNearbyPlaces();
+        GetNearbyPlaces getPlaces = new GetNearbyPlaces(this);
         getPlaces.execute(dataTransfer);
+    }
+
+    @Override
+    public void onTaskCompleted(Attraction atr) {
+        Log.i(TAG, "Task completed " + atr.name + " adapter size " + placesAdapter.getItemCount());
+        try {
+            placesAdapter.add(atr);
+        } catch (Exception e) {
+            Log.e(TAG, "Json exception", e);
+        }
     }
 
 }

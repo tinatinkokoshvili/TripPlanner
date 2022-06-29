@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
     <com.google.android.material.card.MaterialCardView
@@ -14,20 +14,21 @@
         tools:layout_editor_absoluteY="16dp">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Computer History Museum"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            tools:text="Place Name" />
 
         <TextView
-            android:id="@+id/vicinity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="1401 North Shoreline Boulevard, Mountain View"
+            android:id="@+id/tvVicinity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:textAppearance="?attr/textAppearanceHeadline6"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="47dp" />
+            tools:layout_editor_absoluteY="47dp"
+            tools:text="Place Vicinity" />
 
     </com.google.android.material.card.MaterialCardView>
 

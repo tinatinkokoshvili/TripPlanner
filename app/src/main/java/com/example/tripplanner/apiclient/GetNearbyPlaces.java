@@ -3,6 +3,8 @@ package com.example.tripplanner.apiclient;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.tripplanner.OnTaskCompleted;
+import com.example.tripplanner.activities.PickAttractionsActivity;
 import com.google.android.gms.maps.GoogleMap;
 
 import org.json.JSONArray;
@@ -19,15 +21,19 @@ import java.net.URL;
 
 public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
     private static final String TAG = "GetNearbyPlaces";
-    GoogleMap mMap;
-    String url;
-    InputStream is;
-    BufferedReader bufferedReader;
-    StringBuilder stringBuilder;
-    String data;
+    private OnTaskCompleted listener;
+    private String url;
+    private InputStream is;
+    private BufferedReader bufferedReader;
+    private StringBuilder stringBuilder;
+    private String data;
     private static final String nextPlacesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String placeDetailsBaseUrl = "https://maps.googleapis.com/maps/api/place/details/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
+
+    public GetNearbyPlaces(OnTaskCompleted listener){
+        this.listener=listener;
+    }
 
 
     @Override
@@ -47,6 +53,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                 stringBuilder.append(line);
             }
             data = stringBuilder.toString();
+            bufferedReader.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException ex) {
@@ -82,7 +89,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                 String detailsUrl = detailsStringBuilder.toString();
                 Object detailsDataTransfer[] = new Object[1];
                 detailsDataTransfer[0] = detailsUrl;
-                new GetPlaceDetails().execute(detailsDataTransfer);
+                new GetPlaceDetails(listener).execute(detailsDataTransfer);
 
             }
             if (parentObject.has("next_page_token")) {
@@ -94,7 +101,7 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
                     String url = stringBuilder.toString();
                     Object dataTransfer[] = new Object[1];
                     dataTransfer[0] = url;
-                    new GetNearbyPlaces().execute(dataTransfer);
+                    new GetNearbyPlaces(listener).execute(dataTransfer);
                 }
             }
 
@@ -102,7 +109,4 @@ public class GetNearbyPlaces extends AsyncTask<Object, String, String> {
             e.printStackTrace();
         }
     }
-
-
-
 }
