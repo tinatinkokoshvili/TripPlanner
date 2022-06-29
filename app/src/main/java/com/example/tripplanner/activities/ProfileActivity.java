@@ -28,7 +28,7 @@ import com.google.firebase.storage.UploadTask;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ProfileActivity";
-    private FirebaseAuth mAuth;
+    private FirebaseAuth fbAuth;
     private String userID;
     UploadTask uploadTask;
     FirebaseStorage firebaseStorage;
@@ -47,8 +47,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        mAuth = FirebaseAuth.getInstance();
-        userID = mAuth.getCurrentUser().getUid();
+        fbAuth = FirebaseAuth.getInstance();
+        userID = fbAuth.getCurrentUser().getUid();
         documentReference =
                 firestore.collection("testUsers").document(userID);
         storageReference = firebaseStorage.getInstance().getReference("profile image");
@@ -107,7 +107,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void onLogout() {
         Log.i(TAG, "onClick logout button");
-        mAuth.signOut();
+        fbAuth.signOut();
         Intent i = new Intent(this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

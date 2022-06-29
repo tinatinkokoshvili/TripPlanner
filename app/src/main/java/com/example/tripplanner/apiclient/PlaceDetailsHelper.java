@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class GetPlaceDetails extends AsyncTask<Object, String, String> {
+public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
     private static final String TAG = "GetPlaceDetails";
     private OnTaskCompleted listener;
     private String url;
@@ -26,7 +26,7 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
     private StringBuilder stringBuilder;
     private String data;
 
-    public GetPlaceDetails(OnTaskCompleted listener){
+    public PlaceDetailsHelper(OnTaskCompleted listener){
         this.listener=listener;
     }
 
@@ -39,7 +39,7 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
             httpURLConnection.connect();
             is = httpURLConnection.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(is));
-            Log.i(TAG, "doing in backgorund");
+            Log.i(TAG, "doing in background");
             String line="";
             stringBuilder = new StringBuilder();
             while ((line = bufferedReader.readLine()) != null) {
@@ -64,7 +64,7 @@ public class GetPlaceDetails extends AsyncTask<Object, String, String> {
         try {
             JSONObject parentObject = new JSONObject(s);
             JSONObject resultObject = parentObject.getJSONObject("result");
-            Attraction attraction = Attraction.fromJson(resultObject);
+            Attraction attraction = Attraction.createFromJson(resultObject);
             Log.i(TAG, "onTaskCompleted from GetDetails " + attraction.name);
             listener.onTaskCompleted(attraction);
         } catch (JSONException e) {

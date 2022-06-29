@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +13,8 @@ import android.widget.Button;
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
-import com.example.tripplanner.apiclient.GetNearbyPlaces;
+import com.example.tripplanner.apiclient.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
-
-import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +79,7 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
         Object dataTransfer[] = new Object[1];
         dataTransfer[0] = url;
 
-        GetNearbyPlaces getPlaces = new GetNearbyPlaces(this);
+        NearbyPlacesHelper getPlaces = new NearbyPlacesHelper(this);
         getPlaces.execute(dataTransfer);
     }
 

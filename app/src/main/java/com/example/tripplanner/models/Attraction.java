@@ -35,62 +35,82 @@ public class Attraction {
     public String website;
     public Boolean picked;
 
+
+    private static final String FORMATTED_ADDRESS = "formatted_address";
+    private static final String FORMATTED_PHONE_NUMBER = "formatted_phone_number";
+    private static final String GEOMETRY = "geometry";
+    private static final String LOCATION = "location";
+    private static final String LAT = "lat";
+    private static final String LNG = "lng";
+    private static final String ICON = "icon";
+    private static final String ICON_BACKGROUND_COLOR = "icon_background_color";
+    private static final String ICON_MASK_BASE_URI = "icon_mask_base_uri";
+    private static final String INTERNATIONAL_PHONE_NUMBER = "international_phone_number";
+    private static final String NAME = "name";
+    private static final String PLACE_ID = "place_id";
+    private static final String PRICE_LEVEL = "price_level";
+    private static final String RATING = "rating";
+    private static final String URL = "url";
+    private static final String USER_RATINGS_TOTAL = "user_ratings_total";
+    private static final String VICINITY = "vicinity";
+    private static final String WEBSITE = "website";
+
     public Attraction() {
         picked = false;
     }
 
-    public static Attraction fromJson(JSONObject resultObject) throws JSONException {
+    public static Attraction createFromJson(JSONObject resultObject) throws JSONException {
         Attraction attraction = new Attraction();
-        if (resultObject.has("formatted_address"))
-            attraction.formatted_address = resultObject.getString("formatted_address");
-        if (resultObject.has("formatted_phone_number"))
-            attraction.formatted_phone_number = resultObject.getString("formatted_phone_number");
-        JSONObject locationObj = resultObject.getJSONObject("geometry").getJSONObject("location");
-        if (resultObject.has("lat"))
-            attraction.latitude = locationObj.getString("lat");
-        if (resultObject.has("lng"))
-            attraction.longitude = locationObj.getString("lng");
-        if (resultObject.has("icon"))
-            attraction.icon = resultObject.getString("icon");
-        if (resultObject.has("icon_background_color"))
-            attraction.icon_background_color = resultObject.getString("icon_background_color");
-        if (resultObject.has("icon_mask_base_uri"))
-            attraction.icon_mask_base_uri = resultObject.getString("icon_mask_base_uri");
-        if (resultObject.has("international_phone_number"))
-            attraction.international_phone_number = resultObject.getString("international_phone_number");
-        if (resultObject.has("name"))
-            attraction.name = resultObject.getString("name");
+        if (resultObject.has(FORMATTED_ADDRESS))
+            attraction.formatted_address = resultObject.getString(FORMATTED_ADDRESS);
+        if (resultObject.has(FORMATTED_PHONE_NUMBER))
+            attraction.formatted_phone_number = resultObject.getString(FORMATTED_PHONE_NUMBER);
+        JSONObject locationObj = resultObject.getJSONObject(GEOMETRY).getJSONObject(LOCATION);
+        if (resultObject.has(LAT))
+            attraction.latitude = locationObj.getString(LAT);
+        if (resultObject.has(LNG))
+            attraction.longitude = locationObj.getString(LNG);
+        if (resultObject.has(ICON))
+            attraction.icon = resultObject.getString(ICON);
+        if (resultObject.has(ICON_BACKGROUND_COLOR))
+            attraction.icon_background_color = resultObject.getString(ICON_BACKGROUND_COLOR);
+        if (resultObject.has(ICON_MASK_BASE_URI))
+            attraction.icon_mask_base_uri = resultObject.getString(ICON_MASK_BASE_URI);
+        if (resultObject.has(INTERNATIONAL_PHONE_NUMBER))
+            attraction.international_phone_number = resultObject.getString(INTERNATIONAL_PHONE_NUMBER);
+        if (resultObject.has(NAME))
+            attraction.name = resultObject.getString(NAME);
 //        if (resultObject.getJSONObject("opening_hours").has("open_now"))
 //            attraction.open_now = resultObject.getJSONObject("opening_hours").getBoolean("open_now");
 //        if (resultObject.getJSONObject("opening_hours").has("weekday_text"))
 //            attraction.weekday_text = resultObject.getJSONObject("opening_hours").getJSONArray("weekday_text");
 //        if (resultObject.getJSONObject("opening_hours").has("weekday_text"))
 //            attraction.photos = resultObject.getJSONArray("photos");
-        if (resultObject.has("place_id"))
-            attraction.place_id = resultObject.getString("place_id");
-        if (resultObject.has("price_level"))
-            attraction.price_level = resultObject.getInt("price_level");
-        if (resultObject.has("rating"))
-            attraction.rating = resultObject.getInt("rating");
+        if (resultObject.has(PLACE_ID))
+            attraction.place_id = resultObject.getString(PLACE_ID);
+        if (resultObject.has(PRICE_LEVEL))
+            attraction.price_level = resultObject.getInt(PRICE_LEVEL);
+        if (resultObject.has(RATING))
+            attraction.rating = resultObject.getInt(RATING);
 //        if (resultObject.has("reviews"))
 //            attraction.reviews = resultObject.getJSONArray("reviews");
 //        if (resultObject.has("types"))
 //            attraction.types = resultObject.getJSONArray("types");
-        if (resultObject.has("url"))
-            attraction.url = resultObject.getString("url");
-        if (resultObject.has("user_ratings_total"))
-            attraction.user_ratings_total = resultObject.getInt("user_ratings_total");
-        if (resultObject.has("vicinity"))
-            attraction.vicinity = resultObject.getString("vicinity");
-        if (resultObject.has("website"))
-            attraction.website = resultObject.getString("website");
+        if (resultObject.has(URL))
+            attraction.url = resultObject.getString(URL);
+        if (resultObject.has(USER_RATINGS_TOTAL))
+            attraction.user_ratings_total = resultObject.getInt(USER_RATINGS_TOTAL);
+        if (resultObject.has(VICINITY))
+            attraction.vicinity = resultObject.getString(VICINITY);
+        if (resultObject.has(WEBSITE))
+            attraction.website = resultObject.getString(WEBSITE);
         return attraction;
     }
 
-    public static List<Attraction> fromJsonArray(JSONArray jsonArray) throws JSONException {
+    public static List<Attraction> createFromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Attraction> attractions = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            attractions.add(fromJson(jsonArray.getJSONObject(i)));
+            attractions.add(createFromJson(jsonArray.getJSONObject(i)));
         }
         return attractions;
     }

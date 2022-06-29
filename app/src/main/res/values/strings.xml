@@ -3,4 +3,5 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="find_places">Find Places</string>
     <string name="google_places_key">AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU</string>
+    <string name="placeDetailsBaseUrl">https://maps.googleapis.com/maps/api/place/details/json?</string>
 </resources>
