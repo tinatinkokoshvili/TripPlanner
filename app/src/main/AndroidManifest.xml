@@ -19,6 +19,9 @@
         android:theme="@style/Theme.TripPlanner"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AtrDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.RouteActivity"
             android:exported="false" />
         <activity

@@ -7,13 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripplanner.activities.AtrDetailsActivity;
 import com.example.tripplanner.models.Attraction;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -63,45 +69,63 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        MaterialCardView cdAttraction;
+        ImageView ivAtrPicture;
         TextView tvName;
-        TextView tvVicinity;
-        CardView cdAttraction;
+        TextView tvAddress;
+        TextView tvDescription;
+        TextView tvRating;
+        MaterialButton btnLearnMore;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivAtrPicture = itemView.findViewById(R.id.ivAtrPicture);
             tvName = itemView.findViewById(R.id.tvName);
-            tvVicinity = itemView.findViewById(R.id.tvVicinity);
+            tvRating = itemView.findViewById(R.id.tvRating);
+            tvAddress = itemView.findViewById(R.id.tvAddress);
+            //tvDescription = itemView.findViewById(R.id.tvDescription);
+            btnLearnMore = itemView.findViewById(R.id.btnLearnMore);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Attraction attraction) {
+            //load picture
             tvName.setText(attraction.name);
-            tvVicinity.setText(attraction.vicinity);
-            if (attraction.picked) {
-                cdAttraction.setBackgroundColor(Color.BLUE);
-            } else {
-                cdAttraction.setBackgroundColor(Color.WHITE);
-            }
+            tvRating.setText(Integer.toString(attraction.rating));
+            tvAddress.setText(attraction.formatted_address);
+           // tvDescription.setText(attraction.website);
+            cdAttraction.setOnClickListener(this);
+            btnLearnMore.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                Attraction atr = attractionsList.get(position);
-                atr.picked = !atr.picked;
+            Attraction atr = null;
+            if (position != RecyclerView.NO_POSITION && v.getId() != R.id.btnLearnMore) {
+                atr = attractionsList.get(position);
                 Log.i("adapter", "clicked " + atr.name);
-                if (atr.picked) {
-                    cdAttraction.setBackgroundColor(Color.BLUE);
-                } else {
-                    cdAttraction.setBackgroundColor(Color.WHITE);
-                }
-               // notifyItemChanged(position);
-//                Intent intent = new Intent(context, AtrDetailsActivity.class);
-//                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(atr));
-//                context.startActivity(intent);
+                atr.picked = !atr.picked;
+                cdAttraction.toggle();
             }
+            if (position != RecyclerView.NO_POSITION && v.getId() == R.id.btnLearnMore) {
+                atr = attractionsList.get(position);
+                Log.i("adapter", "Clicked Learn More about " + atr.name);
+                Intent intent = new Intent(context, AtrDetailsActivity.class);
+                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(atr));
+                context.startActivity(intent);
+            }
+
+//                if (atr.picked) {
+//                    cdAttraction.setBackgroundColor(Color.BLUE);
+//                } else {
+//                    cdAttraction.setBackgroundColor(Color.WHITE);
+//                }
+               // notifyItemChanged(position);
+
+
         }
     }
 }

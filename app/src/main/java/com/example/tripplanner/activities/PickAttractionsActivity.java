@@ -15,7 +15,10 @@ import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.apiclient.NearbyPlacesHelper;
+import com.example.tripplanner.apiclient.PlacePhotoRequest;
 import com.example.tripplanner.models.Attraction;
+
+import org.w3c.dom.Attr;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.List;
 public class PickAttractionsActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "PickAttractionsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    private String placePhotoBaseUrl = "https://maps.googleapis.com/maps/api/place/photo?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private Button btnGenerate;
     private RecyclerView rvPlaces;
@@ -92,6 +96,7 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     public void onTaskCompleted(Attraction atr) {
         Log.i(TAG, "Task completed " + atr.name + " adapter size " + placesAdapter.getItemCount());
         try {
+            //TODO make an API call to get a photo
             placesAdapter.add(atr);
         } catch (Exception e) {
             Log.e(TAG, "Json exception", e);

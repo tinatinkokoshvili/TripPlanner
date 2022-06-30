@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_location_pin_svgrepo_com.xml" value="0.316" />
+        <entry key="app/src/main/res/layout/activity_atr_details.xml" value="0.1743659420289855" />
         <entry key="app/src/main/res/layout/activity_attractions.xml" value="0.2859375" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.48188405797101447" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.34193840579710144" />
