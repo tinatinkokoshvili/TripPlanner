@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.apiclient.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,9 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
             @Override
             public void onClick(View v) {
                 finalizePickedList();
+                Intent routeIntent = new Intent(PickAttractionsActivity.this, RouteActivity.class);
+                routeIntent.putExtra("list", (Serializable) pickedAttractionsList);
+                startActivity(routeIntent);
             }
         });
         rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);

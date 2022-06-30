@@ -6,11 +6,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-public class Attraction {
+public class Attraction implements Serializable {
     private static final String TAG = "Attraction";
     public String formatted_address;
     public String formatted_phone_number;
@@ -66,9 +67,9 @@ public class Attraction {
         if (resultObject.has(FORMATTED_PHONE_NUMBER))
             attraction.formatted_phone_number = resultObject.getString(FORMATTED_PHONE_NUMBER);
         JSONObject locationObj = resultObject.getJSONObject(GEOMETRY).getJSONObject(LOCATION);
-        if (resultObject.has(LAT))
+        if (locationObj.has(LAT))
             attraction.latitude = locationObj.getString(LAT);
-        if (resultObject.has(LNG))
+        if (locationObj.has(LNG))
             attraction.longitude = locationObj.getString(LNG);
         if (resultObject.has(ICON))
             attraction.icon = resultObject.getString(ICON);

@@ -30,7 +30,7 @@ public class NearbyPlacesHelper extends AsyncTask<Object, String, String> {
     private static final String nextPlacesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String placeDetailsBaseUrl = "https://maps.googleapis.com/maps/api/place/details/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
-    //private static final String API_KEY = Resources.getSystem().getString(R.string.google_maps_key);
+    //private static final String API_KEY = Resources.getSystem().getString(R.string.google_places_key);
 
     public NearbyPlacesHelper(OnTaskCompleted listener){
         this.listener=listener;
