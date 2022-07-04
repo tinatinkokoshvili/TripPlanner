@@ -1,6 +1,8 @@
 package com.example.tripplanner.models;
 
 
+import android.graphics.Bitmap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,11 +10,12 @@ import org.parceler.Parcel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 @Parcel
 public class Attraction implements Serializable {
-    private static final String TAG = "Attraction";
+    public static final String TAG = "Attraction";
     public String formatted_address;
     public String formatted_phone_number;
     public String latitude;
@@ -35,33 +38,33 @@ public class Attraction implements Serializable {
     public String vicinity;
     public String website;
     public Boolean picked;
+    public Bitmap photo;
 
 
-    private static final String FORMATTED_ADDRESS = "formatted_address";
-    private static final String FORMATTED_PHONE_NUMBER = "formatted_phone_number";
-    private static final String GEOMETRY = "geometry";
-    private static final String LOCATION = "location";
-    private static final String LAT = "lat";
-    private static final String LNG = "lng";
-    private static final String ICON = "icon";
-    private static final String ICON_BACKGROUND_COLOR = "icon_background_color";
-    private static final String ICON_MASK_BASE_URI = "icon_mask_base_uri";
-    private static final String INTERNATIONAL_PHONE_NUMBER = "international_phone_number";
-    private static final String NAME = "name";
-    private static final String PLACE_ID = "place_id";
-    private static final String PRICE_LEVEL = "price_level";
-    private static final String RATING = "rating";
-    private static final String URL = "url";
-    private static final String USER_RATINGS_TOTAL = "user_ratings_total";
-    private static final String VICINITY = "vicinity";
-    private static final String WEBSITE = "website";
+    public static final String FORMATTED_ADDRESS = "formatted_address";
+    public static final String FORMATTED_PHONE_NUMBER = "formatted_phone_number";
+    public static final String GEOMETRY = "geometry";
+    public static final String LOCATION = "location";
+    public static final String LAT = "lat";
+    public static final String LNG = "lng";
+    public static final String ICON = "icon";
+    public static final String ICON_BACKGROUND_COLOR = "icon_background_color";
+    public static final String ICON_MASK_BASE_URI = "icon_mask_base_uri";
+    public static final String INTERNATIONAL_PHONE_NUMBER = "international_phone_number";
+    public static final String NAME = "name";
+    public static final String PLACE_ID = "place_id";
+    public static final String PRICE_LEVEL = "price_level";
+    public static final String RATING = "rating";
+    public static final String URL = "url";
+    public static final String USER_RATINGS_TOTAL = "user_ratings_total";
+    public static final String VICINITY = "vicinity";
+    public static final String WEBSITE = "website";
 
-    public Attraction() {
-        picked = false;
-    }
+    public Attraction() {}
 
     public static Attraction createFromJson(JSONObject resultObject) throws JSONException {
         Attraction attraction = new Attraction();
+        attraction.picked = false;
         if (resultObject.has(FORMATTED_ADDRESS))
             attraction.formatted_address = resultObject.getString(FORMATTED_ADDRESS);
         if (resultObject.has(FORMATTED_PHONE_NUMBER))

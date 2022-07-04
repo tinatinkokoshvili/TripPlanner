@@ -34,10 +34,8 @@
                 android:layout_height="164dp"
                 android:contentDescription="Content Description"
                 android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_dialog_map"
                 tools:layout_editor_absoluteX="2dp"
-                tools:layout_editor_absoluteY="-2dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:layout_editor_absoluteY="-2dp" />
 
             <TextView
                 android:id="@+id/tvName"
