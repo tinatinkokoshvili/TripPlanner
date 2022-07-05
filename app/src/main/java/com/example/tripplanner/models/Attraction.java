@@ -2,63 +2,69 @@ package com.example.tripplanner.models;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Parcelable;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
+//import org.parceler.Parcel;
+import android.os.Parcel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.LinkedList;
 import java.util.List;
 
-@Parcel
-public class Attraction implements Serializable {
-    public static final String TAG = "Attraction";
-    public String formatted_address;
-    public String formatted_phone_number;
-    public String latitude;
-    public String longitude;
-    public String icon;
-    public String icon_background_color;
-    public String icon_mask_base_uri;
-    public String international_phone_number;
-    public String name;
+
+public class Attraction implements Parcelable {
+    public transient static final String TAG = "Attraction";
+    public transient String formatted_address;
+    public transient String formatted_phone_number;
+    public transient String latitude;
+    public transient String longitude;
+    public transient String icon;
+    public transient String icon_background_color;
+    public transient String icon_mask_base_uri;
+    public transient String international_phone_number;
+    public transient String name;
     //Boolean open_now;
     //JSONArray weekday_text;
     //JSONArray photos;
-    public String place_id;
-    public int price_level;
-    public int rating;
+    public transient String place_id;
+    public transient int price_level;
+    public transient int rating;
     //JSONArray reviews;
    // JSONArray types;
-    public String url;
-    public int user_ratings_total;
-    public String vicinity;
-    public String website;
-    public Boolean picked;
-    public Bitmap photo;
+    public transient String url;
+    public transient int user_ratings_total;
+    public transient String vicinity;
+    public transient String website;
+    public transient Boolean picked;
+    public transient Bitmap photo;
 
 
-    public static final String FORMATTED_ADDRESS = "formatted_address";
-    public static final String FORMATTED_PHONE_NUMBER = "formatted_phone_number";
-    public static final String GEOMETRY = "geometry";
-    public static final String LOCATION = "location";
-    public static final String LAT = "lat";
-    public static final String LNG = "lng";
-    public static final String ICON = "icon";
-    public static final String ICON_BACKGROUND_COLOR = "icon_background_color";
-    public static final String ICON_MASK_BASE_URI = "icon_mask_base_uri";
-    public static final String INTERNATIONAL_PHONE_NUMBER = "international_phone_number";
-    public static final String NAME = "name";
-    public static final String PLACE_ID = "place_id";
-    public static final String PRICE_LEVEL = "price_level";
-    public static final String RATING = "rating";
-    public static final String URL = "url";
-    public static final String USER_RATINGS_TOTAL = "user_ratings_total";
-    public static final String VICINITY = "vicinity";
-    public static final String WEBSITE = "website";
+    public transient static final String FORMATTED_ADDRESS = "formatted_address";
+    public transient static final String FORMATTED_PHONE_NUMBER = "formatted_phone_number";
+    public transient static final String GEOMETRY = "geometry";
+    public transient static final String LOCATION = "location";
+    public transient static final String LAT = "lat";
+    public transient static final String LNG = "lng";
+    public transient static final String ICON = "icon";
+    public transient static final String ICON_BACKGROUND_COLOR = "icon_background_color";
+    public transient static final String ICON_MASK_BASE_URI = "icon_mask_base_uri";
+    public transient static final String INTERNATIONAL_PHONE_NUMBER = "international_phone_number";
+    public transient static final String NAME = "name";
+    public transient static final String PLACE_ID = "place_id";
+    public transient static final String PRICE_LEVEL = "price_level";
+    public transient static final String RATING = "rating";
+    public transient static final String URL = "url";
+    public transient static final String USER_RATINGS_TOTAL = "user_ratings_total";
+    public transient static final String VICINITY = "vicinity";
+    public transient static final String WEBSITE = "website";
 
     public Attraction() {}
 
@@ -112,11 +118,88 @@ public class Attraction implements Serializable {
     }
 
     public static List<Attraction> createFromJsonArray(JSONArray jsonArray) throws JSONException {
-        List<Attraction> attractions = new ArrayList<>();
+        List<Attraction> attractions = new LinkedList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             attractions.add(createFromJson(jsonArray.getJSONObject(i)));
         }
         return attractions;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeString(formatted_address);
+        dest.writeString(formatted_phone_number);
+        dest.writeString(latitude);
+        dest.writeString(longitude);
+        dest.writeString(icon);
+        dest.writeString(icon_background_color);
+        dest.writeString(icon_mask_base_uri);
+        dest.writeString(international_phone_number);
+        dest.writeString(name);
+        dest.writeString(place_id);
+        dest.writeInt(price_level);
+        dest.writeInt(rating);
+        dest.writeString(url);
+        dest.writeInt(user_ratings_total);
+        dest.writeString(vicinity);
+        dest.writeString(website);
+        dest.writeBoolean(picked);
+//        try {
+//            dest.writeByteArray(convert(photo));
+//        } catch (IOException e) {
+//            Log.e(TAG, "photo bitmap could not be put into Parcelable");
+//        }
+    }
+
+    public Attraction(Parcel in) {
+        formatted_address = in.readString();
+        formatted_phone_number = in.readString();
+        latitude = in.readString();
+        longitude = in.readString();
+        icon = in.readString();
+        icon_background_color = in.readString();
+        icon_mask_base_uri = in.readString();
+        international_phone_number = in.readString();
+        name = in.readString();
+        place_id = in.readString();
+        price_level = in.readInt();
+        rating = in.readInt();
+        url = in.readString();
+        user_ratings_total = in.readInt();
+        vicinity = in.readString();
+        website = in.readString();
+        picked = in.readBoolean();
+        //byte[] photoBytes = new byte[in.readInt()];
+        //in.readByteArray(photoBytes);
+    }
+
+    public static byte[] convert(Bitmap bitmap) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+        byte[] array = stream.toByteArray();
+        stream.close();
+        return array;
+
+
+    }
+    public static Bitmap convert(byte[] array) {
+        return BitmapFactory.decodeByteArray(array,0,array.length);
+    }
+
+    public static final Parcelable.Creator<Attraction> CREATOR = new Parcelable.Creator<Attraction>()
+    {
+        public Attraction createFromParcel(Parcel in)
+        {
+            return new Attraction(in);
+        }
+        public Attraction[] newArray(int size)
+        {
+            return new Attraction[size];
+        }
+    };
 }

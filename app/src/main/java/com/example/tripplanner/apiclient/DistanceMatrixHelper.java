@@ -22,6 +22,10 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
     private StringBuilder stringBuilder;
     private String data;
 
+    public DistanceMatrixHelper(OnTaskCompleted listener) {
+        this.listener = listener;
+    }
+
     @Override
     protected String doInBackground(Object... objects) {
         //mMap = (GoogleMap) objects[0];
@@ -52,5 +56,7 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.i(TAG, "received json " + s);
+       // int[][] distanceMatrix = new int[][];
+        //listener.onTaskCompleted();
     }
 }

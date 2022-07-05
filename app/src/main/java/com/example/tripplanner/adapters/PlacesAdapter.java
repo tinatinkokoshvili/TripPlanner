@@ -31,6 +31,7 @@ import java.util.List;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
     private static final String TAG = "PlacesAdapter";
+    private static final String noPhotoAvailableUrl = "https://archive.org/download/no-photo-available/no-photo-available.png";
     Context context;
     List<Attraction> attractionsList;
 
@@ -102,7 +103,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             }
             if (ivAtrPicture.getDrawable() == null) {
                 Glide.with(context)
-                        .load("https://archive.org/download/no-photo-available/no-photo-available.png").into(ivAtrPicture);
+                        .load(noPhotoAvailableUrl).into(ivAtrPicture);
             }
 
             tvName.setText(attraction.name);
@@ -137,8 +138,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 //                    cdAttraction.setBackgroundColor(Color.WHITE);
 //                }
                // notifyItemChanged(position);
-
-
         }
     }
 }

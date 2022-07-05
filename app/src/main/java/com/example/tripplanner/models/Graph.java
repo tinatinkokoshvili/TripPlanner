@@ -9,26 +9,28 @@ public class Graph {
     private HashMap<Attraction, Integer> nodeMap;
     private int[][] graph;
 
-    Graph(int numNodes) {
+    public Graph(int numNodes) {
         nodeMap = new HashMap<>();
         graph = new int[numNodes][numNodes];
     }
 
-    void addEdge(Attraction v, Attraction u, int weight) {
+    public void addEdge(Attraction v, Attraction u, int weight) {
         graph[nodeMap.get(v)][nodeMap.get(u)] = weight;
+        graph[nodeMap.get(u)][nodeMap.get(v)] = weight;
     }
 
-    void deleteEdge(Attraction v, Attraction u) {
+    public void deleteEdge(Attraction v, Attraction u) {
         // Since the distance or travel duration cannot be negative,
         // we pick -1 to indicate non-existing edge
         graph[nodeMap.get(v)][nodeMap.get(u)] = -1;
+        graph[nodeMap.get(u)][nodeMap.get(v)] = -1;
     }
 
-    int getWeight(Attraction v, Attraction u) {
+    public int getWeight(Attraction v, Attraction u) {
         return graph[nodeMap.get(v)][nodeMap.get(u)];
     }
 
-    int addVertex(Attraction v) {
+    public int addVertex(Attraction v) {
         if (nodeMap.containsKey(v)) {
             return nodeMap.get(v);
         } else {
@@ -43,12 +45,16 @@ public class Graph {
         }
     }
 
-    void deleteVertex(Attraction v) {
+    public void deleteVertex(Attraction v) {
         for (int i = 0; i < graph.length; i++) {
             graph[nodeMap.get(v)][i] = -1;
             graph[i][nodeMap.get(v)] = -1;
         }
         nodeMap.remove(v);
+    }
+
+    public int getNumNodes() {
+        return nodeMap.size();
     }
 
 }

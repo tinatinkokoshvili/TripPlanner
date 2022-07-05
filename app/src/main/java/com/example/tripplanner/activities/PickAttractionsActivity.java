@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ import org.w3c.dom.Attr;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PickAttractionsActivity extends AppCompatActivity implements OnTaskCompleted {
@@ -49,7 +51,7 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     private RecyclerView rvPlaces;
     private PlacesAdapter placesAdapter;
     private List<Attraction> attractionsList;
-    private List<Attraction> pickedAttractionsList;
+    private ArrayList<Attraction> pickedAttractionsList;
 
 
     @Override
@@ -63,13 +65,11 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
             @Override
             public void onClick(View v) {
                 finalizePickedList();
-                Intent routeIntent = new Intent(PickAttractionsActivity.this, RouteActivity.class);
-                routeIntent.putExtra("list", (Serializable) pickedAttractionsList);
-                startActivity(routeIntent);
+                goToRouteActivity();
             }
         });
         rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);
-        attractionsList = new ArrayList<>();
+        attractionsList = new LinkedList<>();
         placesAdapter = new PlacesAdapter(this, attractionsList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvPlaces.setLayoutManager(linearLayoutManager);
@@ -81,12 +81,21 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
         fetchPlaces(latitude, longitude);
     }
 
+    private void goToRouteActivity() {
+        Intent routeIntent = new Intent(PickAttractionsActivity.this, RouteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("data", pickedAttractionsList);
+        routeIntent.putExtras(bundle);
+        startActivity(routeIntent);
+    }
+
     private void finalizePickedList() {
         pickedAttractionsList.clear();
         for (int i = 0; i < attractionsList.size(); i++) {
             Attraction currAtr = attractionsList.get(i);
             if (currAtr.picked) {
                 pickedAttractionsList.add(currAtr);
+                Log.i(TAG, "putting picked atr " + currAtr.name);
             }
         }
         Log.i(TAG, "finalizedList Size " + pickedAttractionsList.size());
@@ -112,39 +121,49 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     public void onTaskCompleted(Attraction atr) {
         Log.i(TAG, "Task completed " + atr.name + " adapter size " + placesAdapter.getItemCount());
         try {
-            //API calls to get photo of the place
-            PlacesClient placesClient = Places.createClient(this);
-            final String placeId = atr.place_id;
-            final List<Place.Field> fields = Collections.singletonList(Place.Field.PHOTO_METADATAS);
-            final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
-            placesClient.fetchPlace(placeRequest).addOnSuccessListener((response) -> {
-                final Place place = response.getPlace();
-                final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
-                if (metadata == null || metadata.isEmpty()) {
-                    Log.w(TAG, "No photo metadata.");
-                    return;
-                }
-                final PhotoMetadata photoMetadata = metadata.get(0);
-                final String attributions = photoMetadata.getAttributions();
-                // Create a FetchPhotoRequest.
-                final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                        .setMaxWidth(500) // Optional.
-                        .setMaxHeight(300) // Optional.
-                        .build();
-                placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                    Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                    atr.photo = bitmap;
-                }).addOnFailureListener((exception) -> {
-                    if (exception instanceof ApiException) {
-                        final ApiException apiException = (ApiException) exception;
-                        Log.e(TAG, "Place not found: " + exception.getMessage());
-                    }
-                });
-            });
+            Attraction atrWithPhoto = getPhotoBitmap(atr);
             placesAdapter.add(atr);
         } catch (Exception e) {
             Log.e(TAG, "Json exception", e);
         }
+    }
+
+    public Attraction getPhotoBitmap(Attraction atr) {
+        //API calls to get photo of the place
+        PlacesClient placesClient = Places.createClient(this);
+        final String placeId = atr.place_id;
+        final List<Place.Field> fields = Collections.singletonList(Place.Field.PHOTO_METADATAS);
+        final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
+        placesClient.fetchPlace(placeRequest).addOnSuccessListener((response) -> {
+            final Place place = response.getPlace();
+            final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
+            if (metadata == null || metadata.isEmpty()) {
+                Log.w(TAG, "No photo metadata.");
+                return;
+            }
+            final PhotoMetadata photoMetadata = metadata.get(0);
+            final String attributions = photoMetadata.getAttributions();
+            // Create a FetchPhotoRequest.
+            final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
+                    .setMaxWidth(500) // Optional.
+                    .setMaxHeight(300) // Optional.
+                    .build();
+            placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+                Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                atr.photo = bitmap;
+            }).addOnFailureListener((exception) -> {
+                if (exception instanceof ApiException) {
+                    final ApiException apiException = (ApiException) exception;
+                    Log.e(TAG, "Place not found: " + exception.getMessage());
+                }
+            });
+        });
+        return atr;
+    }
+
+    @Override
+    public void onDistanceTaskCompleted(int distanceMatrix) {
+        return;
     }
 
 }

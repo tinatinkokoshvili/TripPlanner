@@ -26,7 +26,4 @@ public class AtrDetailsActivity extends AppCompatActivity {
         Log.i(TAG, "Details bitmap " +  attraction.photo);
         ivAtrPhoto.setImageBitmap(attraction.photo);
     }
-
-
-
 }

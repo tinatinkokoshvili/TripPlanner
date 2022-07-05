@@ -53,8 +53,8 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.skyfishjy.library.RippleBackground;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AttractionsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -142,7 +142,7 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                             if (predictionsResponse != null) {
                                 predictionList = predictionsResponse.getAutocompletePredictions();
                                 //Create list of suggestion strings from predictions list
-                                List<String> suggestionsList = new ArrayList<>();
+                                List<String> suggestionsList = new LinkedList<>();
                                 for (int i = 0; i < predictionList.size(); i++) {
                                     AutocompletePrediction prediction = predictionList.get(i);
                                     suggestionsList.add(prediction.getFullText(null).toString());

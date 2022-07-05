@@ -160,7 +160,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    //Map<String, String> profile;
+                    // Authenticating user
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -169,10 +169,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                         Log.i(TAG, "createUserWithEmail:success");
                                         User user = new User(email,  password, fullName, username, downloadUri.toString());
                                         userID = mAuth.getCurrentUser().getUid();
-                                        // Upload Data
+                                        // Add user data to database
                                         DocumentReference documentReference =
                                                 firestore.collection("testUsers").document(userID);
-
                                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
