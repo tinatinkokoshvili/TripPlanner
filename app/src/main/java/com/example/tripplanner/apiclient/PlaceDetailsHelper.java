@@ -68,18 +68,6 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
             JSONObject resultObject = parentObject.getJSONObject("result");
             Attraction attraction = Attraction.createFromJson(resultObject);
             Log.i(TAG, "onTaskCompleted from GetDetails " + attraction.name);
-            //Make an API call to get a photo
-//            StringBuilder stringBuilder = new StringBuilder(placePhotoBaseUrl);
-//            stringBuilder.append("maxwidth=" + "400");
-//            stringBuilder.append("&photo_reference=" + "Aap_uEC6jqtpflLS8GxQqPHBjlcwBf2sri0ZErk9q1ciHGZ6Zx5HBiiiEsPEO3emtB1PGyWbBQhgPL2r9CshoVlJEG4xzB71QMhGBTqqeaCNk1quO3vTTiP50aM1kmOaBQ-DF1ER7zpu6BQOEtnusKMul0m4KA45wfE3h6Xh2IxjLNzx-IiX");
-//            stringBuilder.append("&key=" +API_KEY);
-//            String url = stringBuilder.toString();
-//            Object dataTransfer[] = new Object[2];
-//            dataTransfer[0] = url;
-//            dataTransfer[1] = attraction;
-//            PlacePhotoRequest getPhoto = new PlacePhotoRequest(listener);
-//            getPhoto.execute(dataTransfer);
-
             listener.onTaskCompleted(attraction);
         } catch (JSONException e) {
             e.printStackTrace();

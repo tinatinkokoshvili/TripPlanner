@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.example.tripplanner.OnTaskCompleted;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +25,12 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
     private String data;
+
+    private static final String ROWS = "rows";
+    private static final String ELEMENTS = "elements";
+    private static final String DURATION_IN_TRAFFIC = "duration_in_traffic";
+    private static final String DURATION = "duration";
+    private static final String VALUE = "value";
 
     public DistanceMatrixHelper(OnTaskCompleted listener) {
         this.listener = listener;
@@ -56,7 +66,26 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.i(TAG, "received json " + s);
-       // int[][] distanceMatrix = new int[][];
-        //listener.onTaskCompleted();
+        // Parse json to create the duration_in_traffic matrix
+        try {
+            JSONObject parentObject = new JSONObject(s);
+            JSONArray rowsArray = parentObject.getJSONArray(ROWS);
+            int[][] durationMatrix = new int[rowsArray.length()][rowsArray.length()];
+            for (int i = 0; i < rowsArray.length(); i++) {
+                JSONArray elements = rowsArray.getJSONObject(i).getJSONArray(ELEMENTS);
+                for (int j = 0; j < elements.length(); j++) {
+                    JSONObject trip = elements.getJSONObject(j);
+                    if (trip.has(DURATION_IN_TRAFFIC)) {
+                        durationMatrix[i][j] = trip.getJSONObject(DURATION_IN_TRAFFIC).getInt(VALUE);
+                    } else {
+                        durationMatrix[i][j] = trip.getJSONObject(DURATION).getInt(VALUE);
+                    }
+                    Log.i(TAG, "cell filled " + durationMatrix[i][j]);
+                }
+            }
+            listener.onDurationTaskCompleted(durationMatrix);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

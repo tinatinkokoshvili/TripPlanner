@@ -1,15 +1,12 @@
 package com.example.tripplanner.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,32 +15,21 @@ import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.apiclient.NearbyPlacesHelper;
-import com.example.tripplanner.apiclient.PlacePhotoRequest;
 import com.example.tripplanner.models.Attraction;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPhotoRequest;
-import com.google.android.libraries.places.api.net.FetchPhotoResponse;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-import org.w3c.dom.Attr;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PickAttractionsActivity extends AppCompatActivity implements OnTaskCompleted {
+public class AttractionsSelectionActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "PickAttractionsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
@@ -82,7 +68,7 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     }
 
     private void goToRouteActivity() {
-        Intent routeIntent = new Intent(PickAttractionsActivity.this, RouteActivity.class);
+        Intent routeIntent = new Intent(AttractionsSelectionActivity.this, RouteActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAttractionsList);
         routeIntent.putExtras(bundle);
@@ -162,7 +148,7 @@ public class PickAttractionsActivity extends AppCompatActivity implements OnTask
     }
 
     @Override
-    public void onDistanceTaskCompleted(int distanceMatrix) {
+    public void onDurationTaskCompleted(int[][] distanceMatrix) {
         return;
     }
 

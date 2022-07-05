@@ -233,7 +233,7 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                     public void run() {
                         rippleBg.stopRippleAnimation();
                         //Pass the geocoordinates of the location of interest to the pickattraction intent
-                        Intent intent = new Intent(AttractionsActivity.this , PickAttractionsActivity.class);
+                        Intent intent = new Intent(AttractionsActivity.this , AttractionsSelectionActivity.class);
                         Log.i(TAG, "latlong while passing " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
                         intent.putExtra("latitude", latLngOfPlace.latitude);
                         intent.putExtra("longitude", latLngOfPlace.longitude);

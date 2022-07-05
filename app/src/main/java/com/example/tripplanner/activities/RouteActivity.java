@@ -6,17 +6,8 @@ import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.RouteGenerator;
 import com.example.tripplanner.apiclient.DistanceMatrixHelper;
-import com.example.tripplanner.apiclient.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
-import com.example.tripplanner.models.Graph;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,52 +24,48 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
     private static final String distanceMatrixBaseUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private List<Attraction> atrRoute;
-    private int matrixCellCounter;
+    private int[][] durationMatrix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
-        matrixCellCounter = 0;
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
-
-//        Intent intent = getIntent();
-//        pickedAtrList = (List<Attraction>) intent.getSerializableExtra("list");
-        Log.i(TAG, "first atr " + pickedAtrList.get(0).name);
-        Log.i(TAG, "second atr " + pickedAtrList.get(1).name);
-        Log.i(TAG, "picked attraction" + pickedAtrList.size());
+        durationMatrix = new int[pickedAtrList.size()][pickedAtrList.size()];
         fetchDistances();
-//        RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList);
-//        atrRoute = rtGenerator.getRouteList();
-
     }
 
     private void fetchDistances() {
+        StringBuilder stringBuilder = new StringBuilder(distanceMatrixBaseUrl);
+        stringBuilder.append("&origins=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
-            for (int j = 0; j < pickedAtrList.size(); j++) {
-                StringBuilder stringBuilder = new StringBuilder(distanceMatrixBaseUrl);
-                stringBuilder.append("&origins=");
-                Attraction origin = pickedAtrList.get(i);
-                Attraction destination = pickedAtrList.get(j);
-                Log.i(TAG, "origin " + origin.name + " destination " + destination.name);
-                stringBuilder.append(origin.latitude);
-                stringBuilder.append("%2C");
-                stringBuilder.append(origin.longitude);
-                stringBuilder.append("&destinations=");
-                stringBuilder.append(destination.latitude);
-                stringBuilder.append("%2C");
-                stringBuilder.append(destination.longitude);
-                stringBuilder.append("&key=" + API_KEY);
-                String url = stringBuilder.toString();
-                Object dataTransfer[] = new Object[1];
-                dataTransfer[0] = url;
-                new DistanceMatrixHelper(this).execute(dataTransfer);
+            Attraction curOrigin = pickedAtrList.get(i);
+            stringBuilder.append(curOrigin.latitude);
+            stringBuilder.append("%2C");
+            stringBuilder.append(curOrigin.longitude);
+            if (i != pickedAtrList.size() - 1) {
+                stringBuilder.append("%7C");
             }
         }
+        stringBuilder.append("&destinations=");
+        for (int i = 0; i < pickedAtrList.size(); i++) {
+            Attraction curDestination = pickedAtrList.get(i);
+            stringBuilder.append(curDestination.latitude);
+            stringBuilder.append("%2C");
+            stringBuilder.append(curDestination.longitude);
+            if (i != pickedAtrList.size() - 1) {
+                stringBuilder.append("%7C");
+            }
+        }
+        stringBuilder.append("&departure_time=now");
+        stringBuilder.append("&key=" + API_KEY);
+        String url = stringBuilder.toString();
+        Object dataTransfer[] = new Object[1];
+        dataTransfer[0] = url;
+        new DistanceMatrixHelper(this).execute(dataTransfer);
     }
-
 
     @Override
     public void onTaskCompleted(Attraction attr) {
@@ -86,11 +73,12 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
     }
 
     @Override
-    public void onDistanceTaskCompleted(int distanceCell) {
-        matrixCellCounter++;
-
+    public void onDurationTaskCompleted(int[][] durationMatrix) {
+        this.durationMatrix = durationMatrix;
+//        RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList);
+//        atrRoute = rtGenerator.getRouteList();
+        // Display the route
     }
-
 
     public static byte[] convert(Bitmap bitmap) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -98,8 +86,8 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
         byte[] array = stream.toByteArray();
         stream.close();
         return array;
-
     }
+
     public static Bitmap convert(byte[] array) {
         return BitmapFactory.decodeByteArray(array,0,array.length);
     }
