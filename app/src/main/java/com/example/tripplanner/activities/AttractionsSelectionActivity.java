@@ -45,13 +45,15 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_attractions);
 
+        double latitude = getIntent().getDoubleExtra("latitude", 0);
+        double longitude = getIntent().getDoubleExtra("longitude", 0);
         pickedAttractionsList = new ArrayList<>();
         btnGenerate = findViewById(R.id.btnGenerate);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finalizePickedList();
-                goToRouteActivity();
+                goToRouteActivity(latitude, longitude);
             }
         });
         rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);
@@ -61,17 +63,19 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         rvPlaces.setLayoutManager(linearLayoutManager);
         rvPlaces.setAdapter(placesAdapter);
 
-        double latitude = getIntent().getDoubleExtra("latitude", 0);
-        double longitude = getIntent().getDoubleExtra("longitude", 0);
+
         Log.i(TAG, "latlang " + latitude + " long " + longitude);
         fetchPlaces(latitude, longitude);
     }
 
-    private void goToRouteActivity() {
+    private void goToRouteActivity(double latitude, double longitude) {
         Intent routeIntent = new Intent(AttractionsSelectionActivity.this, RouteActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAttractionsList);
         routeIntent.putExtras(bundle);
+        // Pass the location user looked up so that we can include it in the final route
+        routeIntent.putExtra("latitude", latitude);
+        routeIntent.putExtra("longitude", longitude);
         startActivity(routeIntent);
     }
 

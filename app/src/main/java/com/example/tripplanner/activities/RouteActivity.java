@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import okhttp3.Route;
+
 public class RouteActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "RouteActivity";
     private List<Attraction> pickedAtrList;
@@ -25,12 +27,16 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private List<Attraction> atrRoute;
     private int[][] durationMatrix;
+    private double userLatitude;
+    private double userLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        userLatitude = getIntent().getDoubleExtra("latitude", 0);
+        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
         durationMatrix = new int[pickedAtrList.size()][pickedAtrList.size()];
@@ -45,20 +51,25 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
             stringBuilder.append(curOrigin.latitude);
             stringBuilder.append("%2C");
             stringBuilder.append(curOrigin.longitude);
-            if (i != pickedAtrList.size() - 1) {
-                stringBuilder.append("%7C");
-            }
+            stringBuilder.append("%7C");
         }
+        // Add users current location to list of origin
+        stringBuilder.append(Double.toString(userLatitude));
+        stringBuilder.append("%2C");
+        stringBuilder.append(Double.toString(userLongitude));
         stringBuilder.append("&destinations=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
             Attraction curDestination = pickedAtrList.get(i);
             stringBuilder.append(curDestination.latitude);
             stringBuilder.append("%2C");
             stringBuilder.append(curDestination.longitude);
-            if (i != pickedAtrList.size() - 1) {
-                stringBuilder.append("%7C");
-            }
+            stringBuilder.append("%7C");
         }
+        // Add users current location to list of destination
+        stringBuilder.append(Double.toString(userLatitude));
+        stringBuilder.append("%2C");
+        stringBuilder.append(Double.toString(userLongitude));
+
         stringBuilder.append("&departure_time=now");
         stringBuilder.append("&key=" + API_KEY);
         String url = stringBuilder.toString();
@@ -75,8 +86,13 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
     @Override
     public void onDurationTaskCompleted(int[][] durationMatrix) {
         this.durationMatrix = durationMatrix;
-//        RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList);
-//        atrRoute = rtGenerator.getRouteList();
+        // Add current location to the list of picked attractions
+        Attraction userLocation = new Attraction();
+        userLocation.latitude = Double.toString(userLatitude);
+        userLocation.longitude = Double.toString(userLongitude);
+        pickedAtrList.add(userLocation);
+        RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList, durationMatrix);
+        List<Attraction> atrRoute = rtGenerator.getRouteList();
         // Display the route
     }
 
