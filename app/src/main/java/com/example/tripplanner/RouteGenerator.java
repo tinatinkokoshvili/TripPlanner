@@ -16,13 +16,14 @@ public class RouteGenerator {
     private static List<Attraction> pickedAtrList;
     private static int[][] durationMatrix;
     private static List<Attraction> atrRoute;
+    private static LinkedList<Integer> atrIndexRouteWithDuplicates;
     private static LinkedList<Integer> atrIndexRoute;
     private static int numNodes;
     //static Graph graph;
 
     public RouteGenerator(int numNodes) {
         atrRoute = new LinkedList<>();
-        atrIndexRoute = new LinkedList<>();
+        atrIndexRouteWithDuplicates = new LinkedList<>();
         this.numNodes = numNodes;
     }
 
@@ -30,6 +31,7 @@ public class RouteGenerator {
         this.pickedAtrList = pickedAtrList;
         this.durationMatrix = durationMatrix;
         atrRoute = new LinkedList<>();
+        atrIndexRouteWithDuplicates = new LinkedList<>();
         atrIndexRoute = new LinkedList<>();
         numNodes = pickedAtrList.size();
         Log.i(TAG, "PickedAtrList size " + pickedAtrList.size());
@@ -43,7 +45,9 @@ public class RouteGenerator {
         // Create graph from parent[]
         int[][] mstGraph = createGraphFromParentArray(durationMatrix, parentArray);
         // Run DFS to build atrIndexRoute
-        dfsBuildAtrIndexRoute(mstGraph, numNodes - 1, visited, 0);
+        atrIndexRouteWithDuplicates = dfsBuildAtrIndexRoute(atrIndexRouteWithDuplicates, mstGraph,
+                numNodes - 1, visited, 0);
+        atrIndexRoute = removeDuplicateNodes(atrIndexRouteWithDuplicates, numNodes);
         createRouteListFromIndexList();
         for (int i = 0; i < atrRoute.size(); i++) {
             Log.i(TAG, "Attraction " + i + " " + atrRoute.get(i).name);
@@ -113,24 +117,25 @@ public class RouteGenerator {
         return parent;
     }
 
-    public static LinkedList<Integer> dfsBuildAtrIndexRoute(int[][] graph, int curNode,
+    public static LinkedList<Integer> dfsBuildAtrIndexRoute(LinkedList<Integer> atrIndexRouteWithDuplicatesInner,
+                                                            int[][] graph, int curNode,
                                                             boolean[] visited, int visitedNum) {
         Log.i(TAG, curNode + " ");
         if (visitedNum == visited.length) {
-            return atrIndexRoute;
+            return atrIndexRouteWithDuplicatesInner;
         }
         visited[curNode] = true;
-        atrIndexRoute.add(curNode);
+        atrIndexRouteWithDuplicatesInner.add(curNode);
         for (int neighbor = 0; neighbor < graph[curNode].length; neighbor++) {
             // For metric TSP algorithm, we need a list of all visited vertices
             if (graph[curNode][neighbor] != -1 && visited[neighbor]) {
-                atrIndexRoute.add(neighbor);
+                atrIndexRouteWithDuplicatesInner.add(neighbor);
             }
             if (graph[curNode][neighbor] != -1 && (!visited[neighbor])) {
-                dfsBuildAtrIndexRoute(graph, neighbor, visited, visitedNum);
+                dfsBuildAtrIndexRoute(atrIndexRouteWithDuplicatesInner, graph, neighbor, visited, visitedNum);
             }
         }
-        return atrIndexRoute;
+        return atrIndexRouteWithDuplicatesInner;
     }
 
     static void createRouteListFromIndexList() {
@@ -153,5 +158,17 @@ public class RouteGenerator {
             mstGraph[v][u] = initGraph[v][u];
         }
         return mstGraph;
+    }
+
+    public static LinkedList<Integer> removeDuplicateNodes(List<Integer> list, int numVertices){
+        LinkedList<Integer> atrIndexRoute = new LinkedList<>();
+        boolean[] visited = new boolean[numVertices];
+        for (int i = 0; i < list.size(); i++) {
+            if (!visited[list.get(i)]) {
+                atrIndexRoute.add(list.get(i));
+                visited[list.get(i)] = true;
+            }
+        }
+        return atrIndexRoute;
     }
 }

@@ -47,6 +47,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted 
         StringBuilder stringBuilder = new StringBuilder(distanceMatrixBaseUrl);
         stringBuilder.append("&origins=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
+            Log.i(TAG, "picked attraction putting in link " + pickedAtrList.get(i).name);
             Attraction curOrigin = pickedAtrList.get(i);
             stringBuilder.append(curOrigin.latitude);
             stringBuilder.append("%2C");
