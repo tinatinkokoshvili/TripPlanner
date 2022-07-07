@@ -59,6 +59,7 @@ import java.util.List;
 
 public class AttractionsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "AttractionsActivity";
+    private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlacesClient placesClient;
@@ -89,12 +90,13 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
         rippleBg = findViewById(R.id.ripple_bg);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        Log.i(TAG, "map " + mapFragment);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(AttractionsActivity.this);
 
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU");
+        Places.initialize(getApplicationContext(), API_KEY);
         // Create a new PlacesClient instance
         placesClient = Places.createClient(this);
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();

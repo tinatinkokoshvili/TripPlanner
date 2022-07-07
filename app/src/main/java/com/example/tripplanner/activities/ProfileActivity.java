@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     FloatingActionButton fbtnNewTrip;
     Button btnLogout;
     Button btnNewTrip;
+    Button btnTestRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnLogout.setOnClickListener(this);
         btnNewTrip = findViewById(R.id.btnNewTrip);
         btnNewTrip.setOnClickListener(this);
+        btnTestRoute = findViewById(R.id.btnTestRoute);
+        //btnTestRoute.setOnClickListener(this);
     }
 
     @Override
@@ -106,7 +109,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Intent attractionsintent = new Intent(this, AttractionsActivity.class);
             startActivity(attractionsintent);
         }
-
+//        if (v.getId() == R.id.btnTestRoute) {
+//            Intent testRouteIntent = new Intent(this, TestRouteActivity.class);
+//            startActivity(testRouteIntent);
+//        }
     }
 
     private void onLogout() {

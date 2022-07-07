@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/material_dynamic_primary30"
         android:src="@drawable/common_full_open_on_phone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,6 +78,18 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProfValUsername" />
+
+    <Button
+        android:id="@+id/btnTestRoute"
+        android:layout_width="238dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/material_dynamic_primary30"
+        android:text="Create New Trip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNewTrip" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
