@@ -18,17 +18,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.button.MaterialButton;
 
 import android.annotation.SuppressLint;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,11 +42,14 @@ import java.util.List;
 
 public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback {
     private static final String TAG = "RouteActivity";
+    // In pickedAtrList, userLocation is at last index, other locations are in correct order to visit
     private List<Attraction> pickedAtrList;
     private static final String distanceMatrixBaseUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
     private static final String directionsBaseUrl = "https://maps.googleapis.com/maps/api/directions/";
+    private static final String googleMapsInGooglePlay = "https://play.google.com/store/apps/details?id=com.google.android.apps.maps";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private static final String TRAVEL_MODE = "driving";
+    // In atrRoute, userLocation is at first index, other locations are in correct order to visit after index 0
     private List<Attraction> atrRoute;
     private int[][] durationMatrix;
     private double userLatitude;
@@ -53,6 +61,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     private GoogleMap mMap;
     private Polyline currentPolyline;
+    private Button btnOpenInMaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,45 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
        // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RouteActivity.this);
+        btnOpenInMaps = findViewById(R.id.btnOpenInMaps);
+        btnOpenInMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String origin = "Mumbai";
+                String destination = "Thane";
+                if (origin == null || destination == null) {
+                    Toast.makeText(getApplicationContext(), "Was not able to find locations.", Toast.LENGTH_SHORT).show();
+                } else {
+                    displayTrack(origin, destination);
+                }
+            }
+        });
+    }
+
+    private void displayTrack(String origin, String destination) {
+        try {
+            // If Google Maps are not installed then direct user to play store
+            String redirectUrl = "";
+            redirectUrl += "https://www.google.co.in/maps/dir/";
+            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).latitude +",";
+            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).longitude + "/";
+            for (int i = 1; i < pickedAtrList.size() - 1; i++) {
+                Log.i(TAG, "redirecting " + pickedAtrList.get(i).name);
+                redirectUrl += pickedAtrList.get(i).latitude +",";
+                redirectUrl += pickedAtrList.get(i).longitude + "/";
+            }
+            Uri googleMapsUri = Uri.parse(redirectUrl);
+            Intent intent = new Intent(Intent.ACTION_VIEW, googleMapsUri);
+            intent.setPackage("com.google.android.apps.maps");
+            // Set flag
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Uri playStoreUri = Uri.parse(googleMapsInGooglePlay);
+            Intent intent = new Intent(Intent.ACTION_VIEW, playStoreUri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     private void fetchDistances() {
