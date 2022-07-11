@@ -40,6 +40,7 @@ import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -62,6 +63,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     private final float DEFAULT_ZOOM = 12;
 
+    private HashMap<LatLng, Attraction> markerPosToAtrMap;
     private GoogleMap mMap;
     private Polyline currentPolyline;
     private Button btnOpenInMaps;
@@ -72,6 +74,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        markerPosToAtrMap = new HashMap<>();
         userLatitude = getIntent().getDoubleExtra("latitude", 0);
         userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
@@ -222,7 +225,10 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             @Override
             public void onDoubleClick() {
                 Log.i(TAG, "marker DOUBLE clicked");
+                Attraction clickedAtr = markerPosToAtrMap.get(getMarkerPosition());
+                Log.i(TAG, "clicked atr is " + clickedAtr.name);
                 Intent atrDetailsWithRestaurants = new Intent(RouteActivity.this, AtrDetailsActivity.class);
+                atrDetailsWithRestaurants.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(clickedAtr));
                 startActivity(atrDetailsWithRestaurants);
             }
         };
@@ -243,12 +249,15 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     private void addMarkers() {
         for (int i = 0; i < atrRoute.size(); i++) {
-            Log.i(TAG, "lat string " + atrRoute.get(i).latitude + " long string " + atrRoute.get(i).longitude
-                    + " double " + Double.parseDouble(atrRoute.get(i).latitude) + " double long " + Double.parseDouble(atrRoute.get(i).longitude));
+            Attraction curAtr = atrRoute.get(i);
+            Log.i(TAG, "lat string " + curAtr.latitude + " long string " + curAtr.longitude
+                    + " double " + Double.parseDouble(curAtr.latitude) + " double long " + Double.parseDouble(curAtr.longitude));
             MarkerOptions place =
-                new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).latitude),
-                        Double.parseDouble(atrRoute.get(i).longitude))).title(atrRoute.get(i).name);
-
+                new MarkerOptions().position(new LatLng(Double.parseDouble(curAtr.latitude),
+                        Double.parseDouble(curAtr.longitude))).title(curAtr.name);
+            Log.i(TAG, "marker latitude " +  place.getPosition().latitude);
+            markerPosToAtrMap.put(place.getPosition(), curAtr);
+            Log.i(TAG, "map size " + markerPosToAtrMap.size());
             mMap.addMarker(place);
         }
     }

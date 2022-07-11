@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 public abstract class DoubleClickListener implements GoogleMap.OnMarkerClickListener {
@@ -17,6 +18,7 @@ public abstract class DoubleClickListener implements GoogleMap.OnMarkerClickList
     private long doubleClickQualificationSpanInMillis;
     private long timestampLastClick;
     private String markerId;
+    private LatLng markerPosition;
 
     public DoubleClickListener() {
         doubleClickQualificationSpanInMillis = DEFAULT_QUALIFICATION_SPAN;
@@ -32,14 +34,16 @@ public abstract class DoubleClickListener implements GoogleMap.OnMarkerClickList
     public boolean onMarkerClick(@NonNull Marker marker) {
         if((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
             markerId = marker.getId();
+            markerPosition = marker.getPosition();
+            Log.i(TAG, "marker latitude " +  markerPosition.latitude);
             onDoubleClick();
         }
         Log.i(TAG, "marker clicked");
         timestampLastClick = SystemClock.elapsedRealtime();
         return false;
     }
-    public String getMarkerId() {
-        return markerId;
+    public LatLng getMarkerPosition() {
+        return markerPosition;
     }
 
     public abstract void onDoubleClick();

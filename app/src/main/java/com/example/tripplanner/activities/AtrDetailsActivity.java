@@ -43,21 +43,22 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         setContentView(R.layout.activity_atr_details);
 
         Log.i(TAG, "AtrDetailsActivity started!");
-//        attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
+        attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
+        Log.i(TAG, "clicked attraction is " + attraction.name);
 //        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
 //        Log.i(TAG, "Details bitmap " +  attraction.photo);
 //        ivAtrPhoto.setImageBitmap(attraction.photo);
-//        fetchRestaurants(Double.parseDouble(attraction.latitude), Double.parseDouble(attraction.longitude));
+        fetchRestaurants(Double.parseDouble(attraction.latitude), Double.parseDouble(attraction.longitude));
     }
 
     void fetchRestaurants(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
-        stringBuilder.append("&radius=" + "6000");
+        stringBuilder.append("&radius=" + "2000");
         stringBuilder.append("&type=" + "restaurant");
         //ranks by prominence by default
         stringBuilder.append("&rankby");
-        stringBuilder.append("&key=" +API_KEY);
+        stringBuilder.append("&key=" + API_KEY);
         String url = stringBuilder.toString();
         Object dataTransfer[] = new Object[1];
         dataTransfer[0] = url;
