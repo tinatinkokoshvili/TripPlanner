@@ -11,6 +11,7 @@ import com.example.tripplanner.directionhelpers.FetchURL;
 import com.example.tripplanner.directionhelpers.TaskLoadedCallback;
 import com.example.tripplanner.models.Attraction;
 
+import com.example.tripplanner.models.DoubleClickListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -89,13 +90,8 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         btnOpenInMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String origin = "Mumbai";
-                String destination = "Thane";
-                if (origin == null || destination == null) {
-                    Toast.makeText(getApplicationContext(), "Was not able to find locations.", Toast.LENGTH_SHORT).show();
-                } else {
-                    displayTrack(origin, destination);
-                }
+                    goToMaps();
+
             }
         });
         btnAddRestaurants = findViewById(R.id.btnAddRestaurants);
@@ -110,7 +106,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         });
     }
 
-    private void displayTrack(String origin, String destination) {
+    private void goToMaps() {
         try {
             // If Google Maps are not installed then direct user to play store
             String redirectUrl = "";
@@ -222,7 +218,15 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.setOnMarkerClickListener(this);
+        DoubleClickListener doubleClickListener = new DoubleClickListener() {
+            @Override
+            public void onDoubleClick() {
+                Log.i(TAG, "marker DOUBLE clicked");
+                Intent atrDetailsWithRestaurants = new Intent(RouteActivity.this, AtrDetailsActivity.class);
+                startActivity(atrDetailsWithRestaurants);
+            }
+        };
+        mMap.setOnMarkerClickListener(doubleClickListener);
 
         if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
             View locationButton =

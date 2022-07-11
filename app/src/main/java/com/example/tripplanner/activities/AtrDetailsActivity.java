@@ -42,6 +42,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atr_details);
 
+        Log.i(TAG, "AtrDetailsActivity started!");
 //        attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
 //        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
 //        Log.i(TAG, "Details bitmap " +  attraction.photo);
