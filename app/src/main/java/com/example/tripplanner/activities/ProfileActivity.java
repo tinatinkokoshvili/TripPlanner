@@ -42,10 +42,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ImageView ivProfPagePic;
     TextView tvProfValFullName;
     TextView tvProfValUsername;
-    FloatingActionButton fbtnNewTrip;
+    FloatingActionButton fbtnUpdateProfile;
     Button btnLogout;
     Button btnNewTrip;
-    Button btnTestRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +60,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ivProfPagePic = findViewById(R.id.ivProfPagePic);
         tvProfValFullName = findViewById(R.id.tvProfValFullName);
         tvProfValUsername = findViewById(R.id.tvProfValUsername);
-        fbtnNewTrip = findViewById(R.id.fbtnNewTrip);
-        fbtnNewTrip.setOnClickListener(this);
+        fbtnUpdateProfile = findViewById(R.id.fbtnUpdateProfile);
+        fbtnUpdateProfile.setOnClickListener(this);
         btnLogout = findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
         btnNewTrip = findViewById(R.id.btnNewTrip);
         btnNewTrip.setOnClickListener(this);
-        btnTestRoute = findViewById(R.id.btnTestRoute);
-        //btnTestRoute.setOnClickListener(this);
     }
 
     @Override
@@ -98,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.fbtnNewTrip) {
+        if (v.getId() == R.id.fbtnUpdateProfile) {
             Intent updateInfoIntent = new Intent(this, UpdateActivity.class);
             startActivity(updateInfoIntent);
         }
@@ -106,13 +103,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             onLogout();
         }
         if (v.getId() == R.id.btnNewTrip) {
-            Intent attractionsintent = new Intent(this, AttractionsActivity.class);
-            startActivity(attractionsintent);
+            Intent attractionsIntent = new Intent(this, AttractionsActivity.class);
+            startActivity(attractionsIntent);
         }
-//        if (v.getId() == R.id.btnTestRoute) {
-//            Intent testRouteIntent = new Intent(this, TestRouteActivity.class);
-//            startActivity(testRouteIntent);
-//        }
     }
 
     private void onLogout() {

@@ -11,19 +11,31 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="0dp" />
 
     <Button
         android:id="@+id/btnOpenInMaps"
-        android:layout_width="238dp"
+        android:layout_width="188dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@color/material_dynamic_primary30"
-        android:text="Open in Google Maps"
+        android:text="Open Google Maps"
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnAddRestaurants"
+        android:layout_width="188dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/material_dynamic_primary30"
+        android:text="Add Restaurants"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnOpenInMaps" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

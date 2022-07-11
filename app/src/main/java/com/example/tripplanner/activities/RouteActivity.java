@@ -1,11 +1,12 @@
 package com.example.tripplanner.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.RouteGenerator;
-import com.example.tripplanner.apiclient.DistanceMatrixHelper;
+import com.example.tripplanner.api_client.DistanceMatrixHelper;
 import com.example.tripplanner.directionhelpers.FetchURL;
 import com.example.tripplanner.directionhelpers.TaskLoadedCallback;
 import com.example.tripplanner.models.Attraction;
@@ -15,10 +16,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.material.button.MaterialButton;
 
 import android.annotation.SuppressLint;
 
@@ -26,7 +27,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,12 +35,14 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
 
-public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback {
+public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "RouteActivity";
     // In pickedAtrList, userLocation is at last index, other locations are in correct order to visit
     private List<Attraction> pickedAtrList;
@@ -62,6 +64,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private GoogleMap mMap;
     private Polyline currentPolyline;
     private Button btnOpenInMaps;
+    private Button btnAddRestaurants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         Log.i(TAG, "map " + mapFragment);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
+
        // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RouteActivity.this);
         btnOpenInMaps = findViewById(R.id.btnOpenInMaps);
         btnOpenInMaps.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +98,16 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 }
             }
         });
+        btnAddRestaurants = findViewById(R.id.btnAddRestaurants);
+        btnAddRestaurants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent restaurantsIntent = new Intent(RouteActivity.this, RestaurantsSelectionActivity.class);
+                restaurantsIntent.putExtra("latitude", userLatitude);
+                restaurantsIntent.putExtra("longitude", userLongitude);
+                startActivity(restaurantsIntent);
+            }
+        });
     }
 
     private void displayTrack(String origin, String destination) {
@@ -103,8 +117,8 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             redirectUrl += "https://www.google.co.in/maps/dir/";
             redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).latitude +",";
             redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).longitude + "/";
-            for (int i = 1; i < pickedAtrList.size() - 1; i++) {
-                Log.i(TAG, "redirecting " + pickedAtrList.get(i).name);
+            for (int i = 0; i < pickedAtrList.size() - 1; i++) {
+                Log.i(TAG, "redirecting " + pickedAtrList.get(i).name + " to " + pickedAtrList.get(i+1));
                 redirectUrl += pickedAtrList.get(i).latitude +",";
                 redirectUrl += pickedAtrList.get(i).longitude + "/";
             }
@@ -208,6 +222,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setOnMarkerClickListener(this);
 
         if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
             View locationButton =
@@ -229,6 +244,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             MarkerOptions place =
                 new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).latitude),
                         Double.parseDouble(atrRoute.get(i).longitude))).title(atrRoute.get(i).name);
+
             mMap.addMarker(place);
         }
     }
@@ -241,12 +257,18 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         // Output format
         String output = "json";
         // Building the url to the web service
-        String url = directionsBaseUrl + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+        String url = directionsBaseUrl + output + "?" + parameters + "&key=" + API_KEY;
         return url;
     }
 
     @Override
     public void onTaskDone(Object... values) {
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        Log.i(TAG, "marker clicked");
+        return false;
     }
 }

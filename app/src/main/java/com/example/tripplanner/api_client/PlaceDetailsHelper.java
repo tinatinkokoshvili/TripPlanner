@@ -1,11 +1,11 @@
-package com.example.tripplanner.apiclient;
+package com.example.tripplanner.api_client;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.tripplanner.OnTaskCompleted;
+import com.example.tripplanner.models.Attraction;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,28 +17,23 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
-    private static final String TAG = "DistanceMatrixHelper";
+public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
+    private static final String TAG = "GetPlaceDetails";
     private OnTaskCompleted listener;
     private String url;
     private InputStream is;
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
     private String data;
+    private String placePhotoBaseUrl = "https://maps.googleapis.com/maps/api/place/photo?";
+    private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
 
-    private static final String ROWS = "rows";
-    private static final String ELEMENTS = "elements";
-    private static final String DURATION_IN_TRAFFIC = "duration_in_traffic";
-    private static final String DURATION = "duration";
-    private static final String VALUE = "value";
-
-    public DistanceMatrixHelper(OnTaskCompleted listener) {
-        this.listener = listener;
+    public PlaceDetailsHelper(OnTaskCompleted listener){
+        this.listener=listener;
     }
 
     @Override
     protected String doInBackground(Object... objects) {
-        //mMap = (GoogleMap) objects[0];
         url = (String) objects[0];
         try {
             URL myurl = new URL(url);
@@ -62,28 +57,18 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
         return data;
     }
 
+    //Parse the JSON data
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.i(TAG, "received json " + s);
-        // Parse json to create the duration_in_traffic matrix
+
+        //Create an attraction object
         try {
             JSONObject parentObject = new JSONObject(s);
-            JSONArray rowsArray = parentObject.getJSONArray(ROWS);
-            int[][] durationMatrix = new int[rowsArray.length()][rowsArray.length()];
-            for (int i = 0; i < rowsArray.length(); i++) {
-                JSONArray elements = rowsArray.getJSONObject(i).getJSONArray(ELEMENTS);
-                for (int j = 0; j < elements.length(); j++) {
-                    JSONObject trip = elements.getJSONObject(j);
-                    if (trip.has(DURATION_IN_TRAFFIC)) {
-                        durationMatrix[i][j] = trip.getJSONObject(DURATION_IN_TRAFFIC).getInt(VALUE);
-                    } else {
-                        durationMatrix[i][j] = trip.getJSONObject(DURATION).getInt(VALUE);
-                    }
-                    Log.i(TAG, "cell filled " + durationMatrix[i][j]);
-                }
-            }
-            listener.onDurationTaskCompleted(durationMatrix);
+            JSONObject resultObject = parentObject.getJSONObject("result");
+            Attraction attraction = Attraction.createFromJson(resultObject);
+            Log.i(TAG, "onTaskCompleted from GetDetails " + attraction.name);
+            listener.onTaskCompleted(attraction);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,5 @@
-package com.example.tripplanner.apiclient;
+package com.example.tripplanner.api_client;
 
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.tripplanner.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +32,7 @@ public class NearbyPlacesHelper extends AsyncTask<Object, String, String> {
 
     public NearbyPlacesHelper(OnTaskCompleted listener){
         this.listener=listener;
+        Log.i(TAG, "listener is " + listener.getClass());
     }
 
 

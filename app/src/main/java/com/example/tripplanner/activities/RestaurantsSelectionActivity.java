@@ -1,15 +1,12 @@
 package com.example.tripplanner.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
@@ -24,98 +21,65 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-import java.util.ArrayList;
+import org.parceler.Parcels;
+
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
-public class AttractionsSelectionActivity extends AppCompatActivity implements OnTaskCompleted {
-    private static final String TAG = "PickAttractionsActivity";
+public class RestaurantsSelectionActivity extends AppCompatActivity implements OnTaskCompleted {
+    private static final String TAG = "RestaurantsSelectionActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
-    private Button btnGenerate;
-    private RecyclerView rvPlaces;
-    private PlacesAdapter placesAdapter;
-    private List<Attraction> attractionsList;
-    private ArrayList<Attraction> pickedAttractionsList;
+    private Attraction attraction;
 
+    private RecyclerView rvRestaurants;
+    private PlacesAdapter placesAdapter;
+
+    private double userLatitude;
+    private double userLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_attractions_selection);
+        setContentView(R.layout.activity_restaurants_selection);
 
-        double latitude = getIntent().getDoubleExtra("latitude", 0);
-        double longitude = getIntent().getDoubleExtra("longitude", 0);
-        pickedAttractionsList = new ArrayList<>();
-        btnGenerate = findViewById(R.id.btnGenerate);
-        btnGenerate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finalizePickedList();
-                goToRouteActivity(latitude, longitude);
-            }
-        });
-        rvPlaces = (RecyclerView) findViewById(R.id.rvPlaces);
-        attractionsList = new LinkedList<>();
-        placesAdapter = new PlacesAdapter(this, attractionsList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvPlaces.setLayoutManager(linearLayoutManager);
-        rvPlaces.setAdapter(placesAdapter);
-
-
-        Log.i(TAG, "latlang " + latitude + " long " + longitude);
-        fetchPlaces(latitude, longitude);
+        Log.i(TAG, "RestaurantsSelectionActivity started");
+        userLatitude = getIntent().getDoubleExtra("latitude", 0);
+        userLongitude = getIntent().getDoubleExtra("longitude", 0);
+        //attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
+        fetchRestaurants(userLatitude, userLongitude);
     }
 
-    private void goToRouteActivity(double latitude, double longitude) {
-        Intent routeIntent = new Intent(AttractionsSelectionActivity.this, RouteActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("data", pickedAttractionsList);
-        routeIntent.putExtras(bundle);
-        // Pass the location user looked up so that we can include it in the final route
-        routeIntent.putExtra("latitude", latitude);
-        routeIntent.putExtra("longitude", longitude);
-        startActivity(routeIntent);
-    }
-
-    private void finalizePickedList() {
-        pickedAttractionsList.clear();
-        for (int i = 0; i < attractionsList.size(); i++) {
-            Attraction currAtr = attractionsList.get(i);
-            if (currAtr.picked) {
-                pickedAttractionsList.add(currAtr);
-                Log.i(TAG, "putting picked atr " + currAtr.name);
-            }
-        }
-        Log.i(TAG, "finalizedList Size " + pickedAttractionsList.size());
-    }
-
-    void fetchPlaces(double latitude, double longitude) {
+    void fetchRestaurants(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
         stringBuilder.append("&radius=" + "6000");
-        stringBuilder.append("&type=" + "tourist_attraction");
+        stringBuilder.append("&type=" + "restaurant");
         //ranks by prominence by default
         stringBuilder.append("&rankby");
-        stringBuilder.append("&key=" + API_KEY);
+        stringBuilder.append("&key=" +API_KEY);
         String url = stringBuilder.toString();
         Object dataTransfer[] = new Object[1];
         dataTransfer[0] = url;
 
-        NearbyPlacesHelper getPlaces = new NearbyPlacesHelper(this);
+        NearbyPlacesHelper getPlaces = new NearbyPlacesHelper(RestaurantsSelectionActivity.this);
         getPlaces.execute(dataTransfer);
     }
 
     @Override
-    public void onTaskCompleted(Attraction atr) {
-        Log.i(TAG, "Task completed " + atr.name + " adapter size " + placesAdapter.getItemCount());
-        try {
-            Attraction atrWithPhoto = getPhotoBitmap(atr);
-            placesAdapter.add(atr);
-        } catch (Exception e) {
-            Log.e(TAG, "Json exception", e);
-        }
+    public void onTaskCompleted(Attraction restaurant) {
+        Log.i(TAG, "restaurant fetched " + restaurant.name);
+//        try {
+//            Attraction atrWithPhoto = getPhotoBitmap(restaurant);
+//            //placesAdapter.add(restaurant);
+//        } catch (Exception e) {
+//            Log.e(TAG, "Json exception", e);
+//        }
+    }
+
+    @Override
+    public void onDurationTaskCompleted(int[][] durationMatrix) {
+        return;
     }
 
     public Attraction getPhotoBitmap(Attraction atr) {
@@ -135,8 +99,8 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
             final String attributions = photoMetadata.getAttributions();
             // Create a FetchPhotoRequest.
             final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-//                    .setMaxWidth(500) // Optional.
-//                    .setMaxHeight(300) // Optional.
+                    .setMaxWidth(500) // Optional.
+                    .setMaxHeight(300) // Optional.
                     .build();
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();
@@ -150,10 +114,4 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         });
         return atr;
     }
-
-    @Override
-    public void onDurationTaskCompleted(int[][] distanceMatrix) {
-        return;
-    }
-
 }
