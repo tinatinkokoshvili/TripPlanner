@@ -6,13 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".activities.AtrDetailsActivity">
 
-    <ImageView
-        android:id="@+id/ivAtrDetailsPhoto"
-        android:layout_width="188dp"
-        android:layout_height="210dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRestaurants"
+        android:layout_width="411dp"
+        android:layout_height="691dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btnAddRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generate Route"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@+id/rvRestaurants"
+        app:layout_constraintVertical_bias="0.818" />
 </androidx.constraintlayout.widget.ConstraintLayout>

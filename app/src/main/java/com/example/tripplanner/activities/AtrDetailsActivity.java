@@ -1,6 +1,7 @@
 package com.example.tripplanner.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
@@ -20,11 +21,15 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompleted {
@@ -35,16 +40,33 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private Attraction attraction;
 
     private RecyclerView rvRestaurants;
-    private PlacesAdapter placesAdapter;
+    private PlacesAdapter restaurantsAdapter;
+    private List<Attraction> restaurantsList;
+    private ArrayList<Attraction> pickedRestaurantsList;
+    private Button btnAddRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atr_details);
 
+        btnAddRestaurant = findViewById(R.id.btnAddRestaurant);
+        btnAddRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finalizePickedList();
+            }
+        });
         Log.i(TAG, "AtrDetailsActivity started!");
         attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
         Log.i(TAG, "clicked attraction is " + attraction.name);
+        pickedRestaurantsList = new ArrayList<>();
+        rvRestaurants = (RecyclerView) findViewById(R.id.rvRestaurants);
+        restaurantsList = new LinkedList<>();
+        restaurantsAdapter = new PlacesAdapter(this, restaurantsList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvRestaurants.setLayoutManager(linearLayoutManager);
+        rvRestaurants.setAdapter(restaurantsAdapter);
 //        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
 //        Log.i(TAG, "Details bitmap " +  attraction.photo);
 //        ivAtrPhoto.setImageBitmap(attraction.photo);
@@ -54,6 +76,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     void fetchRestaurants(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
+        // radius for restaurants are much less because we want restaurants close to attraction
         stringBuilder.append("&radius=" + "2000");
         stringBuilder.append("&type=" + "restaurant");
         //ranks by prominence by default
@@ -67,12 +90,24 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         getPlaces.execute(dataTransfer);
     }
 
+    private void finalizePickedList() {
+        pickedRestaurantsList.clear();
+        for (int i = 0; i < restaurantsList.size(); i++) {
+            Attraction currAtr = restaurantsList.get(i);
+            if (currAtr.picked) {
+                pickedRestaurantsList.add(currAtr);
+                Log.i(TAG, "putting picked atr " + currAtr.name);
+            }
+        }
+        Log.i(TAG, "finalizedList Size " + pickedRestaurantsList.size());
+    }
+
     @Override
     public void onTaskCompleted(Attraction restaurant) {
         Log.i(TAG, "restaurant fetched " + restaurant.name);
         try {
-            Attraction atrWithPhoto = getPhotoBitmap(restaurant);
-            //placesAdapter.add(restaurant);
+            Attraction resWithPhoto = getPhotoBitmap(restaurant);
+            restaurantsAdapter.add(restaurant);
         } catch (Exception e) {
             Log.e(TAG, "Json exception", e);
         }
