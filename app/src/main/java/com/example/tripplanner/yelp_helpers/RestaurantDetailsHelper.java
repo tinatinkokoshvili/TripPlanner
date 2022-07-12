@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.models.Attraction;
+import com.example.tripplanner.models.Restaurant;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +21,7 @@ import java.net.URL;
 public class RestaurantDetailsHelper extends AsyncTask<Object, String, String> {
     private static final String TAG = "RestaurantDetailsHelper";
     private static final String YELP_API_KEY = "PMULr-WmLQYIkh0t9kjvz9c2JPIyTkGdEg6Z7j85MeaLY0th1UOzFg_v_w4T914K_cQHjP4gOIoo2inrSi9JlqSW-Rq9QGyPNXkR-YZyTfMjD4eUkJsO_mcjvo_MYnYx";
+    private static final String businessReviewsBase = "https://api.yelp.com/v3/businesses/";
     private OnTaskCompleted listener;
     private String url;
     private InputStream is;
@@ -64,7 +69,12 @@ public class RestaurantDetailsHelper extends AsyncTask<Object, String, String> {
 
         Log.i(TAG, "restaurant details fetched " + s);
         Log.i(TAG, "number of total restaurants " + totalNumOfRestaurants);
-        // Parse, create restaurant and pass everything to listener
-        //TODO
+        try {
+            JSONObject parentObject = new JSONObject(s);
+            // Parse JSON to create a restaurant
+            Restaurant restaurant = Restaurant.createFromJson(parentObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
