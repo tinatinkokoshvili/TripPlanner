@@ -45,6 +45,15 @@ public class Attraction implements Parcelable {
     public transient String website;
     public transient Boolean picked;
     public transient Bitmap photo;
+    public transient boolean isRestaurant;
+
+    public transient String street_number;
+    public transient String street;
+    public transient String subpremise;
+    public transient String address1;
+    public transient String city;
+    public transient String short_state;
+    public transient String country;
 
 
     public transient static final String FORMATTED_ADDRESS = "formatted_address";
@@ -65,12 +74,55 @@ public class Attraction implements Parcelable {
     public transient static final String USER_RATINGS_TOTAL = "user_ratings_total";
     public transient static final String VICINITY = "vicinity";
     public transient static final String WEBSITE = "website";
+    public transient static final String TYPES = "types";
+
+    public transient static final String ADDRESS_COMPONENTS = "address_components";
+
+    public transient static final String LONG_NAME = "long_name";
+    public transient static final String SHORT_NAME = "short_name";
+    public transient static final String STREET_NUMBER = "street_number";
+    public transient static final String ROUTE = "route";
+    public transient static final String SUBPREMISE = "subpremise";
+    public transient static final String LOCALITY = "locality";
+    public transient static final String ADMINISTRATIVE_AREA_LEVEL_1 = "administrative_area_level_1";
+    public transient static final String COUNTRY = "country";
 
     public Attraction() {}
 
     public static Attraction createFromJson(JSONObject resultObject) throws JSONException {
         Attraction attraction = new Attraction();
         attraction.picked = false;
+        JSONArray address_components = resultObject.getJSONArray(ADDRESS_COMPONENTS);
+        for (int i = 0; i < address_components.length(); i++) {
+            JSONObject curObject = address_components.getJSONObject(i);
+            for (int j = 0; j < curObject.getJSONArray(TYPES).length(); j++) {
+                if (curObject.getJSONArray(TYPES).getString(j).equals(STREET_NUMBER)) {
+                    attraction.street_number = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "street_number " + attraction.street_number);
+                }
+                if (curObject.getJSONArray(TYPES).getString(j).equals(ROUTE)) {
+                    attraction.street = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "street " + attraction.street);
+                }
+                if (curObject.getJSONArray(TYPES).getString(j).equals(SUBPREMISE)) {
+                    attraction.subpremise = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "subpremise " + attraction.subpremise);
+                }
+                if (curObject.getJSONArray(TYPES).getString(j).equals(LOCALITY)) {
+                    attraction.city = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "city " + attraction.city);
+                }
+                if (curObject.getJSONArray(TYPES).getString(j).equals(ADMINISTRATIVE_AREA_LEVEL_1)) {
+                    attraction.short_state = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "short_state " + attraction.short_state);
+                }
+                if (curObject.getJSONArray(TYPES).getString(j).equals(COUNTRY)) {
+                    attraction.country = curObject.getString(SHORT_NAME);
+                    Log.i(TAG, "country " + attraction.country);
+                }
+            }
+        }
+        attraction.address1 = attraction.street_number + attraction.street;
         if (resultObject.has(FORMATTED_ADDRESS))
             attraction.formatted_address = resultObject.getString(FORMATTED_ADDRESS);
         if (resultObject.has(FORMATTED_PHONE_NUMBER))
@@ -104,8 +156,12 @@ public class Attraction implements Parcelable {
             attraction.rating = resultObject.getInt(RATING);
 //        if (resultObject.has("reviews"))
 //            attraction.reviews = resultObject.getJSONArray("reviews");
-//        if (resultObject.has("types"))
-//            attraction.types = resultObject.getJSONArray("types");
+        if (resultObject.has("types"))
+            for (int i = 0; i < resultObject.getJSONArray("types").length(); i++) {
+                if (resultObject.getJSONArray("types").get(i).equals("restaurant")) {
+                    attraction.isRestaurant = true;
+                }
+            }
         if (resultObject.has(URL))
             attraction.url = resultObject.getString(URL);
         if (resultObject.has(USER_RATINGS_TOTAL))

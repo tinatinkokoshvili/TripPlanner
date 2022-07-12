@@ -12,6 +12,7 @@ import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.api_client.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
+import com.example.tripplanner.models.Restaurant;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
@@ -42,6 +43,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private RecyclerView rvRestaurants;
     private PlacesAdapter restaurantsAdapter;
     private List<Attraction> restaurantsList;
+    private List<Attraction> allGoogleRestaurants;
+    private List<Restaurant> allYelpRestaurants;
     private ArrayList<Attraction> pickedRestaurantsList;
     private Button btnAddRestaurant;
 
@@ -50,11 +53,13 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atr_details);
 
+        allGoogleRestaurants = new LinkedList<>();
         btnAddRestaurant = findViewById(R.id.btnAddRestaurant);
         btnAddRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finalizePickedList();
+                //TODO generate the route
             }
         });
         Log.i(TAG, "AtrDetailsActivity started!");
@@ -107,6 +112,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         Log.i(TAG, "restaurant fetched " + restaurant.name);
         try {
             Attraction resWithPhoto = getPhotoBitmap(restaurant);
+            allGoogleRestaurants.add(restaurant);
+            Log.i(TAG, "allGoogleRestaurants size " + allGoogleRestaurants.size());
             restaurantsAdapter.add(restaurant);
         } catch (Exception e) {
             Log.e(TAG, "Json exception", e);
