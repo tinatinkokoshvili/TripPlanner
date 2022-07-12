@@ -89,7 +89,7 @@ public class NearbyPlacesHelper extends AsyncTask<Object, String, String> {
                 String detailsUrl = detailsStringBuilder.toString();
                 Object detailsDataTransfer[] = new Object[1];
                 detailsDataTransfer[0] = detailsUrl;
-                new PlaceDetailsHelper(listener).execute(detailsDataTransfer);
+                new PlaceDetailsHelper(listener, resultsArray.length()).execute(detailsDataTransfer);
 
             }
             if (parentObject.has("next_page_token")) {

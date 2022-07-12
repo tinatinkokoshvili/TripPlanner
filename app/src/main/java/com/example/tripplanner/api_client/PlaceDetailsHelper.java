@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.models.Attraction;
-import com.example.tripplanner.yelp_helpers.RestaurantDetailsHelper;
+import com.example.tripplanner.yelp_helpers.RestaurantMatchHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,13 +28,15 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
     private String data;
     private String placePhotoBaseUrl = "https://maps.googleapis.com/maps/api/place/photo?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
+    private int totalNumOfAtr;
 
     private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String yelpMatchBase = "https://api.yelp.com/v3/businesses/matches?";
     private static final String YELP_API_KEY = "PMULr-WmLQYIkh0t9kjvz9c2JPIyTkGdEg6Z7j85MeaLY0th1UOzFg_v_w4T914K_cQHjP4gOIoo2inrSi9JlqSW-Rq9QGyPNXkR-YZyTfMjD4eUkJsO_mcjvo_MYnYx";
 
-    public PlaceDetailsHelper(OnTaskCompleted listener){
+    public PlaceDetailsHelper(OnTaskCompleted listener, int totalNumOfAtr){
         this.listener=listener;
+        this.totalNumOfAtr = totalNumOfAtr;
     }
 
     @Override
@@ -81,10 +83,12 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
                 restaurantStringBuilder.append("&city=" + attraction.city);
                 restaurantStringBuilder.append("&state=" + attraction.short_state);
                 restaurantStringBuilder.append("&country=" + attraction.country);
-                String detailsUrl = restaurantStringBuilder.toString();
+                String matchUrl = restaurantStringBuilder.toString();
                 Object restaurantDetailsDataTransfer[] = new Object[1];
-                restaurantDetailsDataTransfer[0] = detailsUrl;
-                new RestaurantDetailsHelper(attraction).execute(restaurantDetailsDataTransfer);
+                restaurantDetailsDataTransfer[0] = matchUrl;
+                new RestaurantMatchHelper(attraction, listener, totalNumOfAtr).execute(restaurantDetailsDataTransfer);
+            } else {
+                listener.onTaskCompleted(attraction);
             }
 
             // Find the right one and call
@@ -97,7 +101,7 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
 //            Object restaurantDetailsDataTransfer[] = new Object[1];
 //            restaurantDetailsDataTransfer[0] = detailsUrl;
 //            new RestaurantDetailsHelper().execute(restaurantDetailsDataTransfer);
-            listener.onTaskCompleted(attraction);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
