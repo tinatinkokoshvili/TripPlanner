@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import com.example.tripplanner.BusinessRankHelper;
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
@@ -48,18 +49,22 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private ArrayList<Attraction> pickedRestaurantsList;
     private Button btnAddRestaurant;
 
+    int restaurantCounter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atr_details);
 
+        restaurantCounter = 0;
         allGoogleRestaurants = new LinkedList<>();
+        allYelpRestaurants = new LinkedList<>();
         btnAddRestaurant = findViewById(R.id.btnAddRestaurant);
         btnAddRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finalizePickedList();
-                //TODO generate the route
+                //TODO regenerate the route
             }
         });
         Log.i(TAG, "AtrDetailsActivity started!");
@@ -107,17 +112,46 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         Log.i(TAG, "finalizedList Size " + pickedRestaurantsList.size());
     }
 
+//    @Override
+//    public void onTaskCompleted(Attraction restaurant) {
+//        Log.i(TAG, "restaurant fetched " + restaurant.name);
+//        try {
+//            Attraction resWithPhoto = getPhotoBitmap(restaurant);
+//            allGoogleRestaurants.add(restaurant);
+//            Log.i(TAG, "allGoogleRestaurants size " + allGoogleRestaurants.size());
+//            restaurantsAdapter.add(restaurant);
+//        } catch (Exception e) {
+//            Log.e(TAG, "Json exception", e);
+//        }
+//    }
+
     @Override
-    public void onTaskCompleted(Attraction restaurant) {
-        Log.i(TAG, "restaurant fetched " + restaurant.name);
-        try {
-            Attraction resWithPhoto = getPhotoBitmap(restaurant);
-            allGoogleRestaurants.add(restaurant);
-            Log.i(TAG, "allGoogleRestaurants size " + allGoogleRestaurants.size());
-            restaurantsAdapter.add(restaurant);
-        } catch (Exception e) {
-            Log.e(TAG, "Json exception", e);
+    public void onRestaurantTaskCompleted(Attraction attraction, Restaurant restaurant, int totalNumOfRestaurants) {
+        allYelpRestaurants.add(restaurant);
+        allGoogleRestaurants.add(attraction);
+        Log.i(TAG, "yelp size " + allYelpRestaurants.size() + " total num " + totalNumOfRestaurants);
+        if (allYelpRestaurants.size() == totalNumOfRestaurants) {
+            Log.i(TAG, "about to rank");
+            BusinessRankHelper restaurantRanker = new BusinessRankHelper(allGoogleRestaurants, allYelpRestaurants);
+            List<Restaurant> rankedRestaurants = restaurantRanker.getRankedBusinesses();
+            Log.i(TAG, "ranked restaurant size " + rankedRestaurants.size());
+            for (Restaurant r : rankedRestaurants) {
+                Log.i(TAG, "ranked " + r.googleYelpRating);
+            }
+            // TODO add the restaurants to the adapter
         }
+    }
+
+    @Override
+    public void addNullToYelpList() {
+        // Yelp does not have corresponding restaurant to Google Maps restaurant at this point
+        allYelpRestaurants.add(null);
+        allGoogleRestaurants.add(null);
+    }
+
+    @Override
+    public void onTaskCompleted(Attraction attr) {
+        return;
     }
 
     @Override

@@ -73,6 +73,7 @@ public class RestaurantDetailsHelper extends AsyncTask<Object, String, String> {
             JSONObject parentObject = new JSONObject(s);
             // Parse JSON to create a restaurant
             Restaurant restaurant = Restaurant.createFromJson(parentObject);
+            listener.onRestaurantTaskCompleted(attraction, restaurant, totalNumOfRestaurants);
         } catch (JSONException e) {
             e.printStackTrace();
         }

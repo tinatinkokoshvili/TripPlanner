@@ -74,7 +74,8 @@ public class RestaurantMatchHelper extends AsyncTask<Object, String, String> {
             JSONArray businessesArray = parentObject.getJSONArray("businesses");
             if (businessesArray.length() == 0) {
                 // yelp match null, call listener onTaskCompleted to add attraction and null to the lists in listener
-                //TODO
+                listener.addNullToYelpList();
+                Log.i(TAG, "yelp business is null");
             } else {
                 String restaurantId = businessesArray.getJSONObject(0).getString("id");
                 Log.i(TAG, "id " + restaurantId);

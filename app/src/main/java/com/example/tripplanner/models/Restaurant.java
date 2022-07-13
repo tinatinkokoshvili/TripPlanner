@@ -26,6 +26,7 @@ public class Restaurant implements Parcelable {
     public transient String longitude;
     public transient List<String> photos;
     public transient String hours;
+    public transient double googleYelpRating;
 
     public transient static final String ID = "id";
     public transient static final String NAME = "name";
@@ -64,6 +65,7 @@ public class Restaurant implements Parcelable {
                 + "\n" + resultObject.getJSONObject(LOCATION).getJSONArray(DISPLAY_ADDRESS).getString(1);
         restaurant.latitude = resultObject.getJSONObject(COORDINATES).getString(LATITUDE);
         restaurant.longitude = resultObject.getJSONObject(COORDINATES).getString(LONGITUDE);
+        restaurant.googleYelpRating = Double.parseDouble(restaurant.rating);
         restaurant.photos = new LinkedList<>();
         for (int i = 0; i < resultObject.getJSONArray(PHOTOS).length(); i++) {
             restaurant.photos.add(resultObject.getJSONArray(PHOTOS).getString(i));

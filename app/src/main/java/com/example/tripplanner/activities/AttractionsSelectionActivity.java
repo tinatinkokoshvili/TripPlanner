@@ -16,6 +16,7 @@ import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.api_client.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
+import com.example.tripplanner.models.Restaurant;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
@@ -153,6 +154,16 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
 
     @Override
     public void onDurationTaskCompleted(int[][] distanceMatrix) {
+        return;
+    }
+
+    @Override
+    public void onRestaurantTaskCompleted(Attraction attraction, Restaurant restaurant, int numOfTotalRestaurants) {
+        return;
+    }
+
+    @Override
+    public void addNullToYelpList() {
         return;
     }
 

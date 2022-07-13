@@ -12,6 +12,7 @@ import com.example.tripplanner.directionhelpers.TaskLoadedCallback;
 import com.example.tripplanner.models.Attraction;
 
 import com.example.tripplanner.models.DoubleClickListener;
+import com.example.tripplanner.models.Restaurant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -201,6 +202,16 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
         }
+    }
+
+    @Override
+    public void onRestaurantTaskCompleted(Attraction attraction, Restaurant restaurant, int numOfTotalRestaurants) {
+        return;
+    }
+
+    @Override
+    public void addNullToYelpList() {
+        return;
     }
 
     public static byte[] convert(Bitmap bitmap) throws IOException {
