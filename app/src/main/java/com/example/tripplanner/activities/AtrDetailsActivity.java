@@ -11,6 +11,7 @@ import com.example.tripplanner.BusinessRankHelper;
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
+import com.example.tripplanner.adapters.RestaurantAdapter;
 import com.example.tripplanner.api_client.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Restaurant;
@@ -42,11 +43,12 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private Attraction attraction;
 
     private RecyclerView rvRestaurants;
-    private PlacesAdapter restaurantsAdapter;
-    private List<Attraction> restaurantsList;
+    private RestaurantAdapter restaurantsAdapter;
+    private List<Restaurant> restaurantsList;
+    private List<Attraction> resAtrList;
     private List<Attraction> allGoogleRestaurants;
     private List<Restaurant> allYelpRestaurants;
-    private ArrayList<Attraction> pickedRestaurantsList;
+    private ArrayList<Restaurant> pickedRestaurantsList;
     private Button btnAddRestaurant;
 
     int restaurantCounter;
@@ -73,7 +75,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         pickedRestaurantsList = new ArrayList<>();
         rvRestaurants = (RecyclerView) findViewById(R.id.rvRestaurants);
         restaurantsList = new LinkedList<>();
-        restaurantsAdapter = new PlacesAdapter(this, restaurantsList);
+        resAtrList = new LinkedList<>();
+        restaurantsAdapter = new RestaurantAdapter(this, restaurantsList, resAtrList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvRestaurants.setLayoutManager(linearLayoutManager);
         rvRestaurants.setAdapter(restaurantsAdapter);
@@ -103,13 +106,13 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private void finalizePickedList() {
         pickedRestaurantsList.clear();
         for (int i = 0; i < restaurantsList.size(); i++) {
-            Attraction currAtr = restaurantsList.get(i);
-            if (currAtr.picked) {
-                pickedRestaurantsList.add(currAtr);
-                Log.i(TAG, "putting picked atr " + currAtr.name);
+            Restaurant currRes = restaurantsList.get(i);
+            if (currRes.picked) {
+                pickedRestaurantsList.add(currRes);
+                Log.i(TAG, "putting picked restaurant " + currRes.name);
             }
         }
-        Log.i(TAG, "finalizedList Size " + pickedRestaurantsList.size());
+        Log.i(TAG, "finalizedRestaurantList Size " + pickedRestaurantsList.size());
     }
 
 //    @Override
@@ -135,10 +138,15 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
             BusinessRankHelper restaurantRanker = new BusinessRankHelper(allGoogleRestaurants, allYelpRestaurants);
             List<Restaurant> rankedRestaurants = restaurantRanker.getRankedBusinesses();
             Log.i(TAG, "ranked restaurant size " + rankedRestaurants.size());
-            for (Restaurant r : rankedRestaurants) {
-                Log.i(TAG, "ranked " + r.googleYelpRating);
+            for (int i = 0; i < rankedRestaurants.size(); i++) {
+                for (int j = 0; j < allGoogleRestaurants.size(); j++) {
+                    if (allGoogleRestaurants.get(j) != null
+                            && allGoogleRestaurants.get(j).name.equals(rankedRestaurants.get(i).name)) {
+                        getPhotoBitmap(allGoogleRestaurants.get(j));
+                        restaurantsAdapter.add(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
+                    }
+                }
             }
-            // TODO add the restaurants to the adapter
         }
     }
 

@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRestaurants"
-        android:layout_width="411dp"
-        android:layout_height="691dp"
+        android:layout_width="410dp"
+        android:layout_height="678dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="0dp" />
@@ -18,7 +18,7 @@
         android:id="@+id/btnAddRestaurant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generate Route"
+        android:text="Add Restaurant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

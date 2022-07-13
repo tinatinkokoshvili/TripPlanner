@@ -1,9 +1,7 @@
 package com.example.tripplanner.adapters;
-import com.bumptech.glide.Glide;
-import com.example.tripplanner.R;
+
 import android.content.Context;
 import android.content.Intent;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,60 +12,67 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.tripplanner.R;
 import com.example.tripplanner.activities.AtrDetailsActivity;
 import com.example.tripplanner.models.Attraction;
+import com.example.tripplanner.models.Restaurant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Attr;
 
 import java.util.List;
 
-public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
-    private static final String TAG = "PlacesAdapter";
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
+    private static final String TAG = "RestaurantAdapter";
     private static final String noPhotoAvailableUrl = "https://archive.org/download/no-photo-available/no-photo-available.png";
     Context context;
-    List<Attraction> attractionsList;
+    List<Restaurant> restaurantList;
+    List<Attraction> atrList;
 
-    public PlacesAdapter(Context context, List<Attraction> attractionsList) {
+    public RestaurantAdapter(Context context, List<Restaurant> restaurantList, List<Attraction> resAtrList) {
         this.context = context;
-        this.attractionsList = attractionsList;
+        this.restaurantList = restaurantList;
+        this.atrList = resAtrList;
     }
 
     @NonNull
     @Override
-    public PlacesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RestaurantAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_attraction, parent, false);
-        return new ViewHolder(view);
+        return new RestaurantAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlacesAdapter.ViewHolder holder, int position) {
-        Attraction attraction = attractionsList.get(position);
-        Log.i(TAG, "Binding " + attraction.name + " position " + position);
-        holder.bind(attraction);
+    public void onBindViewHolder(@NonNull RestaurantAdapter.ViewHolder holder, int position) {
+        Restaurant restaurant = restaurantList.get(position);
+        Attraction attraction = atrList.get(position);
+        Log.i(TAG, "Binding " + restaurant.name + " position " + position + " atrResName " + attraction.name);
+        holder.bind(restaurant, attraction);
     }
 
     @Override
     public int getItemCount() {
-        return attractionsList.size();
+        return restaurantList.size();
     }
 
     public void clear() {
-        attractionsList.clear();
+        restaurantList.clear();
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Attraction> list) {
-        attractionsList.addAll(list);
+    public void addAll(List<Restaurant> list) {
+        restaurantList.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void add(Attraction attraction) {
-        attractionsList.add(attraction);
-        notifyItemInserted(attractionsList.size() - 1);
+    public void add(Restaurant restaurant, Attraction resAttraction) {
+        restaurantList.add(restaurant);
+        atrList.add(resAttraction);
+        notifyItemInserted(restaurantList.size() - 1);
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         MaterialCardView cdAttraction;
@@ -91,19 +96,21 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Attraction attraction) {
-            if (attraction.photo != null) {
-                ivAtrPicture.setImageBitmap(attraction.photo);
+        public void bind(Restaurant restaurant, Attraction atr) {
+            Log.i(TAG, "in bind  " + restaurant.name + " photo " + atr.name);
+            if (atr.photo != null) {
+                Log.i(TAG, "loading restaurant photo " + atr.name + " photo " + atr.photo);
+                ivAtrPicture.setImageBitmap(atr.photo);
             }
             if (ivAtrPicture.getDrawable() == null) {
                 Glide.with(context)
                         .load(noPhotoAvailableUrl).into(ivAtrPicture);
             }
 
-            tvName.setText(attraction.name);
-            tvRating.setText(Integer.toString(attraction.rating));
-            tvAddress.setText(attraction.formatted_address);
-           // tvDescription.setText(attraction.website);
+            tvName.setText(restaurant.name);
+            tvRating.setText(Double.toString(restaurant.googleYelpRating));
+            tvAddress.setText(restaurant.address);
+            // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
             btnLearnMore.setOnClickListener(this);
         }
@@ -111,27 +118,28 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Attraction atr = null;
+            Restaurant restaurant = null;
             if (position != RecyclerView.NO_POSITION && v.getId() != R.id.btnLearnMore) {
-                atr = attractionsList.get(position);
-                Log.i("adapter", "clicked " + atr.name);
-                atr.picked = !atr.picked;
+                restaurant = restaurantList.get(position);
+                Log.i("adapter", "clicked " + restaurant.name);
+                restaurant.picked = !restaurant.picked;
                 cdAttraction.toggle();
             }
-            if (position != RecyclerView.NO_POSITION && v.getId() == R.id.btnLearnMore) {
-                atr = attractionsList.get(position);
-                Log.i("adapter", "Clicked Learn More about " + atr.name);
-                Intent intent = new Intent(context, AtrDetailsActivity.class);
-                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(atr));
-                context.startActivity(intent);
-            }
+//            if (position != RecyclerView.NO_POSITION && v.getId() == R.id.btnLearnMore) {
+//                restaurant = restaurantList.get(position);
+//                Log.i("adapter", "Clicked Learn More about " + restaurant.name);
+//                Intent intent = new Intent(context, AtrDetailsActivity.class);
+//                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(restaurant));
+//                context.startActivity(intent);
+//            }
 
 //                if (atr.picked) {
 //                    cdAttraction.setBackgroundColor(Color.BLUE);
 //                } else {
 //                    cdAttraction.setBackgroundColor(Color.WHITE);
 //                }
-               // notifyItemChanged(position);
+            // notifyItemChanged(position);
         }
     }
+
 }
