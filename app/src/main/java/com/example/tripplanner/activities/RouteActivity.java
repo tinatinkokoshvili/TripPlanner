@@ -72,6 +72,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     // In atrRoute, userLocation is at first index, other locations are in correct order to visit after index 0
     private List<Attraction> atrRoute;
     private int[][] durationMatrix;
+    private HashMap<Attraction, Integer> pickedAtrToPickedListIndexMap;
     private double userLatitude;
     private double userLongitude;
 
@@ -83,6 +84,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private String radius;
     private String totalTime;
     private String avgStayTime;
+    private double actualTotalTime;
 
     private HashMap<LatLng, Attraction> markerPosToAtrMap;
     private GoogleMap mMap;
@@ -108,6 +110,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 //        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
+        createPickedAtrToPickedListIndexMap();
         userLatitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).latitude);
         userLongitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).longitude);
         tripName = getIntent().getStringExtra("tripName");
@@ -146,6 +149,13 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 SaveTrip();
             }
         });
+    }
+
+    private void createPickedAtrToPickedListIndexMap() {
+        pickedAtrToPickedListIndexMap = new HashMap<>();
+        for (int i = 0; i < pickedAtrList.size(); i++) {
+            pickedAtrToPickedListIndexMap.put(pickedAtrList.get(i), i);
+        }
     }
 
     private void SaveTrip() {
@@ -272,9 +282,37 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             MarkerOptions destination =
                     new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).latitude),
                     Double.parseDouble(atrRoute.get(i + 1).longitude))).title(atrRoute.get(i + 1).name);
+            // Draw the polyline on the map between origin and destination
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
         }
+        if (totalTripTimeExceedsUserProvidedTime()) {
+            Toast.makeText(RouteActivity.this,
+                    "Warning: Total Trip Time (" + actualTotalTime + "hr) exceeds " + totalTime + "hr",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(RouteActivity.this,
+                    "Total Trip Time (" + actualTotalTime + "hr) does NOT exceed " + totalTime + "hr",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean totalTripTimeExceedsUserProvidedTime() {
+        actualTotalTime = 0;
+        for (int i = 0; i < atrRoute.size() - 1; i++) {
+            Attraction origin = atrRoute.get(i);
+            Attraction destination = atrRoute.get(i + 1);
+            if (!pickedAtrToPickedListIndexMap.containsKey(origin) || !pickedAtrToPickedListIndexMap.containsKey(destination)) {
+                Toast.makeText(RouteActivity.this,
+                        "Could not calculate total time, invalid attracions", Toast.LENGTH_SHORT).show();
+            } else {
+                double rideDuration = ((double) durationMatrix[pickedAtrToPickedListIndexMap.get(origin)][pickedAtrToPickedListIndexMap.get(destination)]) / 3600;
+                actualTotalTime += rideDuration;
+                actualTotalTime += Double.parseDouble(avgStayTime);
+            }
+        }
+        Log.i(TAG, "actualTotalTime " + actualTotalTime + " user TotalTime " + totalTime);
+        return actualTotalTime > Double.parseDouble(totalTime);
     }
 
     @Override
