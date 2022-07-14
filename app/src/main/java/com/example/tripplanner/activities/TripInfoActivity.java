@@ -21,6 +21,10 @@ public class TripInfoActivity extends AppCompatActivity {
     private String totalTime;
     private String avgStayTime;
 
+    private static String DEFAULT_RADIUS = "6000";
+    private static String DEFAULT_TotalTime = "10.5";
+    private static String DEFAULT_AVGSTAYTIME = "1"; //In hours
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,22 +58,30 @@ public class TripInfoActivity extends AppCompatActivity {
         }
 
         // Check that totalTime is nonempty and integer
-        if (radius.isEmpty() || !radius.matches("[0-9]+")) {
-            etRadius.setError("Invalid distance");
+        if (radius.isEmpty()) {
+            radius = DEFAULT_RADIUS;
+            return false;
+        } else if (!radius.matches("[0-9]+")) {
+            etRadius.setError("Distance has to be an integer");
             etRadius.requestFocus();
             return false;
         }
 
         // Check that totalTime is nonempty and double or integer
-        if (totalTime.isEmpty() ||
-                (!totalTime.matches("([0-9]*)\\.([0-9]*)") && !totalTime.matches("[0-9]+"))) {
-            etToTalTime.setError("Invalid Total Time");
+        if (totalTime.isEmpty()) {
+            totalTime = DEFAULT_TotalTime;
+            return false;
+        } else if (!totalTime.matches("([0-9]*)\\.([0-9]*)") && !totalTime.matches("[0-9]+")) {
+            etToTalTime.setError("Total Time has to be a double.");
             etToTalTime.requestFocus();
             return false;
         }
 
         // Check that avgStayTime is nonempty and double or integer
-        if (avgStayTime.isEmpty() ||
+        if (avgStayTime.isEmpty()) {
+            avgStayTime = DEFAULT_AVGSTAYTIME;
+            return false;
+        } else if (avgStayTime.isEmpty() ||
                 (!avgStayTime.matches("([0-9]*)\\.([0-9]*)") && !avgStayTime.matches("[0-9]+"))) {
             etAvgStayTime.setError("Invalid Average Stay Time");
             etAvgStayTime.requestFocus();
