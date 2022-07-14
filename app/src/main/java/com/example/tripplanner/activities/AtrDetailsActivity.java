@@ -107,13 +107,16 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
 
     private void goToRouteActivity() {
         for (int i = 0; i < pickedRestaurantsList.size(); i++) {
-            //TODO add restaurants to the atr list to pass
             alreadyPickedAtrlist.add(0, resToAtrMap.get(pickedRestaurantsList.get(i)));
         }
         Intent routeRegenerateActivity = new Intent(AtrDetailsActivity.this, RouteActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", alreadyPickedAtrlist);
         routeRegenerateActivity.putExtras(bundle);
+        routeRegenerateActivity.putExtra("tripName", tripName);
+        routeRegenerateActivity.putExtra("radius", radius);
+        routeRegenerateActivity.putExtra("totalTime", totalTime);
+        routeRegenerateActivity.putExtra("avgStayTime", avgStayTime);
         startActivity(routeRegenerateActivity);
     }
 

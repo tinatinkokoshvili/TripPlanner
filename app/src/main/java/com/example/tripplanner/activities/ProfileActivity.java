@@ -24,26 +24,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ProfileActivity";
     private FirebaseAuth fbAuth;
     private String userID;
-    UploadTask uploadTask;
-    FirebaseStorage firebaseStorage;
-    StorageReference storageReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    DocumentReference documentReference;
-    ImageView ivProfPagePic;
-    TextView tvProfValFullName;
-    TextView tvProfValUsername;
-    FloatingActionButton fbtnUpdateProfile;
-    Button btnLogout;
-    Button btnNewTrip;
+    private DocumentReference documentReference;
+    private ImageView ivProfPagePic;
+    private TextView tvProfValFullName;
+    private TextView tvProfValUsername;
+    private FloatingActionButton fbtnUpdateProfile;
+    private Button btnLogout;
+    private Button btnNewTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

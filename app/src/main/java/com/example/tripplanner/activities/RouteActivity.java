@@ -27,8 +27,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import android.annotation.SuppressLint;
 
@@ -60,7 +58,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private FirebaseAuth fbAuth;
     private String userID;
     private FirebaseFirestore firestore;
-    DocumentReference documentReference;
+    private DocumentReference documentReference;
 
     // In pickedAtrList, userLocation is always at last index, other locations are in correct order to visit
     private ArrayList<Attraction> pickedAtrList;
@@ -283,6 +281,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).latitude),
                     Double.parseDouble(atrRoute.get(i + 1).longitude))).title(atrRoute.get(i + 1).name);
             // Draw the polyline on the map between origin and destination
+            Toast.makeText(RouteActivity.this,
+                    "Drawing line for origin" + origin + " detsination " + destination,
+                    Toast.LENGTH_SHORT).show();
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
         }
