@@ -102,8 +102,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             onLogout();
         }
         if (v.getId() == R.id.btnNewTrip) {
-            Intent attractionsIntent = new Intent(this, AttractionsActivity.class);
-            startActivity(attractionsIntent);
+            Intent tripInfoIntent = new Intent(this, TripInfoActivity.class);
+            startActivity(tripInfoIntent);
+//            Intent attractionsIntent = new Intent(this, AttractionsActivity.class);
+//            startActivity(attractionsIntent);
         }
     }
 

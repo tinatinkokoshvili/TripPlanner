@@ -40,12 +40,20 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
     private List<Attraction> attractionsList;
     private ArrayList<Attraction> pickedAttractionsList;
 
+    private String tripName;
+    private String radius;
+    private String totalTime;
+    private String avgStayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions_selection);
 
+        tripName = getIntent().getStringExtra("tripName");
+        radius = getIntent().getStringExtra("radius");
+        totalTime = getIntent().getStringExtra("totalTime");
+        avgStayTime = getIntent().getStringExtra("avgStayTime");
         double latitude = getIntent().getDoubleExtra("latitude", 0);
         double longitude = getIntent().getDoubleExtra("longitude", 0);
         pickedAttractionsList = new ArrayList<>();
@@ -81,6 +89,10 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAttractionsList);
         routeIntent.putExtras(bundle);
+        routeIntent.putExtra("tripName", tripName);
+        routeIntent.putExtra("radius", radius);
+        routeIntent.putExtra("totalTime", totalTime);
+        routeIntent.putExtra("avgStayTime", avgStayTime);
         // Pass the location user looked up so that we can include it in the final route
 //        routeIntent.putExtra("latitude", latitude);
 //        routeIntent.putExtra("longitude", longitude);
@@ -102,7 +114,8 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
     void fetchPlaces(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
-        stringBuilder.append("&radius=" + "6000");
+        Log.i(TAG, "new radius is " + Integer.parseInt(radius));
+        stringBuilder.append("&radius=" + Integer.parseInt(radius));
         stringBuilder.append("&type=" + "tourist_attraction");
         //ranks by prominence by default
         stringBuilder.append("&rankby");

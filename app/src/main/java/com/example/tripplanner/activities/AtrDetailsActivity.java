@@ -58,7 +58,11 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private Button btnAddRestaurant;
     private HashMap<Restaurant, Attraction> resToAtrMap;
 
-    int restaurantCounter;
+    //int restaurantCounter;
+    private String tripName;
+    private String radius;
+    private String totalTime;
+    private String avgStayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,11 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         resToAtrMap = new HashMap<>();
         Bundle bundle = getIntent().getExtras();
         alreadyPickedAtrlist = bundle.getParcelableArrayList("data");
-        restaurantCounter = 0;
+        tripName = getIntent().getStringExtra("tripName");
+        radius = getIntent().getStringExtra("radius");
+        totalTime = getIntent().getStringExtra("totalTime");
+        avgStayTime = getIntent().getStringExtra("avgStayTime");
+        //restaurantCounter = 0;
         allGoogleRestaurants = new LinkedList<>();
         allYelpRestaurants = new LinkedList<>();
         btnAddRestaurant = findViewById(R.id.btnAddRestaurant);

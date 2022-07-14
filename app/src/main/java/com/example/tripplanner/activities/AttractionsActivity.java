@@ -76,15 +76,20 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
 
     private final float DEFAULT_ZOOM = 18;
 
+    private String tripName;
+    private String radius;
+    private String totalTime;
+    private String avgStayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attractions);
 
-//        amClient = new AmadeusClient(41.397158, 2.160873, 1);
-//        amClient.getContentsFromRequest();
-
+        tripName = getIntent().getStringExtra("tripName");
+        radius = getIntent().getStringExtra("radius");
+        totalTime = getIntent().getStringExtra("totalTime");
+        avgStayTime = getIntent().getStringExtra("avgStayTime");
         materialSearchBar = findViewById(R.id.searchBar);
         btnFind = findViewById(R.id.btnFind);
         rippleBg = findViewById(R.id.ripple_bg);
@@ -239,6 +244,10 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
                         Log.i(TAG, "latlong while passing " + latLngOfPlace.latitude + " " + latLngOfPlace.longitude);
                         intent.putExtra("latitude", latLngOfPlace.latitude);
                         intent.putExtra("longitude", latLngOfPlace.longitude);
+                        intent.putExtra("tripName", tripName);
+                        intent.putExtra("radius", radius);
+                        intent.putExtra("totalTime", totalTime);
+                        intent.putExtra("avgStayTime", avgStayTime);
                         startActivity(intent);
                     }
                 }, 3000);
@@ -246,8 +255,6 @@ public class AttractionsActivity extends AppCompatActivity implements OnMapReady
         });
 
     }
-
-
 
 
     @SuppressLint("MissingPermission")

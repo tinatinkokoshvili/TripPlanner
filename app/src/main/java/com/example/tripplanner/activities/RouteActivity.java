@@ -79,6 +79,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     private final float DEFAULT_ZOOM = 12;
 
+    private String tripName;
+    private String radius;
+    private String totalTime;
+    private String avgStayTime;
+
     private HashMap<LatLng, Attraction> markerPosToAtrMap;
     private GoogleMap mMap;
     private Polyline currentPolyline;
@@ -105,6 +110,10 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         pickedAtrList = bundle.getParcelableArrayList("data");
         userLatitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).latitude);
         userLongitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).longitude);
+        tripName = getIntent().getStringExtra("tripName");
+        radius = getIntent().getStringExtra("radius");
+        totalTime = getIntent().getStringExtra("totalTime");
+        avgStayTime = getIntent().getStringExtra("avgStayTime");
 
         durationMatrix = new int[pickedAtrList.size()][pickedAtrList.size()];
         fetchDistances();
@@ -165,6 +174,10 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAtrList);
         restaurantsIntent.putExtras(bundle);
+        restaurantsIntent.putExtra("tripName", tripName);
+        restaurantsIntent.putExtra("radius", radius);
+        restaurantsIntent.putExtra("totalTime", totalTime);
+        restaurantsIntent.putExtra("avgStayTime", avgStayTime);
         startActivity(restaurantsIntent);
     }
 
@@ -298,12 +311,16 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 Log.i(TAG, "marker DOUBLE clicked");
                 Attraction clickedAtr = markerPosToAtrMap.get(getMarkerPosition());
                 Log.i(TAG, "clicked atr is " + clickedAtr.name);
-                Intent atrDetailsWithRestaurants = new Intent(RouteActivity.this, AtrDetailsActivity.class);
-                atrDetailsWithRestaurants.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(clickedAtr));
+                Intent atrDetailsWithRestaurantsIntent = new Intent(RouteActivity.this, AtrDetailsActivity.class);
+                atrDetailsWithRestaurantsIntent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(clickedAtr));
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("data", pickedAtrList);
-                atrDetailsWithRestaurants.putExtras(bundle);
-                startActivity(atrDetailsWithRestaurants);
+                atrDetailsWithRestaurantsIntent.putExtras(bundle);
+                atrDetailsWithRestaurantsIntent.putExtra("tripName", tripName);
+                atrDetailsWithRestaurantsIntent.putExtra("radius", radius);
+                atrDetailsWithRestaurantsIntent.putExtra("totalTime", totalTime);
+                atrDetailsWithRestaurantsIntent.putExtra("avgStayTime", avgStayTime);
+                startActivity(atrDetailsWithRestaurantsIntent);
             }
         };
         mMap.setOnMarkerClickListener(doubleClickListener);

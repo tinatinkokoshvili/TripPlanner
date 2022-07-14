@@ -38,6 +38,11 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
     private RecyclerView rvRestaurants;
     private PlacesAdapter placesAdapter;
 
+    private String tripName;
+    private String radius;
+    private String totalTime;
+    private String avgStayTime;
+
     private double userLatitude;
     private double userLongitude;
     private ArrayList<Attraction> alreadyPickedAtrList;
@@ -54,6 +59,10 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
         alreadyPickedAtrList = bundle.getParcelableArrayList("data");
         userLatitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).latitude);
         userLongitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).longitude);
+        tripName = getIntent().getStringExtra("tripName");
+        radius = getIntent().getStringExtra("radius");
+        totalTime = getIntent().getStringExtra("totalTime");
+        avgStayTime = getIntent().getStringExtra("avgStayTime");
         //attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
         fetchRestaurants(userLatitude, userLongitude);
     }
