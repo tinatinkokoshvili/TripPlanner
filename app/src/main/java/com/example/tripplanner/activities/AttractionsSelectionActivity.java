@@ -70,13 +70,20 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
     }
 
     private void goToRouteActivity(double latitude, double longitude) {
+        // Add current location to the list of picked attractions
+        Attraction userLocation = new Attraction();
+        userLocation.name = "User Location";
+        userLocation.picked = true;
+        userLocation.latitude = Double.toString(latitude);
+        userLocation.longitude = Double.toString(longitude);
+        pickedAttractionsList.add(userLocation);
         Intent routeIntent = new Intent(AttractionsSelectionActivity.this, RouteActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAttractionsList);
         routeIntent.putExtras(bundle);
         // Pass the location user looked up so that we can include it in the final route
-        routeIntent.putExtra("latitude", latitude);
-        routeIntent.putExtra("longitude", longitude);
+//        routeIntent.putExtra("latitude", latitude);
+//        routeIntent.putExtra("longitude", longitude);
         startActivity(routeIntent);
     }
 

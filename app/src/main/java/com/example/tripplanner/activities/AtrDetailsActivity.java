@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -32,8 +33,11 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import okhttp3.Route;
 
 public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "AtrDetailsActivity";
@@ -41,6 +45,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private ImageView ivAtrPhoto;
     private Attraction attraction;
+
+    private ArrayList<Attraction> alreadyPickedAtrlist;
 
     private RecyclerView rvRestaurants;
     private RestaurantAdapter restaurantsAdapter;
@@ -50,6 +56,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private List<Restaurant> allYelpRestaurants;
     private ArrayList<Restaurant> pickedRestaurantsList;
     private Button btnAddRestaurant;
+    private HashMap<Restaurant, Attraction> resToAtrMap;
 
     int restaurantCounter;
 
@@ -58,6 +65,9 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atr_details);
 
+        resToAtrMap = new HashMap<>();
+        Bundle bundle = getIntent().getExtras();
+        alreadyPickedAtrlist = bundle.getParcelableArrayList("data");
         restaurantCounter = 0;
         allGoogleRestaurants = new LinkedList<>();
         allYelpRestaurants = new LinkedList<>();
@@ -66,7 +76,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
             @Override
             public void onClick(View v) {
                 finalizePickedList();
-                //TODO regenerate the route
+                //regenerate the route
+                goToRouteActivity();
             }
         });
         Log.i(TAG, "AtrDetailsActivity started!");
@@ -84,6 +95,18 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
 //        Log.i(TAG, "Details bitmap " +  attraction.photo);
 //        ivAtrPhoto.setImageBitmap(attraction.photo);
         fetchRestaurants(Double.parseDouble(attraction.latitude), Double.parseDouble(attraction.longitude));
+    }
+
+    private void goToRouteActivity() {
+        for (int i = 0; i < pickedRestaurantsList.size(); i++) {
+            //TODO add restaurants to the atr list to pass
+            alreadyPickedAtrlist.add(0, resToAtrMap.get(pickedRestaurantsList.get(i)));
+        }
+        Intent routeRegenerateActivity = new Intent(AtrDetailsActivity.this, RouteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("data", alreadyPickedAtrlist);
+        routeRegenerateActivity.putExtras(bundle);
+        startActivity(routeRegenerateActivity);
     }
 
     void fetchRestaurants(double latitude, double longitude) {
@@ -144,6 +167,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
                             && allGoogleRestaurants.get(j).name.equals(rankedRestaurants.get(i).name)) {
                         getPhotoBitmap(allGoogleRestaurants.get(j));
                         restaurantsAdapter.add(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
+                        //Build a hashmap for later reference when starting routeActivity intent
+                        resToAtrMap.put(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
                     }
                 }
             }

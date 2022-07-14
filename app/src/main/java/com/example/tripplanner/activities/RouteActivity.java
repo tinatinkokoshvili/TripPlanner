@@ -41,6 +41,7 @@ import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +49,7 @@ import java.util.List;
 public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "RouteActivity";
     // In pickedAtrList, userLocation is at last index, other locations are in correct order to visit
-    private List<Attraction> pickedAtrList;
+    private ArrayList<Attraction> pickedAtrList;
     private static final String distanceMatrixBaseUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
     private static final String directionsBaseUrl = "https://maps.googleapis.com/maps/api/directions/";
     private static final String googleMapsInGooglePlay = "https://play.google.com/store/apps/details?id=com.google.android.apps.maps";
@@ -76,10 +77,13 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         setContentView(R.layout.activity_route);
 
         markerPosToAtrMap = new HashMap<>();
-        userLatitude = getIntent().getDoubleExtra("latitude", 0);
-        userLongitude = getIntent().getDoubleExtra("longitude", 0);
+//        userLatitude = getIntent().getDoubleExtra("latitude", 0);
+//        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
+        userLatitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).latitude);
+        userLongitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).longitude);
+
         durationMatrix = new int[pickedAtrList.size()][pickedAtrList.size()];
         fetchDistances();
 
@@ -103,8 +107,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             @Override
             public void onClick(View v) {
                 Intent restaurantsIntent = new Intent(RouteActivity.this, RestaurantsSelectionActivity.class);
-                restaurantsIntent.putExtra("latitude", userLatitude);
-                restaurantsIntent.putExtra("longitude", userLongitude);
+//                restaurantsIntent.putExtra("latitude", userLatitude);
+//                restaurantsIntent.putExtra("longitude", userLongitude);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("data", pickedAtrList);
+                restaurantsIntent.putExtras(bundle);
                 startActivity(restaurantsIntent);
             }
         });
@@ -180,12 +187,12 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     @Override
     public void onDurationTaskCompleted(int[][] durationMatrix) {
         this.durationMatrix = durationMatrix;
-        // Add current location to the list of picked attractions
-        Attraction userLocation = new Attraction();
-        userLocation.name = "User Location";
-        userLocation.latitude = Double.toString(userLatitude);
-        userLocation.longitude = Double.toString(userLongitude);
-        pickedAtrList.add(userLocation);
+//        // Add current location to the list of picked attractions
+//        Attraction userLocation = new Attraction();
+//        userLocation.name = "User Location";
+//        userLocation.latitude = Double.toString(userLatitude);
+//        userLocation.longitude = Double.toString(userLongitude);
+//        pickedAtrList.add(userLocation);
         RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList, durationMatrix);
         atrRoute = rtGenerator.getRouteList();
         // Add markers to the map
@@ -240,6 +247,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 Log.i(TAG, "clicked atr is " + clickedAtr.name);
                 Intent atrDetailsWithRestaurants = new Intent(RouteActivity.this, AtrDetailsActivity.class);
                 atrDetailsWithRestaurants.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(clickedAtr));
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("data", pickedAtrList);
+                atrDetailsWithRestaurants.putExtras(bundle);
                 startActivity(atrDetailsWithRestaurants);
             }
         };

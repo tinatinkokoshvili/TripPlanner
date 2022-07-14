@@ -24,6 +24,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 
 import org.parceler.Parcels;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
 
     private double userLatitude;
     private double userLongitude;
+    private ArrayList<Attraction> alreadyPickedAtrList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,12 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
         setContentView(R.layout.activity_restaurants_selection);
 
         Log.i(TAG, "RestaurantsSelectionActivity started");
-        userLatitude = getIntent().getDoubleExtra("latitude", 0);
-        userLongitude = getIntent().getDoubleExtra("longitude", 0);
+//        userLatitude = getIntent().getDoubleExtra("latitude", 0);
+//        userLongitude = getIntent().getDoubleExtra("longitude", 0);
+        Bundle bundle = getIntent().getExtras();
+        alreadyPickedAtrList = bundle.getParcelableArrayList("data");
+        userLatitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).latitude);
+        userLongitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).longitude);
         //attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
         fetchRestaurants(userLatitude, userLongitude);
     }
