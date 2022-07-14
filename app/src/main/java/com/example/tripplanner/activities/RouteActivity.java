@@ -22,6 +22,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import android.annotation.SuppressLint;
 
@@ -44,11 +51,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "RouteActivity";
-    // In pickedAtrList, userLocation is at last index, other locations are in correct order to visit
+
+    private FirebaseAuth fbAuth;
+    private String userID;
+    private FirebaseFirestore firestore;
+    DocumentReference documentReference;
+
+    // In pickedAtrList, userLocation is always at last index, other locations are in correct order to visit
     private ArrayList<Attraction> pickedAtrList;
     private static final String distanceMatrixBaseUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
     private static final String directionsBaseUrl = "https://maps.googleapis.com/maps/api/directions/";
@@ -70,12 +84,20 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private Polyline currentPolyline;
     private Button btnOpenInMaps;
     private Button btnAddRestaurants;
+    private Button btnSaveTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        firestore = FirebaseFirestore.getInstance();
+        fbAuth = FirebaseAuth.getInstance();
+        userID = fbAuth.getCurrentUser().getUid();
+        //TODO get trip name provided from user and replace here
+        documentReference =
+                firestore.collection("testUsers")
+                        .document(userID).collection("trips").document("tripName");
         markerPosToAtrMap = new HashMap<>();
 //        userLatitude = getIntent().getDoubleExtra("latitude", 0);
 //        userLongitude = getIntent().getDoubleExtra("longitude", 0);
@@ -99,22 +121,51 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             @Override
             public void onClick(View v) {
                     goToMaps();
-
             }
         });
         btnAddRestaurants = findViewById(R.id.btnAddRestaurants);
         btnAddRestaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent restaurantsIntent = new Intent(RouteActivity.this, RestaurantsSelectionActivity.class);
-//                restaurantsIntent.putExtra("latitude", userLatitude);
-//                restaurantsIntent.putExtra("longitude", userLongitude);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("data", pickedAtrList);
-                restaurantsIntent.putExtras(bundle);
-                startActivity(restaurantsIntent);
+                goToRestaurantSelection();
             }
         });
+        btnSaveTrip = findViewById(R.id.btnSaveTrip);
+        btnSaveTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveTrip();
+            }
+        });
+    }
+
+    private void SaveTrip() {
+        Map<String, String> tripMap = new HashMap<>();
+        for (int i = 0; i < atrRoute.size(); i++) {
+            tripMap.put(Integer.toString(i), atrRoute.get(i).place_id);
+        }
+        documentReference.set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.i(TAG, "trip data successfully saved");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "error when saving trip data");
+            }
+        });
+    }
+
+    private void goToRestaurantSelection() {
+        Intent restaurantsIntent = new Intent(RouteActivity.this,
+                RestaurantsSelectionActivity.class);
+//                restaurantsIntent.putExtra("latitude", userLatitude);
+//                restaurantsIntent.putExtra("longitude", userLongitude);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("data", pickedAtrList);
+        restaurantsIntent.putExtras(bundle);
+        startActivity(restaurantsIntent);
     }
 
     private void goToMaps() {
@@ -202,9 +253,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
         for (int i = 0; i < atrRoute.size() - 1; i++) {
             Log.i(TAG, "atrRoute size " + atrRoute.get(i).name);
-            MarkerOptions origin = new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).latitude),
+            MarkerOptions origin =
+                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).latitude),
                     Double.parseDouble(atrRoute.get(i).longitude))).title(atrRoute.get(i).name);
-            MarkerOptions destination = new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).latitude),
+            MarkerOptions destination =
+                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).latitude),
                     Double.parseDouble(atrRoute.get(i + 1).longitude))).title(atrRoute.get(i + 1).name);
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
