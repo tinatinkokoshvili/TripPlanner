@@ -43,7 +43,7 @@ public class Attraction implements Parcelable {
     public transient int user_ratings_total;
     public transient String vicinity;
     public transient String website;
-    public transient Boolean picked;
+    public transient boolean picked;
     public transient Bitmap photo;
     public transient boolean isRestaurant;
 
@@ -179,6 +179,209 @@ public class Attraction implements Parcelable {
             attractions.add(createFromJson(jsonArray.getJSONObject(i)));
         }
         return attractions;
+    }
+
+    public String getTAG() {
+        return TAG;
+    }
+
+    public String get_formatted_address() {
+        return formatted_address;
+    }
+
+    public String get_formatted_phone_number() {
+        return formatted_phone_number;
+    }
+
+    public String get_latitude() {
+        return latitude;
+    }
+
+    public String get_longitude() {
+        return longitude;
+    }
+
+    public String get_icon() {
+        return icon;
+    }
+
+    public String get_icon_background_color() {
+        return icon_background_color;
+    }
+
+    public String get_icon_mask_base_uri() {
+        return icon_mask_base_uri;
+    }
+
+    public String get_international_phone_number() {
+        return international_phone_number;
+    }
+
+    public String get_place_id() {
+        return place_id;
+    }
+
+    public int price_level() {
+        return price_level;
+    }
+
+    public int get_rating() {
+        return rating;
+    }
+
+    public String get_url() {
+        return url;
+    }
+
+    public int get_user_ratings_total() {
+        return user_ratings_total;
+    }
+
+    public String get_vicinity() {
+        return vicinity;
+    }
+
+    public String get_website() {
+        return website;
+    }
+
+    public boolean get_picked() {
+        return picked;
+    }
+
+    public Bitmap get_photo() {
+        return photo;
+    }
+
+    public boolean get_isRestaurant() {
+        return isRestaurant;
+    }
+
+    public String get_street_number() {
+        return street_number;
+    }
+
+    public String get_street() {
+        return street;
+    }
+
+    public String get_subpremise() {
+        return subpremise;
+    }
+
+    public String get_address1() {
+        return address1;
+    }
+
+    public String get_city() {
+        return city;
+    }
+
+    public String get_short_state() {
+        return short_state;
+    }
+
+    public String get_country() {
+        return country;
+    }
+
+    public String get_static_FORMATTED_ADDRESS() {
+        return FORMATTED_ADDRESS;
+    }
+
+    public String get_static_FORMATTED_PHONE_NUMBER() {
+        return FORMATTED_PHONE_NUMBER;
+    }
+    public String get_static_GEOMETRY() {
+        return GEOMETRY;
+    }
+    public String get_static_LOCATION() {
+        return LOCATION;
+    }
+    public String get_static_LAT() {
+        return LAT;
+    }
+
+    public String get_static_LNG() {
+        return LNG;
+    }
+
+    public String get_static_ICON() {
+        return ICON;
+    }
+
+    public String get_static_ICON_BACKGROUND_COLOR() {
+        return ICON_BACKGROUND_COLOR;
+    }
+
+    public String get_static_ICON_MASK_BASE_URI() {
+        return ICON_MASK_BASE_URI;
+    }
+
+    public String get_static_INTERNATIONAL_PHONE_NUMBER() {
+        return INTERNATIONAL_PHONE_NUMBER;
+    }
+
+    public String get_static_NAME() {
+        return NAME;
+    }
+
+    public String get_static_PLACE_ID() {
+        return PLACE_ID;
+    }
+
+    public String get_static_PRICE_LEVEL() {
+        return PRICE_LEVEL;
+    }
+
+    public String get_static_RATING() {
+        return RATING;
+    }
+    public String get_static_URL() {
+        return URL;
+    }
+    public String get_static_USER_RATINGS_TOTAL() {
+        return USER_RATINGS_TOTAL;
+    }
+    public String get_static_VICINITY() {
+        return VICINITY;
+    }
+
+    public String get_static_WEBSITE() {
+        return WEBSITE;
+    }
+    public String get_static_TYPES() {
+        return TYPES;
+    }
+    public String get_static_ADDRESS_COMPONENTS() {
+        return ADDRESS_COMPONENTS;
+    }
+    public String get_static_LONG_NAME() {
+        return LONG_NAME;
+    }
+    public String get_static_SHORT_NAME() {
+        return SHORT_NAME;
+    }
+    public String get_static_STREET_NUMBER() {
+        return STREET_NUMBER;
+    }
+
+    public String get_static_ROUTE() {
+        return ROUTE;
+    }
+    public String get_static_SUBPREMISE() {
+        return SUBPREMISE;
+    }
+    public String get_static_LOCALITY() {
+        return LOCALITY;
+    }
+
+    public String get_static_ADMINISTRATIVE_AREA_LEVEL_1() {
+        return ADMINISTRATIVE_AREA_LEVEL_1;
+    }
+
+    public String get_static_COUNTRY() {
+        return COUNTRY;
     }
 
     @Override

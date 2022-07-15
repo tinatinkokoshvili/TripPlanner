@@ -157,9 +157,8 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     }
 
     private void SaveTrip() {
-        Map<String, String> tripMap = new HashMap<>();
-        // Add the trip name
-        tripMap.put("tripname", tripName);
+        Map<String, Object> tripMap = new HashMap<>();
+        tripMap.put("tripName", tripName);
         tripMap.put("userLatitude", Double.toString(userLatitude));
         tripMap.put("userLongitude", Double.toString(userLongitude));
         tripMap.put("radius", radius);
@@ -167,21 +166,21 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         tripMap.put("avgStayTime", avgStayTime);
         tripMap.put("actualTotalTime", Double.toString(actualTotalTime));
         for (int i = 1; i < atrRoute.size(); i++) {
-            tripMap.put(Integer.toString(i), atrRoute.get(i).place_id);
+            tripMap.put(Integer.toString(i), atrRoute.get(i));
         }
         firestore.collection("testUsers")
-                .document(userID).collection("trips").document(tripName).
-                set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.i(TAG, "trip data successfully saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e(TAG, "error when saving trip data");
-            }
-        });
+                .document(userID).collection("trips").document(tripName)
+                .set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.i(TAG, "trip data successfully saved");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "error when saving trip data");
+                    }
+                });
     }
 
     private void goToRestaurantSelection() {
