@@ -100,9 +100,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         fbAuth = FirebaseAuth.getInstance();
         userID = fbAuth.getCurrentUser().getUid();
         //TODO get trip name provided from user and replace here
-        documentReference =
-                firestore.collection("testUsers")
-                        .document(userID).collection("trips").document("tripName");
+//        documentReference =
+//                firestore.collection("testUsers")
+//                        .document(userID).collection("trips");
         markerPosToAtrMap = new HashMap<>();
 //        userLatitude = getIntent().getDoubleExtra("latitude", 0);
 //        userLongitude = getIntent().getDoubleExtra("longitude", 0);
@@ -158,10 +158,20 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     private void SaveTrip() {
         Map<String, String> tripMap = new HashMap<>();
-        for (int i = 0; i < atrRoute.size(); i++) {
+        // Add the trip name
+        tripMap.put("tripname", tripName);
+        tripMap.put("userLatitude", Double.toString(userLatitude));
+        tripMap.put("userLongitude", Double.toString(userLongitude));
+        tripMap.put("radius", radius);
+        tripMap.put("totalTime", totalTime);
+        tripMap.put("avgStayTime", avgStayTime);
+        tripMap.put("actualTotalTime", Double.toString(actualTotalTime));
+        for (int i = 1; i < atrRoute.size(); i++) {
             tripMap.put(Integer.toString(i), atrRoute.get(i).place_id);
         }
-        documentReference.set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firestore.collection("testUsers")
+                .document(userID).collection("trips").document(tripName).
+                set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.i(TAG, "trip data successfully saved");
