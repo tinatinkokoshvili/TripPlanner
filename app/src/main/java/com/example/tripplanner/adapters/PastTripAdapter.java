@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
@@ -73,6 +74,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         ImageButton imBtnViewRoute;
         LinearLayout hiddenLayout;
         CardView cvPastTrip;
+        TextView tvNumAtr;
+        //TextView tvNumRes;
+        TextView tvActTotalTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,13 +92,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                         TransitionManager.beginDelayedTransition(cvPastTrip,
                                 new AutoTransition());
                         hiddenLayout.setVisibility(View.GONE);
-                        imBtnArrow.setImageResource(R.drawable.ic_baseline_expand_more_24);
+                        imBtnArrow.setImageResource(R.drawable.ic_angle_down_solid);
                     } else {
                         // The CardView is not expanded
                         TransitionManager.beginDelayedTransition(cvPastTrip,
                                 new AutoTransition());
                         hiddenLayout.setVisibility(View.VISIBLE);
-                        imBtnArrow.setImageResource(R.drawable.ic_baseline_expand_less_24);
+                        imBtnArrow.setImageResource(R.drawable.ic_angle_up_solid);
                     }
                 }
             });
@@ -106,11 +110,15 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                     // Pass the list of attractions in right order
                 }
             });
-            Glide.with(context).load(viewRoutePicUrl).into(imBtnViewRoute);
+            tvNumAtr = itemView.findViewById(R.id.tvNumAtr);
+            //tvNumRes = itemView.findViewById(R.id.tvNumRes);
+            tvActTotalTime = itemView.findViewById(R.id.tvActTotalTime);
         }
 
         public void bind(Trip trip) {
-            // TODO display attributes of trip
+            tvNumAtr.setText(trip.getAttractionsInTrip().size() - 1 + " Attractions •");
+            tvActTotalTime.setText(trip.getActualTotalTime() + "hrs");
+            // TODO add attractions to the trip attractions recyclerview
         }
 
         @Override

@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/custom_border.xml" value="0.246" />
+        <entry key="app/src/main/res/drawable/ic_angle_down_solid.xml" value="0.246" />
+        <entry key="app/src/main/res/drawable/ic_angle_up_solid.xml" value="0.246" />
         <entry key="app/src/main/res/drawable/ic_baseline_expand_less_24.xml" value="0.2435" />
         <entry key="app/src/main/res/drawable/ic_baseline_expand_more_24.xml" value="0.2435" />
         <entry key="app/src/main/res/drawable/ic_location_pin_svgrepo_com.xml" value="0.316" />
+        <entry key="app/src/main/res/drawable/ic_route_solid.xml" value="0.246" />
         <entry key="app/src/main/res/layout/activity_atr_details.xml" value="0.3922141475953918" />
         <entry key="app/src/main/res/layout/activity_attractions.xml" value="0.2859375" />
         <entry key="app/src/main/res/layout/activity_attractions_selection.xml" value="0.3632246376811594" />

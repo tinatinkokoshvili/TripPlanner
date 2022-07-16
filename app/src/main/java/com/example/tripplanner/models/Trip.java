@@ -48,6 +48,14 @@ public class Trip {
         return avgStayTime;
     }
 
+    public double getTotalTripTime() {
+        return totalTripTime;
+    }
+
+    public double getActualTotalTime() {
+        return actualTotalTime;
+    }
+
     public List<Attraction> getAttractionsInTrip() {
         return attractionsInTrip;
     }
