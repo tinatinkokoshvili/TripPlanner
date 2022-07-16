@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PastTripAdapter;
+import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -108,16 +110,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         Toast.makeText(ProfileActivity.this, "Profile does not exist.", Toast.LENGTH_SHORT).show();
                     }
                 });
-
         // Populate the past trip recycler view
+        pastTripAdapter.clear();
         firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                //List<Object> objectList = (List<Object>) queryDocumentSnapshot.get("attractionsInTrip");
                                 Trip trip = queryDocumentSnapshot.toObject(Trip.class);
                                 Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
+
+                                Log.i(TAG, "atr " + trip.getAttractionsInTrip().get(2).getPlaceId());
                                 pastTripAdapter.add(trip);
                             }
                         } else {

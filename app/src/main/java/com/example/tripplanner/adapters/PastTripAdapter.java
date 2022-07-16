@@ -10,15 +10,18 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
+import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
 
+import java.text.DecimalFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHolder> {
@@ -66,6 +69,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
     public void add(Trip trip) {
         tripList.add(trip);
+        Log.i(TAG, trip.getTripName());
         notifyItemInserted(tripList.size() - 1);
     }
 
@@ -74,9 +78,13 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         ImageButton imBtnViewRoute;
         LinearLayout hiddenLayout;
         CardView cvPastTrip;
-        TextView tvNumAtr;
-        //TextView tvNumRes;
-        TextView tvActTotalTime;
+        TextView tvStat;
+        TextView tvTripName;
+
+        private RecyclerView rvTripAttractions;
+        private TripAttractionsAdapter tripAttractionsAdapter;
+        private List<Attraction> tripAttractionsList;
+        private final DecimalFormat df = new DecimalFormat("0.00");
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,15 +118,26 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                     // Pass the list of attractions in right order
                 }
             });
-            tvNumAtr = itemView.findViewById(R.id.tvNumAtr);
-            //tvNumRes = itemView.findViewById(R.id.tvNumRes);
-            tvActTotalTime = itemView.findViewById(R.id.tvActTotalTime);
+            tvStat = itemView.findViewById(R.id.tvStat);
+            tvTripName = itemView.findViewById(R.id.tvTripName);
+
+            rvTripAttractions = (RecyclerView) itemView.findViewById(R.id.rvTripAttractions);
+            tripAttractionsList = new LinkedList<>();
+            tripAttractionsAdapter = new TripAttractionsAdapter(context, tripAttractionsList);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            rvTripAttractions.setLayoutManager(linearLayoutManager);
+            rvTripAttractions.setAdapter(tripAttractionsAdapter);
         }
 
         public void bind(Trip trip) {
-            tvNumAtr.setText(trip.getAttractionsInTrip().size() - 1 + " Attractions •");
-            tvActTotalTime.setText(trip.getActualTotalTime() + "hrs");
-            // TODO add attractions to the trip attractions recyclerview
+            tvTripName.setText(trip.getTripName());
+            tvStat.setText(trip.getAttractionsInTrip().size() - 1 + " Attractions  •  " + df.format(trip.getActualTotalTime()) + "hrs");
+            List<Attraction> atrInTrip = trip.getAttractionsInTrip();
+            for (int i = 1; i < atrInTrip.size(); i++) {
+                Log.i(TAG, "adding to adapter " + atrInTrip.get(i).getPhoto());
+                Attraction curAtr = atrInTrip.get(i);
+                tripAttractionsAdapter.add(atrInTrip.get(i));
+            }
         }
 
         @Override

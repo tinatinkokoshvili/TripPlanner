@@ -34,7 +34,7 @@ public class Attraction implements Parcelable {
     //Boolean open_now;
     //JSONArray weekday_text;
     //JSONArray photos;
-    public transient String place_id;
+    public transient String placeId;
     public transient int price_level;
     public transient int rating;
     //JSONArray reviews;
@@ -149,7 +149,7 @@ public class Attraction implements Parcelable {
 //        if (resultObject.getJSONObject("opening_hours").has("weekday_text"))
 //            attraction.photos = resultObject.getJSONArray("photos");
         if (resultObject.has(PLACE_ID))
-            attraction.place_id = resultObject.getString(PLACE_ID);
+            attraction.placeId = resultObject.getString(PLACE_ID);
         if (resultObject.has(PRICE_LEVEL))
             attraction.price_level = resultObject.getInt(PRICE_LEVEL);
         if (resultObject.has(RATING))
@@ -217,8 +217,12 @@ public class Attraction implements Parcelable {
         return international_phone_number;
     }
 
-    public String get_place_id() {
-        return place_id;
+    public String getName() {
+        return name;
+    }
+
+    public String getPlaceId() {
+        return placeId;
     }
 
     public int price_level() {
@@ -249,7 +253,7 @@ public class Attraction implements Parcelable {
         return picked;
     }
 
-    public Bitmap get_photo() {
+    public Bitmap getPhoto() {
         return photo;
     }
 
@@ -400,7 +404,7 @@ public class Attraction implements Parcelable {
         dest.writeString(icon_mask_base_uri);
         dest.writeString(international_phone_number);
         dest.writeString(name);
-        dest.writeString(place_id);
+        dest.writeString(placeId);
         dest.writeInt(price_level);
         dest.writeInt(rating);
         dest.writeString(url);
@@ -425,7 +429,7 @@ public class Attraction implements Parcelable {
         icon_mask_base_uri = in.readString();
         international_phone_number = in.readString();
         name = in.readString();
-        place_id = in.readString();
+        placeId = in.readString();
         price_level = in.readInt();
         rating = in.readInt();
         url = in.readString();

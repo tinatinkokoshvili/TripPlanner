@@ -112,7 +112,7 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
     public Attraction getPhotoBitmap(Attraction atr) {
         //API calls to get photo of the place
         PlacesClient placesClient = Places.createClient(this);
-        final String placeId = atr.place_id;
+        final String placeId = atr.placeId;
         final List<Place.Field> fields = Collections.singletonList(Place.Field.PHOTO_METADATAS);
         final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
         placesClient.fetchPlace(placeRequest).addOnSuccessListener((response) -> {
