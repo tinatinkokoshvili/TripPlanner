@@ -13,6 +13,7 @@ import com.example.tripplanner.models.Attraction;
 
 import com.example.tripplanner.models.DoubleClickListener;
 import com.example.tripplanner.models.Restaurant;
+import com.example.tripplanner.models.Trip;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,7 +59,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private FirebaseAuth fbAuth;
     private String userID;
     private FirebaseFirestore firestore;
-    private DocumentReference documentReference;
 
     // In pickedAtrList, userLocation is always at last index, other locations are in correct order to visit
     private ArrayList<Attraction> pickedAtrList;
@@ -99,13 +99,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         firestore = FirebaseFirestore.getInstance();
         fbAuth = FirebaseAuth.getInstance();
         userID = fbAuth.getCurrentUser().getUid();
-        //TODO get trip name provided from user and replace here
-//        documentReference =
-//                firestore.collection("testUsers")
-//                        .document(userID).collection("trips");
         markerPosToAtrMap = new HashMap<>();
-//        userLatitude = getIntent().getDoubleExtra("latitude", 0);
-//        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
         createPickedAtrToPickedListIndexMap();
@@ -125,7 +119,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
-       // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(RouteActivity.this);
         btnOpenInMaps = findViewById(R.id.btnOpenInMaps);
         btnOpenInMaps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,20 +150,12 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     }
 
     private void SaveTrip() {
-        Map<String, Object> tripMap = new HashMap<>();
-        tripMap.put("tripName", tripName);
-        tripMap.put("userLatitude", Double.toString(userLatitude));
-        tripMap.put("userLongitude", Double.toString(userLongitude));
-        tripMap.put("radius", radius);
-        tripMap.put("totalTime", totalTime);
-        tripMap.put("avgStayTime", avgStayTime);
-        tripMap.put("actualTotalTime", Double.toString(actualTotalTime));
-        for (int i = 1; i < atrRoute.size(); i++) {
-            tripMap.put(Integer.toString(i), atrRoute.get(i));
-        }
+        Trip tripToSave = new Trip(tripName, Double.toString(userLatitude), Double.toString(userLatitude),
+                radius, Double.parseDouble(totalTime), Double.parseDouble(avgStayTime),
+                actualTotalTime, atrRoute);
         firestore.collection("testUsers")
                 .document(userID).collection("trips").document(tripName)
-                .set(tripMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .set(tripToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.i(TAG, "trip data successfully saved");
@@ -186,8 +171,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private void goToRestaurantSelection() {
         Intent restaurantsIntent = new Intent(RouteActivity.this,
                 RestaurantsSelectionActivity.class);
-//                restaurantsIntent.putExtra("latitude", userLatitude);
-//                restaurantsIntent.putExtra("longitude", userLongitude);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("data", pickedAtrList);
         restaurantsIntent.putExtras(bundle);

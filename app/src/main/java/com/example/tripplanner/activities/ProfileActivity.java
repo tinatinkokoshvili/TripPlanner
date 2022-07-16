@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -53,10 +55,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private RecyclerView rvPastTrips;
     private PastTripAdapter pastTripAdapter;
-    ImageButton arrow;
-    ImageButton imbtnViewRoute;
-    LinearLayout hiddenView;
-    CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +106,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(ProfileActivity.this, "Profile does not exist.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Populate the past trip recycler view
+        firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                Trip trip = queryDocumentSnapshot.toObject(Trip.class);
+                                Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
+                                pastTripAdapter.add(trip);
+                            }
+                        } else {
+                            Log.e(TAG, "Error getting trips: ", task.getException());
+                        }
                     }
                 });
     }

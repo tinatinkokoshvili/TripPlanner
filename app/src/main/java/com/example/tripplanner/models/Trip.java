@@ -6,16 +6,18 @@ public class Trip {
     private String tripName;
     private String userLatitude;
     private String userLongitude;
-    private int radius;
+    private String radius;
     private double totalTripTime;
     private double avgStayTime;
-    // Attractions are ordered correctly, userLocation not included at all
+    private double actualTotalTime;
+    // Attractions are ordered correctly
     private List<Attraction> attractionsInTrip;
 
     public Trip() {}
 
     public Trip(String tripName, String userLatitude, String userLongitude,
-                int radius, double totalTripTime, double avgStayTime, List<Attraction> attractionsInTrip) {
+                String radius, double totalTripTime, double avgStayTime, double actualTotalTime,
+                List<Attraction> attractionsInTrip) {
         this.tripName = tripName;
         this.userLatitude = userLatitude;
         this.userLongitude = userLongitude;
@@ -23,6 +25,7 @@ public class Trip {
         this.totalTripTime = totalTripTime;
         this.avgStayTime = avgStayTime;
         this.attractionsInTrip = attractionsInTrip;
+        this.actualTotalTime = actualTotalTime;
     }
 
     public String getTripName() {
@@ -37,7 +40,7 @@ public class Trip {
         return userLongitude;
     }
 
-    public int getRadius() {
+    public String getRadius() {
         return radius;
     }
 
