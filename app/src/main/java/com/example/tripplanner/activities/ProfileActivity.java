@@ -53,8 +53,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private FloatingActionButton fbtnUpdateProfile;
     private Button btnLogout;
     private Button btnNewTrip;
-    private List<Trip> pastTripList;
 
+    private List<Trip> pastTripList;
     private RecyclerView rvPastTrips;
     private PastTripAdapter pastTripAdapter;
 

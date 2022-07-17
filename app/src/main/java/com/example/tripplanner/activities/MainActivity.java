@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.tripplanner.R;
 import com.example.tripplanner.activities.fragments.ComposeFragment;
+import com.example.tripplanner.activities.fragments.PastTripsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity  {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity  {
                     case R.id.action_past_trips:
                         // TODO update fragment
                         Toast.makeText(MainActivity.this, "Trips", Toast.LENGTH_SHORT).show();
-                        fragment = new ComposeFragment();
+                        fragment = new PastTripsFragment();
                         break;
                     case R.id.action_compose:
                         Toast.makeText(MainActivity.this, "Compose", Toast.LENGTH_SHORT).show();
