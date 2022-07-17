@@ -81,7 +81,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         private RecyclerView rvTripAttractions;
         private TripAttractionsAdapter tripAttractionsAdapter;
         private List<Attraction> tripAttractionsList;
-        private final DecimalFormat df = new DecimalFormat("0.00");
+        private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,7 +128,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
         public void bind(Trip trip) {
             tvTripName.setText(trip.getTripName());
-            tvStat.setText(trip.getAttractionsInTrip().size() - 1 + " Attractions  •  " + df.format(trip.getActualTotalTime()) + "hrs");
+            tvStat.setText(trip.getAttractionsInTrip().size() - 1 + " Attractions  •  " + decimalFormat.format(trip.getActualTotalTime()) + "hrs");
             List<Attraction> atrInTrip = trip.getAttractionsInTrip();
             for (int i = 1; i < atrInTrip.size(); i++) {
                 Log.i(TAG, "adding to adapter " + atrInTrip.get(i).getPhoto());

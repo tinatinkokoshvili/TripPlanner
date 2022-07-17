@@ -21,6 +21,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import org.parceler.Parcels;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder> {
@@ -70,6 +71,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         MaterialCardView cdAttraction;
         ImageView ivAtrPicture;
         TextView tvName;
@@ -101,7 +103,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             }
 
             tvName.setText(attraction.name);
-            tvRating.setText(Integer.toString(attraction.rating));
+            tvRating.setText(decimalFormat.format(attraction.rating));
             tvAddress.setText(attraction.formatted_address);
            // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);

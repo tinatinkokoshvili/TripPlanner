@@ -23,6 +23,7 @@ import com.google.android.material.card.MaterialCardView;
 import org.parceler.Parcels;
 import org.w3c.dom.Attr;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
@@ -41,7 +42,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @NonNull
     @Override
     public RestaurantAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_attraction, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_restaurant, parent, false);
         return new RestaurantAdapter.ViewHolder(view);
     }
 
@@ -75,6 +76,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         MaterialCardView cdAttraction;
         ImageView ivAtrPicture;
         TextView tvName;
@@ -82,7 +84,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         TextView tvDescription;
         TextView tvRating;
         MaterialButton btnLearnMore;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,7 +109,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             }
 
             tvName.setText(restaurant.name);
-            tvRating.setText(Double.toString(restaurant.googleYelpRating));
+            tvRating.setText(decimalFormat.format(restaurant.googleYelpRating));
             tvAddress.setText(restaurant.address);
             // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);

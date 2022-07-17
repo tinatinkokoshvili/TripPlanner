@@ -96,7 +96,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         restaurantsList = new LinkedList<>();
         resAtrList = new LinkedList<>();
         restaurantsAdapter = new RestaurantAdapter(this, restaurantsList, resAtrList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvRestaurants.setLayoutManager(linearLayoutManager);
         rvRestaurants.setAdapter(restaurantsAdapter);
 //        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
@@ -124,7 +124,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
         // radius for restaurants are much less because we want restaurants close to attraction
-        stringBuilder.append("&radius=" + "2000");
+        stringBuilder.append("&radius=" + "500");
         stringBuilder.append("&type=" + "restaurant");
         //ranks by prominence by default
         stringBuilder.append("&rankby");
