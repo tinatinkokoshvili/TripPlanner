@@ -5,4 +5,6 @@
     <string name="google_places_key">AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU</string>
     <string name="placeDetailsBaseUrl">https://maps.googleapis.com/maps/api/place/details/json?</string>
     <string name="str_btn_draw">Draw Route</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

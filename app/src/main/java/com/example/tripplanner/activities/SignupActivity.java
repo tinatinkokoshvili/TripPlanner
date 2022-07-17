@@ -177,7 +177,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                             public void onSuccess(Void unused) {
                                                 Log.i(TAG, "user info signup successful");
                                                 progressBar.setVisibility(View.INVISIBLE);
-                                                Intent intent = new Intent(SignupActivity.this, ProfileActivity.class);
+                                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
