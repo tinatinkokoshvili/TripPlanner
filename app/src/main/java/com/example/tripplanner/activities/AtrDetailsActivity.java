@@ -149,19 +149,6 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         Log.i(TAG, "finalizedRestaurantList Size " + pickedRestaurantsList.size());
     }
 
-//    @Override
-//    public void onTaskCompleted(Attraction restaurant) {
-//        Log.i(TAG, "restaurant fetched " + restaurant.name);
-//        try {
-//            Attraction resWithPhoto = getPhotoBitmap(restaurant);
-//            allGoogleRestaurants.add(restaurant);
-//            Log.i(TAG, "allGoogleRestaurants size " + allGoogleRestaurants.size());
-//            restaurantsAdapter.add(restaurant);
-//        } catch (Exception e) {
-//            Log.e(TAG, "Json exception", e);
-//        }
-//    }
-
     @Override
     public void onRestaurantTaskCompleted(Attraction attraction, Restaurant restaurant, int totalNumOfRestaurants) {
         allYelpRestaurants.add(restaurant);

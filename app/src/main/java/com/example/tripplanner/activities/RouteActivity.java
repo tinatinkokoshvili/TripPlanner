@@ -67,6 +67,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private static final String googleMapsInGooglePlay = "https://play.google.com/store/apps/details?id=com.google.android.apps.maps";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private static final String TRAVEL_MODE = "driving";
+    private static final String C2 = "%2C";
+    private static final String C7 = "%7C";
+    private static final String DEPARTURE_TIME = "now";
     // In atrRoute, userLocation is at first index, other locations are in correct order to visit after index 0
     private List<Attraction> atrRoute;
     private int[][] durationMatrix;
@@ -214,28 +217,28 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             Log.i(TAG, "picked attraction putting in link " + pickedAtrList.get(i).name);
             Attraction curOrigin = pickedAtrList.get(i);
             stringBuilder.append(curOrigin.latitude);
-            stringBuilder.append("%2C");
+            stringBuilder.append(C2);
             stringBuilder.append(curOrigin.longitude);
-            stringBuilder.append("%7C");
+            stringBuilder.append(C7);
         }
         // Add users current location to list of origin
         stringBuilder.append(Double.toString(userLatitude));
-        stringBuilder.append("%2C");
+        stringBuilder.append(C2);
         stringBuilder.append(Double.toString(userLongitude));
         stringBuilder.append("&destinations=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
             Attraction curDestination = pickedAtrList.get(i);
             stringBuilder.append(curDestination.latitude);
-            stringBuilder.append("%2C");
+            stringBuilder.append(C2);
             stringBuilder.append(curDestination.longitude);
-            stringBuilder.append("%7C");
+            stringBuilder.append(C7);
         }
         // Add users current location to list of destination
         stringBuilder.append(Double.toString(userLatitude));
-        stringBuilder.append("%2C");
+        stringBuilder.append(C2);
         stringBuilder.append(Double.toString(userLongitude));
 
-        stringBuilder.append("&departure_time=now");
+        stringBuilder.append("&departure_time=" + DEPARTURE_TIME);
         stringBuilder.append("&key=" + getString(R.string.google_maps_key));
         String url = stringBuilder.toString();
         Object dataTransfer[] = new Object[1];

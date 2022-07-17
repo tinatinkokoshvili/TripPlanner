@@ -89,6 +89,13 @@ public class Attraction implements Parcelable {
 
     public Attraction() {}
 
+    public Attraction(String name, boolean picked, String lat, String lon) {
+        this.name = name;
+        this.picked = picked;
+        this.latitude = lat;
+        this.longitude = lon;
+    }
+
     public static Attraction createFromJson(JSONObject resultObject) throws JSONException {
         Attraction attraction = new Attraction();
         attraction.picked = false;

@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FetchURL extends AsyncTask<String, Void, String> {
+    private static final String TAG = "FetchURL";
     Context mContext;
     String directionMode = "driving";
 
@@ -27,7 +28,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         try {
             // Fetching the data from web service
             data = downloadUrl(strings[0]);
-            Log.d("mylog", "Background task data " + data.toString());
+            Log.i(TAG, "Background task data " + data.toString());
         } catch (Exception e) {
             Log.d("Background Task", e.toString());
         }

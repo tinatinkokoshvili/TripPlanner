@@ -18,10 +18,10 @@ public class DirectionsJSONParser {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
         Log.i(TAG, jObject.toString());
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
-        JSONArray jRoutes;
-        JSONArray jLegs;
-        JSONArray jSteps;
         try {
+            JSONArray jRoutes;
+            JSONArray jLegs;
+            JSONArray jSteps;
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
             for (int i = 0; i < jRoutes.length(); i++) {
