@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
+import com.example.tripplanner.activities.fragments.ProfileFragment;
 import com.example.tripplanner.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -71,7 +72,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
         etUpdateFullName = findViewById(R.id.etUpdateFullName);
         etUpdateUsername = findViewById(R.id.etUpdateUsername);
         ivUploadNewPic = findViewById(R.id.ivUploadNewPic);
-      //  ivUploadNewPic.setOnClickListener(this);
         btnUpdateInfo = findViewById(R.id.btnUpdateInfo);
         btnUpdateInfo.setOnClickListener(this);
         ivNewPicture = findViewById(R.id.ivNewPicture);
@@ -145,7 +145,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(Void unused) {
                 Log.i(TAG, "user info signup successful");
                 //progressBar.setVisibility(View.INVISIBLE);
-                Intent intent = new Intent(UpdateActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {

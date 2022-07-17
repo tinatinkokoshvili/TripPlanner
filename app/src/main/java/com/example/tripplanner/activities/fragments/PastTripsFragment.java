@@ -49,15 +49,6 @@ public class PastTripsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        fbAuth = FirebaseAuth.getInstance();
-        userID = fbAuth.getCurrentUser().getUid();
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -68,6 +59,8 @@ public class PastTripsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        fbAuth = FirebaseAuth.getInstance();
+        userID = fbAuth.getCurrentUser().getUid();
         rvPastTrips = (RecyclerView) view.findViewById(R.id.rvPastTrips);
         pastTripList = new LinkedList<>();
         pastTripAdapter = new PastTripAdapter(getContext(), pastTripList);
