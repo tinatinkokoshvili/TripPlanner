@@ -90,21 +90,12 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
         }
 
         public void bind(Attraction attraction) {
-            getPhotoBitmap(attraction);
-//            Log.i(TAG, "bitmap in bind " + attraction.getPhoto());
-//            if (attraction.getPhoto() != null) {
-//                Log.i(TAG, "photo bitmap " + attraction.getPhoto());
-//                ivTripAtrPic.setImageBitmap(attraction.getPhoto());
-//            }
-//            if (ivTripAtrPic.getDrawable() == null) {
-//                Glide.with(context)
-//                        .load(noPhotoAvailableUrl).into(ivTripAtrPic);
-//            }
+            loadPhotoBitmap(attraction);
             Log.i(TAG, "setting name for " + attraction.name);
             tvTripAtrName.setText(attraction.name);
         }
 
-        public Attraction getPhotoBitmap(Attraction atr) {
+        public Attraction loadPhotoBitmap(Attraction atr) {
             Places.initialize(context, API_KEY);
             placesClient = Places.createClient(context);
             //API calls to get photo of the place
@@ -137,7 +128,7 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
                     }
                     if (ivTripAtrPic.getDrawable() == null) {
                         Glide.with(context)
-                                .load(noPhotoAvailableUrl).into(ivTripAtrPic);
+                                .load(R.drawable.ic_image_solid).into(ivTripAtrPic);
                     }
                 }).addOnFailureListener((exception) -> {
                     if (exception instanceof ApiException) {
