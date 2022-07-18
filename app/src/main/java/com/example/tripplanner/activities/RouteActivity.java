@@ -135,7 +135,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             public void run() {
                 showProgressDialogWithTitle("Please Wait", "Creating the most efficient route...");
             }
-        }, 2000);
+        }, 1000);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

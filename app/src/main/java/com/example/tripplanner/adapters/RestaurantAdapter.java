@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -76,7 +77,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        private final DecimalFormat decimalFormat = new DecimalFormat("0.0");
         MaterialCardView cdAttraction;
         ImageView ivAtrPicture;
         TextView tvName;
@@ -84,6 +85,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         TextView tvDescription;
         TextView tvRating;
         MaterialButton btnLearnMore;
+        RatingBar rbResRating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +97,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             btnLearnMore = itemView.findViewById(R.id.btnLearnMore);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
+            rbResRating = itemView.findViewById(R.id.rbResRating);
         }
 
         public void bind(Restaurant restaurant, Attraction atr) {
@@ -114,6 +117,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
             btnLearnMore.setOnClickListener(this);
+            float voteAverage = (float) Double.parseDouble(decimalFormat.format(restaurant.googleYelpRating));
+            Log.i(TAG, restaurant.name + voteAverage);
+            rbResRating.setRating(voteAverage);
         }
 
         @Override

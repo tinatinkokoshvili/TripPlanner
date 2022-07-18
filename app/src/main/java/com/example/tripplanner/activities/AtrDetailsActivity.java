@@ -37,8 +37,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import okhttp3.Route;
-
 public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "AtrDetailsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
@@ -175,7 +173,10 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
 
     @Override
     public void addNullToYelpList() {
-        // Yelp does not have corresponding restaurant to Google Maps restaurant at this point
+        /*
+          Yelp does not have corresponding restaurant to Google Maps restaurant at this point
+          so we add null
+         */
         allYelpRestaurants.add(null);
         allGoogleRestaurants.add(null);
     }
