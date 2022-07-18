@@ -25,18 +25,21 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.annotation.SuppressLint;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -93,12 +96,15 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private Button btnOpenInMaps;
     private Button btnAddRestaurants;
     private Button btnSaveTrip;
+    private CircularProgressIndicator cSaveProgressIndicator;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        progressDialog = new ProgressDialog(this);
         firestore = FirebaseFirestore.getInstance();
         fbAuth = FirebaseAuth.getInstance();
         userID = fbAuth.getCurrentUser().getUid();
@@ -113,8 +119,15 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         totalTime = getIntent().getStringExtra("totalTime");
         avgStayTime = getIntent().getStringExtra("avgStayTime");
 
+        showProgressDialogWithTitle("Please Wait", "Getting required data...");
         durationMatrix = new int[pickedAtrList.size()][pickedAtrList.size()];
         fetchDistances();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showProgressDialogWithTitle("Please Wait", "Creating the most efficient route...");
+            }
+        }, 2000);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -143,6 +156,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 SaveTrip();
             }
         });
+
+        cSaveProgressIndicator = findViewById(R.id.cSaveProgressIndicator);
+        cSaveProgressIndicator.hide();
     }
 
     private void createPickedAtrToPickedListIndexMap() {
@@ -153,6 +169,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     }
 
     private void SaveTrip() {
+        cSaveProgressIndicator.show();
         Trip tripToSave = new Trip(tripName, Double.toString(userLatitude), Double.toString(userLatitude),
                 radius, Double.parseDouble(totalTime), Double.parseDouble(avgStayTime),
                 actualTotalTime, atrRoute);
@@ -162,11 +179,13 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     @Override
                     public void onSuccess(Void unused) {
                         Log.i(TAG, "trip data successfully saved");
+                        cSaveProgressIndicator.hide();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "error when saving trip data");
+                        cSaveProgressIndicator.hide();
                     }
                 });
     }
@@ -253,6 +272,8 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     @Override
     public void onDurationTaskCompleted(int[][] durationMatrix) {
+
+
         this.durationMatrix = durationMatrix;
 //        // Add current location to the list of picked attractions
 //        Attraction userLocation = new Attraction();
@@ -291,6 +312,12 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     "Total Trip Time (" + actualTotalTime + "hr) does NOT exceed " + totalTime + "hr",
                     Toast.LENGTH_SHORT).show();
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideProgressDialogWithTitle();
+            }
+        }, 1000);
     }
 
     private boolean totalTripTimeExceedsUserProvidedTime() {
@@ -397,6 +424,23 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         // Building the url to the web service
         String url = directionsBaseUrl + output + "?" + parameters + "&key=" + API_KEY;
         return url;
+    }
+
+    // Method to show Progress bar
+    private void showProgressDialogWithTitle(String title,String substring) {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //Without this user can hide loader by tapping outside screen
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(substring);
+        progressDialog.show();
+
+    }
+
+    // Method to hide/ dismiss Progress bar
+    private void hideProgressDialogWithTitle() {
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.dismiss();
     }
 
     @Override
