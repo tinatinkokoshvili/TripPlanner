@@ -2,6 +2,7 @@ package com.example.tripplanner.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,6 +76,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private static final String C2 = "%2C";
     private static final String C7 = "%7C";
     private static final String DEPARTURE_TIME = "now";
+    private static final String TRIP_SAVED = "Trip Saved";
+    private static final String TRIP_SAVE_FAILED = "Save Failed";
+    private static final String UNDO = "UNDO";
     // In atrRoute, userLocation is at first index, other locations are in correct order to visit after index 0
     private List<Attraction> atrRoute;
     private int[][] durationMatrix;
@@ -98,12 +104,14 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private Button btnSaveTrip;
     private CircularProgressIndicator cSaveProgressIndicator;
     ProgressDialog progressDialog;
+    CoordinatorLayout snackbarCoordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        snackbarCoordinatorLayout = findViewById(R.id.snackbarCoordinatorLayout);
         progressDialog = new ProgressDialog(this);
         firestore = FirebaseFirestore.getInstance();
         fbAuth = FirebaseAuth.getInstance();
@@ -180,12 +188,19 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     public void onSuccess(Void unused) {
                         Log.i(TAG, "trip data successfully saved");
                         cSaveProgressIndicator.hide();
+                        Snackbar.make(snackbarCoordinatorLayout, TRIP_SAVED,
+                                        Snackbar.LENGTH_LONG)
+                                .setAction(UNDO, new UndoListener(firestore, userID, tripName))
+                                .show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "error when saving trip data");
                         cSaveProgressIndicator.hide();
+                        Snackbar.make(snackbarCoordinatorLayout, TRIP_SAVE_FAILED,
+                                        Snackbar.LENGTH_SHORT)
+                                .show();
                     }
                 });
     }
@@ -272,8 +287,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
 
     @Override
     public void onDurationTaskCompleted(int[][] durationMatrix) {
-
-
         this.durationMatrix = durationMatrix;
 //        // Add current location to the list of picked attractions
 //        Attraction userLocation = new Attraction();
@@ -452,5 +465,40 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     public boolean onMarkerClick(@NonNull Marker marker) {
         Log.i(TAG, "marker clicked");
         return false;
+    }
+}
+
+class UndoListener implements View.OnClickListener {
+    private static final String TAG = "MyUndoListener";
+    private String COLLECTIONS_USERS = "testUsers";
+    private String TRIPS = "trips";
+    private String userID;
+    private FirebaseFirestore firestore;
+    private String tripName;
+
+    UndoListener(FirebaseFirestore firestore, String userID, String tripName) {
+        this.firestore = firestore;
+        this.userID = userID;
+        this.tripName = tripName;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.i(TAG, "undo clicked");
+        firestore.collection(COLLECTIONS_USERS)
+                .document(userID).collection(TRIPS).document(tripName)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 }
