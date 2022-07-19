@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.algorithms;
 
 import android.util.Log;
 

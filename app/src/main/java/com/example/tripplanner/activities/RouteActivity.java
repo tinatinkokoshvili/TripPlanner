@@ -6,7 +6,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
-import com.example.tripplanner.RouteGenerator;
+import com.example.tripplanner.algorithms.RouteGenerator;
 import com.example.tripplanner.api_client.DistanceMatrixHelper;
 import com.example.tripplanner.directionhelpers.FetchURL;
 import com.example.tripplanner.directionhelpers.TaskLoadedCallback;
@@ -27,10 +27,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.annotation.SuppressLint;
@@ -56,7 +54,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class RouteActivity extends AppCompatActivity implements OnTaskCompleted, OnMapReadyCallback, TaskLoadedCallback, GoogleMap.OnMarkerClickListener {

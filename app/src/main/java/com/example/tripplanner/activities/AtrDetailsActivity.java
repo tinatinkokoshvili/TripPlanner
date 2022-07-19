@@ -8,10 +8,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
-import com.example.tripplanner.BusinessRankHelper;
+import com.example.tripplanner.algorithms.BusinessRankHelper;
 import com.example.tripplanner.OnTaskCompleted;
 import com.example.tripplanner.R;
-import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.adapters.RestaurantAdapter;
 import com.example.tripplanner.api_client.NearbyPlacesHelper;
 import com.example.tripplanner.models.Attraction;
