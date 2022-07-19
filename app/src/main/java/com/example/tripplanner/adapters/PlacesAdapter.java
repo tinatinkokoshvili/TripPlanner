@@ -2,25 +2,25 @@ package com.example.tripplanner.adapters;
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
 import android.content.Context;
-import android.content.Intent;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tripplanner.activities.AtrDetailsActivity;
 import com.example.tripplanner.models.Attraction;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-
-import org.parceler.Parcels;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -82,6 +82,16 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         MaterialButton btnLearnMore;
         RatingBar rbAtrRating;
 
+        ImageView ivDetailsPicture;
+        ImageView ivDetailsIcon;
+        TextView tvDetailsName;
+        RatingBar rbDetailsRating;
+        TextView tvDetailsRatingNum;
+        TextView tvDetailsAddress;
+        TextView tvDetailsPhoneNumber;
+        TextView tvDetailsUrl;
+        TextView tvDetailsWebsite;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +104,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
             rbAtrRating = itemView.findViewById(R.id.rbAtrRating);
+
+
         }
 
         public void bind(Attraction attraction) {
@@ -129,9 +141,67 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             if (position != RecyclerView.NO_POSITION && v.getId() == R.id.btnLearnMore) {
                 atr = attractionsList.get(position);
                 Log.i("adapter", "Clicked Learn More about " + atr.name);
-                Intent intent = new Intent(context, AtrDetailsActivity.class);
-                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(atr));
-                context.startActivity(intent);
+                // inflate the layout of the popup window
+                LayoutInflater inflater = (LayoutInflater)
+                        context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.details_popup, null);
+
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true; // lets taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                ivDetailsPicture = popupView.findViewById(R.id.ivDetailsPicture);
+                ivDetailsIcon = popupView.findViewById(R.id.ivDetailsIcon);
+                tvDetailsName = popupView.findViewById(R.id.tvDetailsName);
+
+                rbDetailsRating = popupView.findViewById(R.id.rbDetailsRating);
+                tvDetailsRatingNum = popupView.findViewById(R.id.tvDetailsRatingNum);
+                tvDetailsAddress = popupView.findViewById(R.id.tvDetailsAddress);
+
+                tvDetailsPhoneNumber = popupView.findViewById(R.id.tvDetailsPhoneNumber);
+                tvDetailsUrl = popupView.findViewById(R.id.tvDetailsUrl);
+                tvDetailsWebsite = popupView.findViewById(R.id.tvDetailsWebsite);
+
+                if (atr.getPhoto() != null) {
+                    ivDetailsPicture.setImageBitmap(atr.getPhoto());
+                } else {
+                    Glide.with(context)
+                            .load(noPhotoAvailableUrl).into(ivAtrPicture);
+                }
+                if (atr.getIcon() != null && !atr.getIcon().isEmpty()) {
+                    Glide.with(context).load(atr.getIcon()).into(ivDetailsIcon);
+                }
+                if (atr.getName() != null && !atr.getName().isEmpty()) {
+                    tvDetailsName.setText(atr.getName());
+                }
+                float voteAverage = (float) atr.getRating();
+                Log.i(TAG, atr.getName() + voteAverage);
+                rbDetailsRating.setRating(voteAverage);
+                tvDetailsRatingNum.setText(decimalFormat.format(atr.getRating()));
+
+                if (atr.getFormattedAddress() != null && !atr.getFormattedAddress().isEmpty())
+                    tvDetailsAddress.setText(atr.getFormattedAddress());
+                if (atr.getFormattedPhoneNumber() != null && !atr.getFormattedPhoneNumber().isEmpty())
+                    tvDetailsPhoneNumber.setText(atr.getFormattedPhoneNumber());
+                if (atr.getUrl() != null && !atr.getUrl().isEmpty())
+                    tvDetailsUrl.setText(atr.getUrl());
+                if (atr.getWebsite() != null && !atr.getWebsite().isEmpty())
+                    tvDetailsWebsite.setText(atr.getWebsite());
+
+                // show the popup window
+                // which view you pass in doesn't matter, it is only used for the window tolken
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+                // dismiss the popup window when touched
+                popupView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        popupWindow.dismiss();
+                        return true;
+                    }
+                });
             }
 
 //                if (atr.picked) {
