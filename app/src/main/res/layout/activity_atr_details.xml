@@ -7,6 +7,8 @@
     android:background="#f2f2f2"
     tools:context=".activities.AtrDetailsActivity">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRestaurants"
         android:layout_width="403dp"

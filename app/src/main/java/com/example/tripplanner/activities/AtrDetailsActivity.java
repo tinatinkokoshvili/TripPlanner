@@ -100,7 +100,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
 //        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
 //        Log.i(TAG, "Details bitmap " +  attraction.photo);
 //        ivAtrPhoto.setImageBitmap(attraction.photo);
-        fetchRestaurants(Double.parseDouble(attraction.latitude), Double.parseDouble(attraction.longitude));
+        fetchRestaurants(Double.parseDouble(attraction.getLat()), Double.parseDouble(attraction.getLon()));
     }
 
     private void goToRouteActivity() {

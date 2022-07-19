@@ -84,7 +84,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         TextView tvAddress;
         TextView tvDescription;
         TextView tvRating;
-        MaterialButton btnLearnMore;
         RatingBar rbResRating;
 
         public ViewHolder(@NonNull View itemView) {
@@ -93,8 +92,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             tvName = itemView.findViewById(R.id.tvName);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvAddress = itemView.findViewById(R.id.tvAddress);
-            //tvDescription = itemView.findViewById(R.id.tvDescription);
-            btnLearnMore = itemView.findViewById(R.id.btnLearnMore);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
             rbResRating = itemView.findViewById(R.id.rbResRating);
@@ -116,7 +113,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             tvAddress.setText(restaurant.address);
             // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
-            btnLearnMore.setOnClickListener(this);
             float voteAverage = (float) Double.parseDouble(decimalFormat.format(restaurant.googleYelpRating));
             Log.i(TAG, restaurant.name + voteAverage);
             rbResRating.setRating(voteAverage);

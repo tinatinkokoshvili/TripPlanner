@@ -24,8 +24,8 @@ public class Attraction implements Parcelable {
     public transient static final String TAG = "Attraction";
     public transient String formatted_address;
     public transient String formatted_phone_number;
-    public transient String latitude;
-    public transient String longitude;
+    public transient String lat;
+    public transient String lon;
     public transient String icon;
     public transient String icon_background_color;
     public transient String icon_mask_base_uri;
@@ -92,8 +92,8 @@ public class Attraction implements Parcelable {
     public Attraction(String name, boolean picked, String lat, String lon) {
         this.name = name;
         this.picked = picked;
-        this.latitude = lat;
-        this.longitude = lon;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public static Attraction createFromJson(JSONObject resultObject) throws JSONException {
@@ -136,9 +136,9 @@ public class Attraction implements Parcelable {
             attraction.formatted_phone_number = resultObject.getString(FORMATTED_PHONE_NUMBER);
         JSONObject locationObj = resultObject.getJSONObject(GEOMETRY).getJSONObject(LOCATION);
         if (locationObj.has(LAT))
-            attraction.latitude = locationObj.getString(LAT);
+            attraction.lat = locationObj.getString(LAT);
         if (locationObj.has(LNG))
-            attraction.longitude = locationObj.getString(LNG);
+            attraction.lon = locationObj.getString(LNG);
         if (resultObject.has(ICON))
             attraction.icon = resultObject.getString(ICON);
         if (resultObject.has(ICON_BACKGROUND_COLOR))
@@ -192,35 +192,35 @@ public class Attraction implements Parcelable {
         return TAG;
     }
 
-    public String get_formatted_address() {
+    public String getFormattedAddress() {
         return formatted_address;
     }
 
-    public String get_formatted_phone_number() {
+    public String getFormattedPhoneNumber() {
         return formatted_phone_number;
     }
 
-    public String get_latitude() {
-        return latitude;
+    public String getLat() {
+        return lat;
     }
 
-    public String get_longitude() {
-        return longitude;
+    public String getLon() {
+        return lon;
     }
 
-    public String get_icon() {
+    public String getIcon() {
         return icon;
     }
 
-    public String get_icon_background_color() {
+    public String getIconBackgroundColor() {
         return icon_background_color;
     }
 
-    public String get_icon_mask_base_uri() {
+    public String getIconMaskBaseUri() {
         return icon_mask_base_uri;
     }
 
-    public String get_international_phone_number() {
+    public String getInternationalPhoneNumber() {
         return international_phone_number;
     }
 
@@ -232,31 +232,31 @@ public class Attraction implements Parcelable {
         return placeId;
     }
 
-    public int price_level() {
+    public int priceLevel() {
         return price_level;
     }
 
-    public int get_rating() {
+    public int getRating() {
         return rating;
     }
 
-    public String get_url() {
+    public String getUrl() {
         return url;
     }
 
-    public int get_user_ratings_total() {
+    public int getUserRatingsTotal() {
         return user_ratings_total;
     }
 
-    public String get_vicinity() {
+    public String getVicinity() {
         return vicinity;
     }
 
-    public String get_website() {
+    public String getWebsite() {
         return website;
     }
 
-    public boolean get_picked() {
+    public boolean getPicked() {
         return picked;
     }
 
@@ -264,35 +264,35 @@ public class Attraction implements Parcelable {
         return photo;
     }
 
-    public boolean get_isRestaurant() {
+    public boolean getIsRestaurant() {
         return isRestaurant;
     }
 
-    public String get_street_number() {
+    public String getStreetNumber() {
         return street_number;
     }
 
-    public String get_street() {
+    public String getStreet() {
         return street;
     }
 
-    public String get_subpremise() {
+    public String getSubpremise() {
         return subpremise;
     }
 
-    public String get_address1() {
+    public String getAddress1() {
         return address1;
     }
 
-    public String get_city() {
+    public String getCity() {
         return city;
     }
 
-    public String get_short_state() {
+    public String getShortState() {
         return short_state;
     }
 
-    public String get_country() {
+    public String getCountry() {
         return country;
     }
 
@@ -404,8 +404,8 @@ public class Attraction implements Parcelable {
     public void writeToParcel(android.os.Parcel dest, int flags) {
         dest.writeString(formatted_address);
         dest.writeString(formatted_phone_number);
-        dest.writeString(latitude);
-        dest.writeString(longitude);
+        dest.writeString(lat);
+        dest.writeString(lon);
         dest.writeString(icon);
         dest.writeString(icon_background_color);
         dest.writeString(icon_mask_base_uri);
@@ -429,8 +429,8 @@ public class Attraction implements Parcelable {
     public Attraction(Parcel in) {
         formatted_address = in.readString();
         formatted_phone_number = in.readString();
-        latitude = in.readString();
-        longitude = in.readString();
+        lat = in.readString();
+        lon = in.readString();
         icon = in.readString();
         icon_background_color = in.readString();
         icon_mask_base_uri = in.readString();

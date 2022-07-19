@@ -44,7 +44,7 @@ public class Trip {
         return radius;
     }
 
-    public double getAvgStayTime() {
+    public double getavgStayTime() {
         return avgStayTime;
     }
 

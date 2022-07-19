@@ -116,7 +116,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             Attraction atr = null;
             if (position != RecyclerView.NO_POSITION && v.getId() != R.id.btnLearnMore) {
                 atr = attractionsList.get(position);
-                Log.i("adapter", "clicked " + atr.name);
+                Log.i(TAG, "clicked " + atr.name);
                 atr.picked = !atr.picked;
                 cdAttraction.toggle();
             }

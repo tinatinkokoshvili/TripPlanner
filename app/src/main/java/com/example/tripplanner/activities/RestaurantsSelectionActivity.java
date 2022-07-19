@@ -57,8 +57,8 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
 //        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         alreadyPickedAtrList = bundle.getParcelableArrayList("data");
-        userLatitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).latitude);
-        userLongitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).longitude);
+        userLatitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).getLat());
+        userLongitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).getLon());
         tripName = getIntent().getStringExtra("tripName");
         radius = getIntent().getStringExtra("radius");
         totalTime = getIntent().getStringExtra("totalTime");

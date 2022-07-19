@@ -1,6 +1,8 @@
 package com.example.tripplanner.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +19,12 @@ import android.transition.TransitionManager;
 import android.widget.TextView;
 
 import com.example.tripplanner.R;
+import com.example.tripplanner.activities.RouteActivity;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -111,10 +115,32 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             imBtnViewRoute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO go to Route Activity
-                    // Pass the list of attractions in right order
+                    int position = getAdapterPosition();
+                    Trip trip = null;
+                    if (v.getId() == R.id.imBtnViewRoute) {
+                        trip = tripList.get(position);
+                        Log.i(TAG, "clicked " + trip.getTripName());
+
+                        // Pass the list of attractions in right order
+                        ArrayList<Attraction> atrInTrip = (ArrayList<Attraction>) trip.getAttractionsInTrip();
+                        //Moving userLocation to last one so that it si
+                        Attraction userLocation = atrInTrip.get(0);
+                        atrInTrip.remove(0);
+                        atrInTrip.add(userLocation);
+
+                        Intent routeIntent = new Intent(context, RouteActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("data", atrInTrip);
+                        routeIntent.putExtras(bundle);
+                        routeIntent.putExtra("tripName", trip.getTripName().toString());
+                        routeIntent.putExtra("radius", trip.getRadius()).toString();
+                        routeIntent.putExtra("totalTime", Double.toString(trip.getTotalTripTime()));
+                        routeIntent.putExtra("avgStayTime", Double.toString(trip.getavgStayTime()));
+                        context.startActivity(routeIntent);
+                    }
                 }
             });
+
             tvStat = itemView.findViewById(R.id.tvStat);
             tvTripName = itemView.findViewById(R.id.tvTripName);
 
@@ -139,8 +165,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
-
         }
     }
 }

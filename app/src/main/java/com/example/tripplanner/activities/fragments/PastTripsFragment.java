@@ -63,7 +63,7 @@ public class PastTripsFragment extends Fragment {
         userID = fbAuth.getCurrentUser().getUid();
         rvPastTrips = (RecyclerView) view.findViewById(R.id.rvPastTrips);
         pastTripList = new LinkedList<>();
-        pastTripAdapter = new PastTripAdapter(getContext(), pastTripList);
+        pastTripAdapter = new PastTripAdapter(getActivity(), pastTripList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvPastTrips.setLayoutManager(linearLayoutManager);
         rvPastTrips.setAdapter(pastTripAdapter);

@@ -120,8 +120,10 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         Bundle bundle = getIntent().getExtras();
         pickedAtrList = bundle.getParcelableArrayList("data");
         createPickedAtrToPickedListIndexMap();
-        userLatitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).latitude);
-        userLongitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).longitude);
+        Log.i(TAG, "userlocation lat " + pickedAtrList.get(pickedAtrList.size() - 1).getName());
+        Log.i(TAG, "userlocation lon " + pickedAtrList.get(pickedAtrList.size() - 1).getLon());
+        userLatitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).getLat());
+        userLongitude = Double.parseDouble(pickedAtrList.get(pickedAtrList.size() - 1).getLon());
         tripName = getIntent().getStringExtra("tripName");
         radius = getIntent().getStringExtra("radius");
         totalTime = getIntent().getStringExtra("totalTime");
@@ -223,12 +225,12 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             // If Google Maps are not installed then direct user to play store
             String redirectUrl = "";
             redirectUrl += "https://www.google.co.in/maps/dir/";
-            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).latitude +",";
-            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).longitude + "/";
+            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).getLat() +",";
+            redirectUrl += pickedAtrList.get(pickedAtrList.size()-1).getLon() + "/";
             for (int i = 0; i < pickedAtrList.size() - 1; i++) {
-                Log.i(TAG, "redirecting " + pickedAtrList.get(i).name + " to " + pickedAtrList.get(i+1));
-                redirectUrl += pickedAtrList.get(i).latitude +",";
-                redirectUrl += pickedAtrList.get(i).longitude + "/";
+                Log.i(TAG, "redirecting " + pickedAtrList.get(i).getName() + " to " + pickedAtrList.get(i+1));
+                redirectUrl += pickedAtrList.get(i).getLat() +",";
+                redirectUrl += pickedAtrList.get(i).getLon() + "/";
             }
             Uri googleMapsUri = Uri.parse(redirectUrl);
             Intent intent = new Intent(Intent.ACTION_VIEW, googleMapsUri);
@@ -248,11 +250,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         StringBuilder stringBuilder = new StringBuilder(distanceMatrixBaseUrl);
         stringBuilder.append("&origins=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
-            Log.i(TAG, "picked attraction putting in link " + pickedAtrList.get(i).name);
+            Log.i(TAG, "picked attraction putting in link " + pickedAtrList.get(i).getName());
             Attraction curOrigin = pickedAtrList.get(i);
-            stringBuilder.append(curOrigin.latitude);
+            stringBuilder.append(curOrigin.getLat());
             stringBuilder.append(C2);
-            stringBuilder.append(curOrigin.longitude);
+            stringBuilder.append(curOrigin.getLon());
             stringBuilder.append(C7);
         }
         // Add users current location to list of origin
@@ -262,9 +264,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         stringBuilder.append("&destinations=");
         for (int i = 0; i < pickedAtrList.size(); i++) {
             Attraction curDestination = pickedAtrList.get(i);
-            stringBuilder.append(curDestination.latitude);
+            stringBuilder.append(curDestination.getLat());
             stringBuilder.append(C2);
-            stringBuilder.append(curDestination.longitude);
+            stringBuilder.append(curDestination.getLon());
             stringBuilder.append(C7);
         }
         // Add users current location to list of destination
@@ -302,13 +304,13 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         Log.i(TAG, "atrRoute size " + atrRoute.size());
 
         for (int i = 0; i < atrRoute.size() - 1; i++) {
-            Log.i(TAG, "atrRoute size " + atrRoute.get(i).name);
+            Log.i(TAG, "atrRoute size " + atrRoute.get(i).getName());
             MarkerOptions origin =
-                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).latitude),
-                    Double.parseDouble(atrRoute.get(i).longitude))).title(atrRoute.get(i).name);
+                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i).getLat()),
+                    Double.parseDouble(atrRoute.get(i).getLon()))).title(atrRoute.get(i).getName());
             MarkerOptions destination =
-                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).latitude),
-                    Double.parseDouble(atrRoute.get(i + 1).longitude))).title(atrRoute.get(i + 1).name);
+                    new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).getLat()),
+                    Double.parseDouble(atrRoute.get(i + 1).getLon()))).title(atrRoute.get(i + 1).getName());
             // Draw the polyline on the map between origin and destination
             Toast.makeText(RouteActivity.this,
                     "Drawing line for origin" + origin + " detsination " + destination,
@@ -344,11 +346,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             } else {
                 double rideDuration = ((double) durationMatrix[pickedAtrToPickedListIndexMap.get(origin)][pickedAtrToPickedListIndexMap.get(destination)]) / 3600;
                 actualTotalTime += rideDuration;
-                actualTotalTime += Double.parseDouble(avgStayTime);
+                actualTotalTime += Double.parseDouble(avgStayTime.toString());
             }
         }
         Log.i(TAG, "actualTotalTime " + actualTotalTime + " user TotalTime " + totalTime);
-        return actualTotalTime > Double.parseDouble(totalTime);
+        return actualTotalTime > Double.parseDouble(totalTime.toString());
     }
 
     @Override
@@ -384,7 +386,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             public void onDoubleClick() {
                 Log.i(TAG, "marker DOUBLE clicked");
                 Attraction clickedAtr = markerPosToAtrMap.get(getMarkerPosition());
-                Log.i(TAG, "clicked atr is " + clickedAtr.name);
+                Log.i(TAG, "clicked atr is " + clickedAtr.getName());
                 Intent atrDetailsWithRestaurantsIntent = new Intent(RouteActivity.this, AtrDetailsActivity.class);
                 atrDetailsWithRestaurantsIntent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(clickedAtr));
                 Bundle bundle = new Bundle();
@@ -415,11 +417,11 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private void addMarkers() {
         for (int i = 0; i < atrRoute.size(); i++) {
             Attraction curAtr = atrRoute.get(i);
-            Log.i(TAG, "lat string " + curAtr.latitude + " long string " + curAtr.longitude
-                    + " double " + Double.parseDouble(curAtr.latitude) + " double long " + Double.parseDouble(curAtr.longitude));
+            Log.i(TAG, "lat string " + curAtr.getLat() + " long string " + curAtr.getLon()
+                    + " double " + Double.parseDouble(curAtr.getLat()) + " double long " + Double.parseDouble(curAtr.getLon()));
             MarkerOptions place =
-                new MarkerOptions().position(new LatLng(Double.parseDouble(curAtr.latitude),
-                        Double.parseDouble(curAtr.longitude))).title(curAtr.name);
+                new MarkerOptions().position(new LatLng(Double.parseDouble(curAtr.getLat()),
+                        Double.parseDouble(curAtr.getLon()))).title(curAtr.getName());
             Log.i(TAG, "marker latitude " +  place.getPosition().latitude);
             markerPosToAtrMap.put(place.getPosition(), curAtr);
             Log.i(TAG, "map size " + markerPosToAtrMap.size());
