@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -79,6 +80,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         TextView tvDescription;
         TextView tvRating;
         MaterialButton btnLearnMore;
+        RatingBar rbAtrRating;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -91,6 +93,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             btnLearnMore = itemView.findViewById(R.id.btnLearnMore);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
+            rbAtrRating = itemView.findViewById(R.id.rbAtrRating);
         }
 
         public void bind(Attraction attraction) {
@@ -108,6 +111,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
            // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
             btnLearnMore.setOnClickListener(this);
+            float voteAverage = (float) attraction.rating;
+            Log.i(TAG, attraction.name + voteAverage);
+            rbAtrRating.setRating(voteAverage);
         }
 
         @Override
