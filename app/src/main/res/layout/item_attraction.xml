@@ -44,6 +44,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="4dp"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.036"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +63,7 @@
                 android:numStars="5"
                 android:stepSize="0.5"
                 app:layout_constraintStart_toStartOf="parent"
+
                 app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
             <TextView
@@ -73,6 +75,7 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.038"
@@ -85,21 +88,21 @@
                 android:id="@+id/tvRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="184dp"
+                android:layout_marginEnd="172dp"
                 android:layout_marginBottom="28dp"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.875"
                 tools:text="Rating Stars" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLearnMore"
                 style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="104dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="44dp"
                 android:text="Learn More"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
