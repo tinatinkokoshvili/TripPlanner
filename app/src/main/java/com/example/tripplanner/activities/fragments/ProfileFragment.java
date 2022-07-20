@@ -25,6 +25,7 @@ import com.example.tripplanner.activities.ProfileActivity;
 import com.example.tripplanner.activities.TripInfoActivity;
 import com.example.tripplanner.activities.UpdateActivity;
 import com.example.tripplanner.adapters.PastTripAdapter;
+import com.example.tripplanner.algorithms.FriendRecommendationsHelper;
 import com.example.tripplanner.models.Trip;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,11 +56,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView tvProfValUsername;
     private FloatingActionButton fbtnUpdateProfile;
     private Button btnLogout;
-    private Button btnNewTrip;
 
-    private List<Trip> pastTripList;
-    private RecyclerView rvPastTrips;
-    private PastTripAdapter pastTripAdapter;
+//    private List<Trip> pastTripList;
+//    private RecyclerView rvPastTrips;
+//    private PastTripAdapter pastTripAdapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -91,15 +91,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         fbtnUpdateProfile.setOnClickListener(this);
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
-        btnNewTrip = view.findViewById(R.id.btnNewTrip);
-        btnNewTrip.setOnClickListener(this);
 
-        rvPastTrips = (RecyclerView) view.findViewById(R.id.rvPastTrips);
-        pastTripList = new LinkedList<>();
-        pastTripAdapter = new PastTripAdapter(getContext(), pastTripList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvPastTrips.setLayoutManager(linearLayoutManager);
-        rvPastTrips.setAdapter(pastTripAdapter);
+//        rvPastTrips = (RecyclerView) view.findViewById(R.id.rvPastTrips);
+//        pastTripList = new LinkedList<>();
+//        pastTripAdapter = new PastTripAdapter(getContext(), pastTripList);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        rvPastTrips.setLayoutManager(linearLayoutManager);
+//        rvPastTrips.setAdapter(pastTripAdapter);
 
         getDataFromDb();
     }
@@ -125,26 +123,32 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "Profile does not exist.", Toast.LENGTH_SHORT).show();
                     }
                 });
-        // Populate the past trip recycler view
-        pastTripAdapter.clear();
-        firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                //List<Object> objectList = (List<Object>) queryDocumentSnapshot.get("attractionsInTrip");
-                                Trip trip = queryDocumentSnapshot.toObject(Trip.class);
-                                Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
+        // Populate the friend recommendations recycler view
 
-                                Log.i(TAG, "atr " + trip.getAttractionsInTrip().get(2).getPlaceId());
-                                pastTripAdapter.add(trip);
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting trips: ", task.getException());
-                        }
-                    }
-                });
+        FriendRecommendationsHelper friendRecommendationsHelper =
+                new FriendRecommendationsHelper(fbAuth, firestore, userID, "testUsers", "trips");
+
+
+        // Populate the past trip recycler view
+//        pastTripAdapter.clear();
+//        firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful() && task.getResult() != null) {
+//                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+//                                //List<Object> objectList = (List<Object>) queryDocumentSnapshot.get("attractionsInTrip");
+//                                Trip trip = queryDocumentSnapshot.toObject(Trip.class);
+//                                Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
+//
+//                                Log.i(TAG, "atr " + trip.getAttractionsInTrip().get(2).getPlaceId());
+//                                pastTripAdapter.add(trip);
+//                            }
+//                        } else {
+//                            Log.e(TAG, "Error getting trips: ", task.getException());
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -156,10 +160,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.btnLogout) {
             onLogout();
         }
-        if (v.getId() == R.id.btnNewTrip) {
-            Intent tripInfoIntent = new Intent(getContext(), TripInfoActivity.class);
-            startActivity(tripInfoIntent);
-        }
+//        if (v.getId() == R.id.btnNewTrip) {
+//            Intent tripInfoIntent = new Intent(getContext(), TripInfoActivity.class);
+//            startActivity(tripInfoIntent);
+//        }
     }
 
     private void onLogout() {

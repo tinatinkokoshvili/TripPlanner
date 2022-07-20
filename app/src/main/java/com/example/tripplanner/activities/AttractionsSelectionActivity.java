@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.tripplanner.OnTaskCompleted;
+import com.example.tripplanner.interfaces.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.adapters.PlacesAdapter;
 import com.example.tripplanner.api_client.NearbyPlacesHelper;

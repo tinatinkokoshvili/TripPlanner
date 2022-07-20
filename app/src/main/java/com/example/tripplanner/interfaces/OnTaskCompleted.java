@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.interfaces;
 
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Restaurant;

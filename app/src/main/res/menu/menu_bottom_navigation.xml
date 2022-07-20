@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_past_trips"
         android:icon="@drawable/ic_suitcase_rolling_solid"
-        android:title="Past Trips"
+        android:title="Trips"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_compose"

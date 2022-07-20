@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.example.tripplanner.OnTaskCompleted;
+import com.example.tripplanner.interfaces.OnTaskCompleted;
 import com.example.tripplanner.R;
 import com.example.tripplanner.algorithms.RouteGenerator;
 import com.example.tripplanner.api_client.DistanceMatrixHelper;
@@ -418,7 +418,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     + " double " + Double.parseDouble(curAtr.getLat()) + " double long " + Double.parseDouble(curAtr.getLon()));
             MarkerOptions place =
                 new MarkerOptions().position(new LatLng(Double.parseDouble(curAtr.getLat()),
-                        Double.parseDouble(curAtr.getLon()))).title(curAtr.getName());
+                        Double.parseDouble(curAtr.getLon()))).title(i + ". " + curAtr.getName());
             Log.i(TAG, "marker latitude " +  place.getPosition().latitude);
             markerPosToAtrMap.put(place.getPosition(), curAtr);
             Log.i(TAG, "map size " + markerPosToAtrMap.size());

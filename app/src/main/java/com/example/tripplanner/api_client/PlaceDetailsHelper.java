@@ -3,7 +3,7 @@ package com.example.tripplanner.api_client;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.tripplanner.OnTaskCompleted;
+import com.example.tripplanner.interfaces.OnTaskCompleted;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.yelp_helpers.RestaurantMatchHelper;
 

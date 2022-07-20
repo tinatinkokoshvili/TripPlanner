@@ -59,6 +59,11 @@ public class Document implements Comparable<Document> {
     }
 
     @Override
+    public String toString() {
+        return combinedAtrsDocument;
+    }
+
+    @Override
     public int compareTo(Document other) {
         return combinedAtrsDocument.compareTo(other.combinedAtrsDocument);
     }
