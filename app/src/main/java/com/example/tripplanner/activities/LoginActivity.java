@@ -42,8 +42,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
-        etLoginEmail = findViewById(R.id.etUpdateUsername);
-        etLoginPassword = findViewById(R.id.etPassword);
+        etLoginEmail = findViewById(R.id.etLoginEmail);
+        etLoginPassword = findViewById(R.id.etLoginPassword);
 
         tvSignup = findViewById(R.id.tvSignup);
         tvSignup.setOnClickListener(this);

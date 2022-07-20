@@ -13,70 +13,32 @@
         android:id="@+id/ivNavLogo"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="164dp"
         android:layout_weight="1"
         android:paddingBottom="20dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
-        android:id="@+id/etUpdateUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="252dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="email"
-        android:paddingBottom="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword"
-        android:paddingBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/etUpdateUsername"
-        tools:layout_editor_absoluteX="0dp" />
-
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_width="359dp"
+        android:layout_height="38dp"
         android:layout_weight="1"
-        android:paddingBottom="4dp"
         android:backgroundTint="#839DF6"
+        android:paddingBottom="4dp"
         android:text="LOG IN"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword"
-        tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword"
         tools:text="LOG IN" />
-
-    <Button
-        android:id="@+id/btnUpdateInfo"
-        android:layout_width="136dp"
-        android:layout_height="39dp"
-        android:layout_weight="1"
-        android:backgroundTint="#F4F4F4"
-        android:text="SIGNUP"
-        android:textColor="#000000"
-        android:visibility="gone"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="646dp"
-        tools:text="SIGN UP" />
 
     <TextView
         android:id="@+id/tvOr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="15dp"
         android:text="Or"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,12 +48,50 @@
         android:id="@+id/tvSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="15dp"
         android:clickable="true"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tvOr"
+        app:layout_constraintStart_toEndOf="@+id/tvOr"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutEmail"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:hint="example@email.com"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#d10202"
+        app:layout_constraintTop_toBottomOf="@+id/ivNavLogo"
+        app:startIconDrawable="@drawable/ic_user_solid"
+        tools:layout_editor_absoluteX="1dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutPassword"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        app:endIconMode="password_toggle"
+        app:helperTextTextColor="#d10202"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail"
+        app:startIconDrawable="@drawable/ic_lock_solid"
+        tools:layout_editor_absoluteX="1dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
