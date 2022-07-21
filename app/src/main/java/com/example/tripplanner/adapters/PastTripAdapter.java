@@ -17,11 +17,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
 import com.example.tripplanner.activities.RouteActivity;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -81,15 +91,19 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         CardView cvPastTrip;
         TextView tvStat;
         TextView tvTripName;
+        TextView tvTripAuthor;
 
         private RecyclerView rvTripAttractions;
         private TripAttractionsAdapter tripAttractionsAdapter;
         private List<Attraction> tripAttractionsList;
         private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
+        private FirebaseFirestore firestore;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            firestore  = FirebaseFirestore.getInstance();
             cvPastTrip = itemView.findViewById(R.id.cvPastTrip);
             hiddenLayout = itemView.findViewById(R.id.hiddenLayout);
             imBtnArrow = itemView.findViewById(R.id.imBtnArrow);
@@ -120,7 +134,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                     if (v.getId() == R.id.imBtnViewRoute) {
                         trip = tripList.get(position);
                         Log.i(TAG, "clicked " + trip.getTripName());
-
                         // Pass the list of attractions in right order
                         ArrayList<Attraction> atrInTrip = (ArrayList<Attraction>) trip.getAttractionsInTrip();
                         //Moving userLocation to last one so that it si
@@ -143,6 +156,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
             tvStat = itemView.findViewById(R.id.tvStat);
             tvTripName = itemView.findViewById(R.id.tvTripName);
+            tvTripAuthor = itemView.findViewById(R.id.tvTripAuthor);
 
             rvTripAttractions = (RecyclerView) itemView.findViewById(R.id.rvTripAttractions);
             tripAttractionsList = new LinkedList<>();
@@ -161,10 +175,38 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                 Attraction curAtr = atrInTrip.get(i);
                 tripAttractionsAdapter.add(atrInTrip.get(i));
             }
+            Log.i(TAG, "authorId "+ trip.getAuthorId());
+            if (trip.getAuthorId() != null && !trip.getAuthorId().isEmpty()) {
+                fetchAuthorDetails(trip.getAuthorId());
+            }
+        }
+
+        private void fetchAuthorDetails(String author) {
+            firestore.collection("testUsers").document(author)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                String fullName_result = task.getResult().getString("fullName");
+                                String username_result = task.getResult().getString("username");
+                                String picUrl_result = task.getResult().getString("picUrl");
+
+                                //Glide.with(getContext()).load(picUrl_result).into(ivProfPagePic);
+                                tvTripAuthor.setText(fullName_result + " • @" + username_result);
+
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Profile does not exist.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
 
         @Override
         public void onClick(View v) {
+            return;
         }
     }
 }

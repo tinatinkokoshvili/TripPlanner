@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="15dp"
     tools:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
     <com.google.android.material.card.MaterialCardView
@@ -23,25 +23,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/ivFriendPic"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:contentDescription="Content Description"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_user_solid"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvFriendName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="24dp"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,17 +41,28 @@
                 android:id="@+id/tvFriendUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="15dp"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.505"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvFriendName"
-                app:layout_constraintVertical_bias="0.0"
                 tools:text="username" />
 
+            <ImageView
+                android:id="@+id/ivFriendPic"
+                android:layout_width="100dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Content Description"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_user_solid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
-import com.example.tripplanner.models.Attraction;
-import com.example.tripplanner.models.Restaurant;
 import com.example.tripplanner.models.User;
 
 import java.util.List;
@@ -72,7 +70,7 @@ public class FriendRecAdapter extends RecyclerView.Adapter<FriendRecAdapter.View
             super(itemView);
             ivFriendPic = itemView.findViewById(R.id.ivFriendPic);
             tvFriendName = itemView.findViewById(R.id.tvFriendName);
-            tvFriendUserName = itemView.findViewById(R.id.tvFriendUserName);
+            tvFriendUserName = itemView.findViewById(R.id.tvFriendName);
         }
 
         public void bind(User friendRec) {

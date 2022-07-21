@@ -82,10 +82,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivAtrPicture = itemView.findViewById(R.id.ivFriendPic);
-            tvName = itemView.findViewById(R.id.tvFriendName);
+            ivAtrPicture = itemView.findViewById(R.id.ivAtrPicture);
+            tvName = itemView.findViewById(R.id.tvName);
             tvRating = itemView.findViewById(R.id.tvRating);
-            tvAddress = itemView.findViewById(R.id.tvFriendUserName);
+            tvAddress = itemView.findViewById(R.id.tvAddress);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
             rbResRating = itemView.findViewById(R.id.rbResRating);

@@ -179,7 +179,7 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
         cSaveProgressIndicator.show();
         Trip tripToSave = new Trip(tripName, Double.toString(userLatitude), Double.toString(userLatitude),
                 radius, Double.parseDouble(totalTime), Double.parseDouble(avgStayTime),
-                actualTotalTime, atrRoute);
+                actualTotalTime, atrRoute, userID);
         firestore.collection("testUsers")
                 .document(userID).collection("trips").document(tripName)
                 .set(tripToSave).addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -10,6 +10,7 @@ public class Trip {
     private double totalTripTime;
     private double avgStayTime;
     private double actualTotalTime;
+    private String authorId;
     // Attractions are ordered correctly
     private List<Attraction> attractionsInTrip;
 
@@ -17,7 +18,7 @@ public class Trip {
 
     public Trip(String tripName, String userLatitude, String userLongitude,
                 String radius, double totalTripTime, double avgStayTime, double actualTotalTime,
-                List<Attraction> attractionsInTrip) {
+                List<Attraction> attractionsInTrip, String authorId) {
         this.tripName = tripName;
         this.userLatitude = userLatitude;
         this.userLongitude = userLongitude;
@@ -26,6 +27,7 @@ public class Trip {
         this.avgStayTime = avgStayTime;
         this.attractionsInTrip = attractionsInTrip;
         this.actualTotalTime = actualTotalTime;
+        this.authorId = authorId;
     }
 
     public String getTripName() {
@@ -58,5 +60,9 @@ public class Trip {
 
     public List<Attraction> getAttractionsInTrip() {
         return attractionsInTrip;
+    }
+
+    public String getAuthorId() {
+        return authorId;
     }
 }

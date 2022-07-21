@@ -29,7 +29,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/ivFriendPic"
+                android:id="@+id/ivAtrPicture"
                 android:layout_width="394dp"
                 android:layout_height="164dp"
                 android:contentDescription="Content Description"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvFriendName"
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.036"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivFriendPic"
+                app:layout_constraintTop_toBottomOf="@+id/ivAtrPicture"
                 tools:text="Name" />
 
             <RatingBar
@@ -64,10 +64,10 @@
                 android:stepSize="0.5"
                 app:layout_constraintStart_toStartOf="parent"
 
-                app:layout_constraintTop_toBottomOf="@+id/tvFriendName" />
+                app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
             <TextView
-                android:id="@+id/tvFriendUserName"
+                android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
