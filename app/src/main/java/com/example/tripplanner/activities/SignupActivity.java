@@ -35,7 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
@@ -75,24 +75,30 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         etUsername = findViewById(R.id.etUpdateUsername);
         etPassword = findViewById(R.id.etPassword);
         btnSignup = findViewById(R.id.btnSignup);
-        btnSignup.setOnClickListener(this);
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "signup clicked");
+                registerUser();
+            }
+        });
         tvUploadPic = findViewById(R.id.tvUploadPic);
         progressBar = findViewById(R.id.progressbar_cp);
 
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnUpdateInfo:
-                Log.i(TAG, "signup clicked");
-                registerUser();
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.btnUpdateInfo:
+//                Log.i(TAG, "signup clicked");
+//                registerUser();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     private void registerUser() {
         String email = etEmail.getText().toString().trim();

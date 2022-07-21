@@ -12,4 +12,20 @@ public class User {
         this.password = password;
         this.picUrl = picUrl;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
 }

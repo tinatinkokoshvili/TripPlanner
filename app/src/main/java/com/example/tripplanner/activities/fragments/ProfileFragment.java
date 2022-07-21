@@ -24,13 +24,16 @@ import com.example.tripplanner.activities.LoginActivity;
 import com.example.tripplanner.activities.ProfileActivity;
 import com.example.tripplanner.activities.TripInfoActivity;
 import com.example.tripplanner.activities.UpdateActivity;
+import com.example.tripplanner.adapters.FriendRecAdapter;
 import com.example.tripplanner.adapters.PastTripAdapter;
+import com.example.tripplanner.adapters.RestaurantAdapter;
 import com.example.tripplanner.algorithms.Corpus;
 import com.example.tripplanner.algorithms.Document;
 import com.example.tripplanner.algorithms.FriendRecommendationsHelper;
 import com.example.tripplanner.algorithms.VectorSpaceModel;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
+import com.example.tripplanner.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -67,11 +70,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton fbtnUpdateProfile;
     private Button btnLogout;
 
-//    private List<Trip> pastTripList;
-//    private RecyclerView rvPastTrips;
-//    private PastTripAdapter pastTripAdapter;
+    private RecyclerView rvFriendRecs;
+    private FriendRecAdapter friendRecAdapter;
+    private List<User> recFriendList;
 
-    private static String USER_COLLECTION_NAME = "tripUsers";
+    private static String USER_COLLECTION_NAME = "testUsers";
     private static String TRIP_COLLECTION_NAME = "trips";
     HashMap<String, Document> userIdToDocumentMap;
 
@@ -106,12 +109,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
 
-//        rvPastTrips = (RecyclerView) view.findViewById(R.id.rvPastTrips);
-//        pastTripList = new LinkedList<>();
-//        pastTripAdapter = new PastTripAdapter(getContext(), pastTripList);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        rvPastTrips.setLayoutManager(linearLayoutManager);
-//        rvPastTrips.setAdapter(pastTripAdapter);
+        rvFriendRecs = (RecyclerView) view.findViewById(R.id.rvFriendRecs);
+        recFriendList = new LinkedList<>();
+        friendRecAdapter = new FriendRecAdapter(getContext(), recFriendList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvFriendRecs.setLayoutManager(linearLayoutManager);
+        rvFriendRecs.setAdapter(friendRecAdapter);
 
         getDataFromDb();
     }
@@ -137,33 +140,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(), "Profile does not exist.", Toast.LENGTH_SHORT).show();
                     }
                 });
-        // Populate the friend recommendations recycler view
 
         userIdToDocumentMap = new HashMap<>();
         Log.i(TAG, "About to call createTripListAllUsers");
+        // Creating friend recommendations
+
         createTripListAllUsers();
 
-
-        // Populate the past trip recycler view
-//        pastTripAdapter.clear();
-//        firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful() && task.getResult() != null) {
-//                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-//                                //List<Object> objectList = (List<Object>) queryDocumentSnapshot.get("attractionsInTrip");
-//                                Trip trip = queryDocumentSnapshot.toObject(Trip.class);
-//                                Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
-//
-//                                Log.i(TAG, "atr " + trip.getAttractionsInTrip().get(2).getPlaceId());
-//                                pastTripAdapter.add(trip);
-//                            }
-//                        } else {
-//                            Log.e(TAG, "Error getting trips: ", task.getException());
-//                        }
-//                    }
-//                });
     }
 
     @Override
@@ -175,10 +158,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.btnLogout) {
             onLogout();
         }
-//        if (v.getId() == R.id.btnNewTrip) {
-//            Intent tripInfoIntent = new Intent(getContext(), TripInfoActivity.class);
-//            startActivity(tripInfoIntent);
-//        }
     }
 
     private void onLogout() {
@@ -257,17 +236,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                                 Trip currTrip = queryDocumentSnapshot.toObject(Trip.class);
                                                 trips.add(currTrip);
                                             }
-                                            // Add the user to the map if they have at least 1 trips
-                                            userIdToTripsMap.put(curUserId, trips);
+                                            if (!(curUserId.equals(userID) && trips.size() == 0)) {
+                                                // Add the user to the map if they have at least 1 trips
+                                                userIdToTripsMap.put(curUserId, trips);
 
-                                            Log.i(TAG, "task size " + task.getResult().size() + " userIdToTripsMap.size() " + userIdToTripsMap.size());
-                                            if (task.getResult().size() == userIdToTripsMap.size()) {
-                                                Log.i(TAG, "fetching all users trip are done. size: " + userIdToTripsMap.size());
-                                                for (Map.Entry entry : userIdToTripsMap.entrySet()) {
-                                                    List<Trip> list = (ArrayList) entry.getValue();
-                                                    Log.i(TAG, "userID " + entry.getKey() + " tripsize " + list.size());
+                                                Log.i(TAG, "task size " + task.getResult().size() + " userIdToTripsMap.size() " + userIdToTripsMap.size());
+                                                if (task.getResult().size() == userIdToTripsMap.size()) {
+                                                    Log.i(TAG, "fetching all users trip are done. size: " + userIdToTripsMap.size());
+                                                    for (Map.Entry entry : userIdToTripsMap.entrySet()) {
+                                                        List<Trip> list = (ArrayList) entry.getValue();
+                                                        Log.i(TAG, "userID " + entry.getKey() + " tripsize " + list.size());
+                                                    }
+                                                    getRankedUserId(userIdToTripsMap);
                                                 }
-                                                getRankedUserId(userIdToTripsMap);
                                             }
                                         } else {
                                             Log.e(TAG, "Error getting trips: ", tripTask.getException());
@@ -316,6 +297,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void populateFriendRecRecyclerView(ArrayList<String> friendRecs) {
-        return;
+        // Populate the past trip recycler view
+        int numRecs = Math.min(10, friendRecs.size());
+        // Starting from 1 to avoid the display of currently authenticated user as
+        // this user will always be the first in the ranked friend rec list
+        for (int i = 1; i < numRecs; i++) {
+            String curUserId = friendRecs.get(i);
+            firestore.collection("testUsers").document(curUserId)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful() && task.getResult() != null) {
+                                User friendRec = task.getResult().toObject(User.class);
+                                friendRecAdapter.add(friendRec);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Profile does not exist.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+
     }
 }
