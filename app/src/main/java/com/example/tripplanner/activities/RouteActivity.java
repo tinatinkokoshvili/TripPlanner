@@ -309,9 +309,9 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).getLat()),
                     Double.parseDouble(atrRoute.get(i + 1).getLon()))).title(atrRoute.get(i + 1).getName());
             // Draw the polyline on the map between origin and destination
-            Toast.makeText(RouteActivity.this,
-                    "Drawing line for origin" + origin + " detsination " + destination,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(RouteActivity.this,
+//                    "Drawing line for origin" + origin + " detsination " + destination,
+//                    Toast.LENGTH_SHORT).show();
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
         }

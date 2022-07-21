@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
-import com.example.tripplanner.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,13 +13,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Attr;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 public class FriendRecommendationsHelper {
     private static final String TAG = "FriendRecommendationsHelper";
@@ -29,7 +28,7 @@ public class FriendRecommendationsHelper {
     private static String userID;
     private static String USER_COLLECTION_NAME;
     private static String TRIP_COLLECTION_NAME;
-    private int userCounter;
+    HashMap<String, Document> userIdToDocumentMap;
 
     public FriendRecommendationsHelper(FirebaseAuth fbAuth, FirebaseFirestore firestore, String userID,
         String userCollectionName, String tripCollectionName) {
@@ -38,8 +37,52 @@ public class FriendRecommendationsHelper {
         this.userID = userID;
         USER_COLLECTION_NAME = userCollectionName;
         TRIP_COLLECTION_NAME = tripCollectionName;
-        userCounter = 0;
+        userIdToDocumentMap = new HashMap<>();
         createTripListAllUsers();
+    }
+
+    private ArrayList<String> createRankedSimilarUsers() {
+        ArrayList<Document> documents = new ArrayList<Document>();
+        TreeMap<String, Double> cosineSimilarityToFriendMap = new TreeMap<>();
+
+        for (Map.Entry entry : userIdToDocumentMap.entrySet()) {
+                documents.add((Document) entry.getValue());
+        }
+        Corpus corpus = new Corpus(documents);
+        VectorSpaceModel vectorSpace = new VectorSpaceModel(corpus);
+        Document userDocument = userIdToDocumentMap.get(userID);
+
+        for (int i = 0; i < documents.size(); i++) {
+            Document friendDocument = documents.get(i);
+            double cosSimilarity = vectorSpace.cosineSimilarity(friendDocument, userDocument);
+            cosineSimilarityToFriendMap.put(friendDocument.getUserId(), cosSimilarity);
+        }
+        PriorityQueue<String> userPriorityQueue = new PriorityQueue<String>(userIdToDocumentMap.size(), new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                //if (cosineSimilarityToFriendMap.containsKey(o1) && cosineSimilarityToFriendMap.containsKey(o2)) {
+                if (cosineSimilarityToFriendMap.get(o1) < cosineSimilarityToFriendMap.get(o2)) {
+                    return 1;
+                } else if (cosineSimilarityToFriendMap.get(o1) > cosineSimilarityToFriendMap.get(o2)) {
+                    return -1;
+                }
+                // }
+                return 0;
+            }
+        });
+        for (Map.Entry entry : userIdToDocumentMap.entrySet()) {
+                userPriorityQueue.add((String) entry.getKey());
+        }
+        ArrayList<String> rankedUserIds = new ArrayList<>();
+        while (!userPriorityQueue.isEmpty()) {
+            rankedUserIds.add(userPriorityQueue.poll());
+        }
+        // Print for debugging
+        for (int i = 0; i < rankedUserIds.size(); i++) {
+            Log.i(TAG, rankedUserIds.get(i) + " cos sim " + cosineSimilarityToFriendMap.get(rankedUserIds.get(i)));
+        }
+
+        return rankedUserIds;
     }
 
     private HashMap<String, List<Trip>> createTripListAllUsers() {
@@ -73,9 +116,8 @@ public class FriendRecommendationsHelper {
                                                 List<Trip> list = (ArrayList) entry.getValue();
                                                 Log.i(TAG, "userID " + entry.getKey() + " tripsize " + list.size());
                                             }
-                                            createDocumentsForAllUsers(userIdToTripsMap);
+                                            getRankedUserId(userIdToTripsMap);
                                         }
-
                                     } else {
                                         Log.e(TAG, "Error getting trips: ", tripTask.getException());
                                     }
@@ -87,12 +129,10 @@ public class FriendRecommendationsHelper {
                 }
             }
         });
-
         return userIdToTripsMap;
     }
 
-    private HashMap<String, Document> createDocumentsForAllUsers(HashMap<String, List<Trip>> map) {
-        HashMap<String, Document> userIdToDocumentMap= new HashMap<>();
+    private ArrayList<String> getRankedUserId(HashMap<String, List<Trip>> map) {
         HashMap<String, List<Trip>> userTripMap = map;
         for (Map.Entry entry : userTripMap.entrySet()) {
             String curUserId = (String) entry.getKey();
@@ -101,7 +141,9 @@ public class FriendRecommendationsHelper {
                 String curUserAtrs = "";
                 for (int i = 0; i < curTripList.size(); i++) {
                     ArrayList<Attraction> atrList = (ArrayList<Attraction>) curTripList.get(i).getAttractionsInTrip();
-                    for (int j = 0; j < atrList.size(); j++) {
+                    // Starting from 1 to avoid adding user location each time because it
+                    // does not really change anything
+                    for (int j = 1; j < atrList.size(); j++) {
                         // If we want to recommend based on attractions and not words, then add ","
                         // instead of just space
                         curUserAtrs += atrList.get(j).getName() + " ";
@@ -116,6 +158,8 @@ public class FriendRecommendationsHelper {
             Document doc = (Document) entry.getValue();
             Log.i(TAG, "userID " + entry.getKey() + doc.toString());
         }
-        return userIdToDocumentMap;
+        ArrayList<String> rankedUserList = createRankedSimilarUsers();
+        Log.i(TAG, "rankedUserList size " + rankedUserList.size());
+        return rankedUserList;
     }
 }
