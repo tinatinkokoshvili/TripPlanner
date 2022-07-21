@@ -1,7 +1,6 @@
 package com.example.tripplanner.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
-import com.example.tripplanner.activities.AtrDetailsActivity;
 import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Restaurant;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-
-import org.parceler.Parcels;
-import org.w3c.dom.Attr;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -88,10 +82,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivAtrPicture = itemView.findViewById(R.id.ivAtrPicture);
-            tvName = itemView.findViewById(R.id.tvName);
+            ivAtrPicture = itemView.findViewById(R.id.ivFriendPic);
+            tvName = itemView.findViewById(R.id.tvFriendName);
             tvRating = itemView.findViewById(R.id.tvRating);
-            tvAddress = itemView.findViewById(R.id.tvAddress);
+            tvAddress = itemView.findViewById(R.id.tvFriendUserName);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
             rbResRating = itemView.findViewById(R.id.rbResRating);
