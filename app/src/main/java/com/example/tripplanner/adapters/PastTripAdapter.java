@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,9 @@ import com.example.tripplanner.models.Attraction;
 import com.example.tripplanner.models.Trip;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,13 +88,16 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageButton imBtnArrow;
-        ImageButton imBtnViewRoute;
-        LinearLayout hiddenLayout;
-        CardView cvPastTrip;
-        TextView tvStat;
-        TextView tvTripName;
-        TextView tvTripAuthor;
+        private ImageButton imBtnArrow;
+        private ImageButton imBtnViewRoute;
+        private LinearLayout hiddenLayout;
+        private CardView cvPastTrip;
+        private TextView tvStat;
+        private TextView tvTripName;
+        private TextView tvTripAuthor;
+        private ImageView ivHeart;
+        private ImageView ivFilledHeart;
+        private TextView tvLikes;
 
         private RecyclerView rvTripAttractions;
         private TripAttractionsAdapter tripAttractionsAdapter;
@@ -157,6 +163,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             tvStat = itemView.findViewById(R.id.tvStat);
             tvTripName = itemView.findViewById(R.id.tvTripName);
             tvTripAuthor = itemView.findViewById(R.id.tvTripAuthor);
+            ivHeart = itemView.findViewById(R.id.ivHeart);
+            ivFilledHeart = itemView.findViewById(R.id.ivFilledHeart);
+            tvLikes = itemView.findViewById(R.id.tvLikes);
 
             rvTripAttractions = (RecyclerView) itemView.findViewById(R.id.rvTripAttractions);
             tripAttractionsList = new LinkedList<>();
@@ -179,6 +188,36 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             if (trip.getAuthorId() != null && !trip.getAuthorId().isEmpty()) {
                 fetchAuthorDetails(trip.getAuthorId());
             }
+            Glide.with(context).load(R.drawable.ufi_heart).into(ivHeart);
+            ivFilledHeart.setVisibility(View.GONE);
+            Glide.with(context).load(R.drawable.ufi_heart_active).into(ivFilledHeart);
+            tvLikes.setText(trip.getLikes() + " Likes");
+            ivHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("heart", "Heart Clicked");
+                    ivFilledHeart.setVisibility(View.VISIBLE);
+                    trip.incrementLikes();
+                    saveNewTripLikes(trip);
+                    tvLikes.setText(trip.getLikes() + " Likes");
+                }
+            });
+        }
+
+        private void saveNewTripLikes(Trip trip) {
+            firestore.collection("testUsers")
+                    .document(trip.getAuthorId()).collection("trips").document(trip.getTripName())
+                    .set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.i(TAG, "trip likes successfully updates");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "error when updating trip likes");
+                        }
+                    });
         }
 
         private void fetchAuthorDetails(String author) {
