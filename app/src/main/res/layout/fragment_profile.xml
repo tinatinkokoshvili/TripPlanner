@@ -10,15 +10,14 @@
 
     <Button
         android:id="@+id/btnLogout"
-        android:layout_width="101dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="263dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@android:color/darker_gray"
         android:text="Log Out"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
-        app:layout_constraintStart_toEndOf="@+id/ivProfPagePic"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvFriendRecs" />
 
     <ImageView
         android:id="@+id/ivProfPagePic"
@@ -59,20 +58,24 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbtnUpdateProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/material_dynamic_primary30"
+        android:layout_width="81dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="72dp"
+        android:backgroundTint="#f2f2f2"
+        android:elevation="0dp"
         android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tvProfValFullName"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfPagePic" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFriendRecs"
         android:layout_width="403dp"
         android:layout_height="336dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="92dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="5dp" />
 
