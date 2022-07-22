@@ -75,4 +75,8 @@ public class Trip {
     public void incrementLikes() {
         likes++;
     }
+
+    public void decrementLikes() {
+        likes--;
+    }
 }

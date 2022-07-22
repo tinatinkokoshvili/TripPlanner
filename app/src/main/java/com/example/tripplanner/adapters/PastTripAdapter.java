@@ -195,9 +195,20 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             ivHeart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i("heart", "Heart Clicked");
+                    Log.i(TAG, "Heart Clicked");
                     ivFilledHeart.setVisibility(View.VISIBLE);
                     trip.incrementLikes();
+                    saveNewTripLikes(trip);
+                    tvLikes.setText(trip.getLikes() + " Likes");
+                }
+            });
+            ivFilledHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG, "Filled Heart Clicked");
+                    ivHeart.setVisibility(View.VISIBLE);
+                    ivFilledHeart.setVisibility(View.GONE);
+                    trip.decrementLikes();
                     saveNewTripLikes(trip);
                     tvLikes.setText(trip.getLikes() + " Likes");
                 }
