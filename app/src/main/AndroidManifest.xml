@@ -21,9 +21,6 @@
         android:theme="@style/Theme.TripPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".activities.TripInfoActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.RestaurantsSelectionActivity"
             android:exported="false" />
         <activity
@@ -51,9 +48,6 @@
             android:exported="false" />
         <activity
             android:name=".activities.UpdateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SignupActivity"

@@ -15,7 +15,6 @@ import android.widget.EditText;
 
 import com.example.tripplanner.R;
 import com.example.tripplanner.activities.AttractionsActivity;
-import com.example.tripplanner.activities.TripInfoActivity;
 
 public class ComposeFragment extends Fragment {
     private EditText etTripName;
