@@ -76,7 +76,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         ImageView ivAtrPicture;
         TextView tvName;
         TextView tvAddress;
-        TextView tvDescription;
         TextView tvRating;
         RatingBar rbResRating;
 
@@ -105,7 +104,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             tvName.setText(restaurant.name);
             tvRating.setText(decimalFormat.format(restaurant.googleYelpRating));
             tvAddress.setText(restaurant.address);
-            // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
             float voteAverage = (float) Double.parseDouble(decimalFormat.format(restaurant.googleYelpRating));
             Log.i(TAG, restaurant.name + voteAverage);
@@ -122,20 +120,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                 restaurant.picked = !restaurant.picked;
                 cdAttraction.toggle();
             }
-//            if (position != RecyclerView.NO_POSITION && v.getId() == R.id.btnLearnMore) {
-//                restaurant = restaurantList.get(position);
-//                Log.i("adapter", "Clicked Learn More about " + restaurant.name);
-//                Intent intent = new Intent(context, AtrDetailsActivity.class);
-//                intent.putExtra(Attraction.class.getSimpleName(), Parcels.wrap(restaurant));
-//                context.startActivity(intent);
-//            }
-
-//                if (atr.picked) {
-//                    cdAttraction.setBackgroundColor(Color.BLUE);
-//                } else {
-//                    cdAttraction.setBackgroundColor(Color.WHITE);
-//                }
-            // notifyItemChanged(position);
         }
     }
 

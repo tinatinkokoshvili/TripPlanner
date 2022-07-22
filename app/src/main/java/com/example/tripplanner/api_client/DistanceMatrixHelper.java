@@ -38,7 +38,6 @@ public class DistanceMatrixHelper extends AsyncTask<Object, String, String> {
 
     @Override
     protected String doInBackground(Object... objects) {
-        //mMap = (GoogleMap) objects[0];
         url = (String) objects[0];
         try {
             URL myurl = new URL(url);

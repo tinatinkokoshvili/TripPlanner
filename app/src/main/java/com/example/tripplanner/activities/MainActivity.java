@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        setActionBarIcon();
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity  {
 
     public void setActionBarIcon() {
         ActionBar actionBar = getSupportActionBar();
-        //actionBar.setIcon(R.drawable.nav_logo_whiteout);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);

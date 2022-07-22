@@ -91,8 +91,6 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         routeIntent.putExtra("totalTime", totalTime);
         routeIntent.putExtra("avgStayTime", avgStayTime);
         // Pass the location user looked up so that we can include it in the final route
-//        routeIntent.putExtra("latitude", latitude);
-//        routeIntent.putExtra("longitude", longitude);
         startActivity(routeIntent);
     }
 
@@ -153,8 +151,6 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
             final String attributions = photoMetadata.getAttributions();
             // Create a FetchPhotoRequest.
             final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-//                    .setMaxWidth(500) // Optional.
-//                    .setMaxHeight(300) // Optional.
                     .build();
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();

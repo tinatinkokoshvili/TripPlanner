@@ -40,7 +40,6 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private static final String TAG = "AtrDetailsActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
-    private ImageView ivAtrPhoto;
     private Attraction attraction;
 
     private ArrayList<Attraction> alreadyPickedAtrlist;
@@ -55,7 +54,6 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private Button btnAddRestaurant;
     private HashMap<Restaurant, Attraction> resToAtrMap;
 
-    //int restaurantCounter;
     private String tripName;
     private String radius;
     private String totalTime;
@@ -73,7 +71,6 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         radius = getIntent().getStringExtra("radius");
         totalTime = getIntent().getStringExtra("totalTime");
         avgStayTime = getIntent().getStringExtra("avgStayTime");
-        //restaurantCounter = 0;
         allGoogleRestaurants = new LinkedList<>();
         allYelpRestaurants = new LinkedList<>();
         btnAddRestaurant = findViewById(R.id.btnAddRestaurant);
@@ -96,9 +93,6 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvRestaurants.setLayoutManager(linearLayoutManager);
         rvRestaurants.setAdapter(restaurantsAdapter);
-//        ivAtrPhoto = findViewById(R.id.ivAtrDetailsPhoto);
-//        Log.i(TAG, "Details bitmap " +  attraction.photo);
-//        ivAtrPhoto.setImageBitmap(attraction.photo);
         fetchRestaurants(Double.parseDouble(attraction.getLat()), Double.parseDouble(attraction.getLon()));
     }
 

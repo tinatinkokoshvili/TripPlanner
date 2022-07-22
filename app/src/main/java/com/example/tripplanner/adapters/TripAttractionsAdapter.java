@@ -99,7 +99,6 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
             Places.initialize(context, API_KEY);
             placesClient = Places.createClient(context);
             //API calls to get photo of the place
-            //PlacesClient placesClient = Places.createClient(context);
             final String placeId = atr.getPlaceId();
             Log.i(TAG, "place id " + placeId);
             final List<Place.Field> fields = Collections.singletonList(Place.Field.PHOTO_METADATAS);
@@ -115,8 +114,6 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
                 final String attributions = photoMetadata.getAttributions();
                 // Create a FetchPhotoRequest.
                 final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-//                    .setMaxWidth(500) // Optional.
-//                    .setMaxHeight(300) // Optional.
                         .build();
                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                     Bitmap bitmap = fetchPhotoResponse.getBitmap();

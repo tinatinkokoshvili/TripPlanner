@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText etLoginEmail;
     EditText etLoginPassword;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-
     }
 
     @Override

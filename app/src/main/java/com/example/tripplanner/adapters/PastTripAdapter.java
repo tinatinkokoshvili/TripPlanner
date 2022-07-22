@@ -188,6 +188,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             if (trip.getAuthorId() != null && !trip.getAuthorId().isEmpty()) {
                 fetchAuthorDetails(trip.getAuthorId());
             }
+            // TODO check if the current signed in user is in the list of people who have already liked the trip
             Glide.with(context).load(R.drawable.ufi_heart).into(ivHeart);
             ivFilledHeart.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.ufi_heart_active).into(ivFilledHeart);

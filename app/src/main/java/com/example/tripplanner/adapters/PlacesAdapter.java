@@ -99,7 +99,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             tvName = itemView.findViewById(R.id.tvName);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvAddress = itemView.findViewById(R.id.tvAddress);
-            //tvDescription = itemView.findViewById(R.id.tvDescription);
             btnLearnMore = itemView.findViewById(R.id.btnLearnMore);
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
@@ -120,7 +119,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             tvName.setText(attraction.name);
             tvRating.setText(decimalFormat.format(attraction.rating));
             tvAddress.setText(attraction.formatted_address);
-           // tvDescription.setText(attraction.website);
             cdAttraction.setOnClickListener(this);
             btnLearnMore.setOnClickListener(this);
             float voteAverage = (float) attraction.rating;
@@ -203,13 +201,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
                     }
                 });
             }
-
-//                if (atr.picked) {
-//                    cdAttraction.setBackgroundColor(Color.BLUE);
-//                } else {
-//                    cdAttraction.setBackgroundColor(Color.WHITE);
-//                }
-               // notifyItemChanged(position);
         }
     }
 }

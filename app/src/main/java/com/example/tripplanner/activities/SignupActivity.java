@@ -87,19 +87,6 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.btnUpdateInfo:
-//                Log.i(TAG, "signup clicked");
-//                registerUser();
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-
     private void registerUser() {
         String email = etEmail.getText().toString().trim();
         String fullName = etFullName.getText().toString().trim();

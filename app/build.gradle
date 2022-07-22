@@ -76,6 +76,9 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:${designSupportVersion}"
+
+    // Required -- JUnit 4 framework
+    testImplementation "junit:junit:4.13.2"
 }
 
 apply plugin: 'com.google.gms.google-services'

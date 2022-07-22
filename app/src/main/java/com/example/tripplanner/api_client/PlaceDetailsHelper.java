@@ -91,17 +91,6 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
                 listener.onTaskCompleted(attraction);
             }
 
-            // Find the right one and call
-//            StringBuilder restaurantStringBuilder = new StringBuilder("https://api.yelp.com/v3/businesses/");
-////        restaurantStringBuilder.append("latitude=" + 37.420941);
-////        restaurantStringBuilder.append("&longitude=" + -122.0933529);
-////        restaurantStringBuilder.append("&radius" + 0);
-//            restaurantStringBuilder.append("3MLCZ99s5KcnAIgNpz8gag");
-//            String detailsUrl = restaurantStringBuilder.toString();
-//            Object restaurantDetailsDataTransfer[] = new Object[1];
-//            restaurantDetailsDataTransfer[0] = detailsUrl;
-//            new RestaurantDetailsHelper().execute(restaurantDetailsDataTransfer);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

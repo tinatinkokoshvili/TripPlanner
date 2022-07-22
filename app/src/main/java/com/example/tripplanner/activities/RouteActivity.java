@@ -287,12 +287,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     @Override
     public void onDurationTaskCompleted(int[][] durationMatrix) {
         this.durationMatrix = durationMatrix;
-//        // Add current location to the list of picked attractions
-//        Attraction userLocation = new Attraction();
-//        userLocation.name = "User Location";
-//        userLocation.latitude = Double.toString(userLatitude);
-//        userLocation.longitude = Double.toString(userLongitude);
-//        pickedAtrList.add(userLocation);
         RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList, durationMatrix);
         atrRoute = rtGenerator.getRouteList();
         // Add markers to the map
@@ -309,9 +303,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                     new MarkerOptions().position(new LatLng(Double.parseDouble(atrRoute.get(i + 1).getLat()),
                     Double.parseDouble(atrRoute.get(i + 1).getLon()))).title(atrRoute.get(i + 1).getName());
             // Draw the polyline on the map between origin and destination
-//            Toast.makeText(RouteActivity.this,
-//                    "Drawing line for origin" + origin + " detsination " + destination,
-//                    Toast.LENGTH_SHORT).show();
             new FetchURL(RouteActivity.this)
                     .execute(getUrl(origin.getPosition(), destination.getPosition(), TRAVEL_MODE), TRAVEL_MODE);
         }
@@ -346,7 +337,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
                 actualTotalTime += Double.parseDouble(avgStayTime.toString());
             }
         }
-        Log.i(TAG, "actualTotalTime " + actualTotalTime + " user TotalTime " + totalTime);
         return actualTotalTime > Double.parseDouble(totalTime.toString());
     }
 
@@ -358,18 +348,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     @Override
     public void addNullToYelpList() {
         return;
-    }
-
-    public static byte[] convert(Bitmap bitmap) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-        byte[] array = stream.toByteArray();
-        stream.close();
-        return array;
-    }
-
-    public static Bitmap convert(byte[] array) {
-        return BitmapFactory.decodeByteArray(array,0,array.length);
     }
 
     @SuppressLint("MissingPermission")

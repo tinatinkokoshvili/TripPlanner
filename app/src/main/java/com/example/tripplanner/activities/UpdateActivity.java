@@ -154,10 +154,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e(TAG, "user info signup failed");
             }
         });
-
-       // progressBar.setVisibility(View.VISIBLE);
-        //Map<String, String> profile;
-
     }
 
     public void chooseNewImage(View view) {

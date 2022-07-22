@@ -31,14 +31,11 @@ public class Attraction implements Parcelable {
     public transient String icon_mask_base_uri;
     public transient String international_phone_number;
     public transient String name;
-    //Boolean open_now;
-    //JSONArray weekday_text;
-    //JSONArray photos;
+
     public transient String placeId;
     public transient int price_level;
     public transient int rating;
-    //JSONArray reviews;
-   // JSONArray types;
+
     public transient String url;
     public transient int user_ratings_total;
     public transient String vicinity;
@@ -149,20 +146,12 @@ public class Attraction implements Parcelable {
             attraction.international_phone_number = resultObject.getString(INTERNATIONAL_PHONE_NUMBER);
         if (resultObject.has(NAME))
             attraction.name = resultObject.getString(NAME);
-//        if (resultObject.getJSONObject("opening_hours").has("open_now"))
-//            attraction.open_now = resultObject.getJSONObject("opening_hours").getBoolean("open_now");
-//        if (resultObject.getJSONObject("opening_hours").has("weekday_text"))
-//            attraction.weekday_text = resultObject.getJSONObject("opening_hours").getJSONArray("weekday_text");
-//        if (resultObject.getJSONObject("opening_hours").has("weekday_text"))
-//            attraction.photos = resultObject.getJSONArray("photos");
         if (resultObject.has(PLACE_ID))
             attraction.placeId = resultObject.getString(PLACE_ID);
         if (resultObject.has(PRICE_LEVEL))
             attraction.price_level = resultObject.getInt(PRICE_LEVEL);
         if (resultObject.has(RATING))
             attraction.rating = resultObject.getInt(RATING);
-//        if (resultObject.has("reviews"))
-//            attraction.reviews = resultObject.getJSONArray("reviews");
         if (resultObject.has("types"))
             for (int i = 0; i < resultObject.getJSONArray("types").length(); i++) {
                 if (resultObject.getJSONArray("types").get(i).equals("restaurant")) {
@@ -419,11 +408,6 @@ public class Attraction implements Parcelable {
         dest.writeString(vicinity);
         dest.writeString(website);
         dest.writeBoolean(picked);
-//        try {
-//            dest.writeByteArray(convert(photo));
-//        } catch (IOException e) {
-//            Log.e(TAG, "photo bitmap could not be put into Parcelable");
-//        }
     }
 
     public Attraction(Parcel in) {
@@ -444,21 +428,6 @@ public class Attraction implements Parcelable {
         vicinity = in.readString();
         website = in.readString();
         picked = in.readBoolean();
-        //byte[] photoBytes = new byte[in.readInt()];
-        //in.readByteArray(photoBytes);
-    }
-
-    public static byte[] convert(Bitmap bitmap) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-        byte[] array = stream.toByteArray();
-        stream.close();
-        return array;
-
-
-    }
-    public static Bitmap convert(byte[] array) {
-        return BitmapFactory.decodeByteArray(array,0,array.length);
     }
 
     public static final Parcelable.Creator<Attraction> CREATOR = new Parcelable.Creator<Attraction>()

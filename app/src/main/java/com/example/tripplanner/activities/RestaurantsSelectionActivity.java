@@ -29,10 +29,6 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
     private static final String TAG = "RestaurantsSelectionActivity";
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
-    private Attraction attraction;
-
-    private RecyclerView rvRestaurants;
-    private PlacesAdapter placesAdapter;
 
     private String tripName;
     private String radius;
@@ -48,9 +44,6 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants_selection);
 
-        Log.i(TAG, "RestaurantsSelectionActivity started");
-//        userLatitude = getIntent().getDoubleExtra("latitude", 0);
-//        userLongitude = getIntent().getDoubleExtra("longitude", 0);
         Bundle bundle = getIntent().getExtras();
         alreadyPickedAtrList = bundle.getParcelableArrayList("data");
         userLatitude = Double.parseDouble(alreadyPickedAtrList.get(alreadyPickedAtrList.size() - 1).getLat());
@@ -59,7 +52,6 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
         radius = getIntent().getStringExtra("radius");
         totalTime = getIntent().getStringExtra("totalTime");
         avgStayTime = getIntent().getStringExtra("avgStayTime");
-        //attraction = (Attraction) Parcels.unwrap(getIntent().getExtras().getParcelable(Attraction.class.getSimpleName()));
         fetchRestaurants(userLatitude, userLongitude);
     }
 
@@ -81,13 +73,7 @@ public class RestaurantsSelectionActivity extends AppCompatActivity implements O
 
     @Override
     public void onTaskCompleted(Attraction restaurant) {
-        Log.i(TAG, "restaurant fetched " + restaurant.name);
-//        try {
-//            Attraction atrWithPhoto = getPhotoBitmap(restaurant);
-//            //placesAdapter.add(restaurant);
-//        } catch (Exception e) {
-//            Log.e(TAG, "Json exception", e);
-//        }
+        return;
     }
 
     @Override

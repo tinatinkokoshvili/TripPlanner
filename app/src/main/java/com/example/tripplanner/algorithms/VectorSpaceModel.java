@@ -31,7 +31,7 @@ public class VectorSpaceModel {
     }
 
     private void createTfIdfWeights() {
-        Log.i(TAG, "Creating tf-idf vectors");
+//        Log.i(TAG, "Creating tf-idf vectors");
         Set<String> terms = corpus.getInvertedIndex().keySet();
 
         for (Document document : corpus.getDocuments()) {

@@ -37,7 +37,6 @@ public class RouteGenerator {
         atrIndexRoute = new LinkedList<>();
         numNodes = pickedAtrList.size();
         Log.i(TAG, "PickedAtrList size " + pickedAtrList.size());
-        //graph = new Graph(numNodes);
     }
 
     public static List<Attraction> getRouteList() {
@@ -99,35 +98,25 @@ public class RouteGenerator {
     public static int[] primMST(int[][] graph) {
         int parent[] = new int[numNodes];
         // Key is nodekey and value is node
-        //TreeMap<Integer, Integer> keysMap = new TreeMap();
         int key[] = new int[numNodes];
         // To represent set of vertices already included in MST
         Boolean includedInMST[] = new Boolean[numNodes];
         for (int i = 0; i < numNodes; i++) {
-            //keysMap.put(Integer.MAX_VALUE, i);
             key[i] = Integer.MAX_VALUE;
             includedInMST[i] = false;
-            //Log.i(TAG, "keysMap size after puttin " + i + " size: " + keysMap.size());
         }
         // Make userLocation's key 0, so that it is picked first, make userLocation root
-        //keysMap.replace(0, numNodes - 1);
         key[numNodes - 1] = 0;
         parent[numNodes - 1] = -1;
         for (int count = 0; count < numNodes - 1; count++) {
             // Pick thd minimum key vertex from the set of vertices
             // not yet included in MST
-            //Log.i(TAG, "keysMap size " + keysMap.size());
             int u = minKey(key, includedInMST);
             includedInMST[u] = true;
             // Update key value and parent index of the adjacent
             // (not yet in MST) vertices of the picked vertex.
             for (int v = 0; v < numNodes; v++) {
                 // Update the key only if graph[u][v] is smaller than key[v]
-//                if (graph[u][v] != 0 && !includedInMST[v] && graph[u][v] < key[v]) {
-//                    parent[v] = u;
-//                    keysMap.replace(graph[u][v], v);
-//                    key[v] = graph[u][v];
-//                }
                 if (graph[u][v] != 0 && includedInMST[v] == false && graph[u][v] < key[v]) {
                     parent[v] = u;
                     key[v] = graph[u][v];
@@ -135,7 +124,6 @@ public class RouteGenerator {
             }
         }
 
-        //printMST(parent, graph);
         return parent;
     }
 
