@@ -111,7 +111,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         startActivity(routeRegenerateActivity);
     }
 
-    void fetchRestaurants(double latitude, double longitude) {
+    private void fetchRestaurants(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
         // radius for restaurants are much less because we want restaurants close to attraction
