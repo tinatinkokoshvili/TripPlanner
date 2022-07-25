@@ -87,7 +87,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         notifyItemInserted(tripList.size() - 1);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageButton imBtnArrow;
         private ImageButton imBtnViewRoute;
         private LinearLayout hiddenLayout;
@@ -240,9 +240,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                             if (task.isSuccessful() && task.getResult() != null) {
                                 String fullName_result = task.getResult().getString("fullName");
                                 String username_result = task.getResult().getString("username");
-                                String picUrl_result = task.getResult().getString("picUrl");
 
-                                //Glide.with(getContext()).load(picUrl_result).into(ivProfPagePic);
                                 tvTripAuthor.setText(fullName_result + " • @" + username_result);
 
                             }
@@ -253,11 +251,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                             Toast.makeText(context, "Profile does not exist.", Toast.LENGTH_SHORT).show();
                         }
                     });
-        }
-
-        @Override
-        public void onClick(View v) {
-            return;
         }
     }
 }

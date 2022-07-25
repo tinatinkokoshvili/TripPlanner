@@ -26,14 +26,10 @@ public class PlaceDetailsHelper extends AsyncTask<Object, String, String> {
     private BufferedReader bufferedReader;
     private StringBuilder stringBuilder;
     private String data;
-    private String placePhotoBaseUrl = "https://maps.googleapis.com/maps/api/place/photo?";
-    private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private int totalNumOfAtr;
 
-    private static final String reqBaseBusiness = "https://api.yelp.com/v3/businesses/search?";
     private static final String yelpMatchBase = "https://api.yelp.com/v3/businesses/matches?";
-    private static final String YELP_API_KEY = "PMULr-WmLQYIkh0t9kjvz9c2JPIyTkGdEg6Z7j85MeaLY0th1UOzFg_v_w4T914K_cQHjP4gOIoo2inrSi9JlqSW-Rq9QGyPNXkR-YZyTfMjD4eUkJsO_mcjvo_MYnYx";
-
+    
     public PlaceDetailsHelper(OnTaskCompleted listener, int totalNumOfAtr){
         this.listener=listener;
         this.totalNumOfAtr = totalNumOfAtr;

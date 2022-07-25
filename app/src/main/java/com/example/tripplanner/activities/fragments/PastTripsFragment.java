@@ -71,7 +71,6 @@ public class PastTripsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                //List<Object> objectList = (List<Object>) queryDocumentSnapshot.get("attractionsInTrip");
                                 Trip trip = queryDocumentSnapshot.toObject(Trip.class);
                                 Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
 

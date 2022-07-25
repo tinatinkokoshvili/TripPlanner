@@ -139,7 +139,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         userIdToDocumentMap = new HashMap<>();
         Log.i(TAG, "About to call createTripListAllUsers");
         // Creating friend recommendations
-
         generateFriendRecommendations();
 
     }
@@ -183,13 +182,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         PriorityQueue<String> userPriorityQueue = new PriorityQueue<String>(userIdToDocumentMap.size(), new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                //if (cosineSimilarityToFriendMap.containsKey(o1) && cosineSimilarityToFriendMap.containsKey(o2)) {
                 if (cosineSimilarityToFriendMap.get(o1) < cosineSimilarityToFriendMap.get(o2)) {
                     return 1;
                 } else if (cosineSimilarityToFriendMap.get(o1) > cosineSimilarityToFriendMap.get(o2)) {
                     return -1;
                 }
-                // }
                 return 0;
             }
         });

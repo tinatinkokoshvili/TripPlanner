@@ -21,7 +21,6 @@ import java.net.URL;
 public class RestaurantDetailsHelper extends AsyncTask<Object, String, String> {
     private static final String TAG = "RestaurantDetailsHelper";
     private static final String YELP_API_KEY = "PMULr-WmLQYIkh0t9kjvz9c2JPIyTkGdEg6Z7j85MeaLY0th1UOzFg_v_w4T914K_cQHjP4gOIoo2inrSi9JlqSW-Rq9QGyPNXkR-YZyTfMjD4eUkJsO_mcjvo_MYnYx";
-    private static final String businessReviewsBase = "https://api.yelp.com/v3/businesses/";
     private OnTaskCompleted listener;
     private String url;
     private InputStream is;

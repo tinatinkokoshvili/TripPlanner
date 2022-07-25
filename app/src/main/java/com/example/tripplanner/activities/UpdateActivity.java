@@ -85,7 +85,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
                             String username_result = task.getResult().getString("username");
                             String picUrl_result = task.getResult().getString("picUrl");
 
-                            //Glide.with(UpdateActivity.this).load(picUrl_result).into(ivProfPagePic);
                             etUpdateFullName.setText(fullName_result);
                             etUpdateUsername.setText(username_result);
                             newFullName = fullName_result;
@@ -144,7 +143,6 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onSuccess(Void unused) {
                 Log.i(TAG, "user info signup successful");
-                //progressBar.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
                 startActivity(intent);
             }

@@ -31,7 +31,6 @@ public class VectorSpaceModel {
     }
 
     private void createTfIdfWeights() {
-//        Log.i(TAG, "Creating tf-idf vectors");
         Set<String> terms = corpus.getInvertedIndex().keySet();
 
         for (Document document : corpus.getDocuments()) {
@@ -81,8 +80,6 @@ public class VectorSpaceModel {
      * Ranges from 0 (not similar) to 1 (very similar).
      */
     public double cosineSimilarity(Document d1, Document d2) {
-//		Log.i(TAG, "dot product: " + getDotProduct(d1, d2) +
-//				"magnitude of d1:" + getMagnitude(d1) + " mag of d2: " + getMagnitude(d2));
         return getDotProduct(d1, d2) / (getMagnitude(d1) * getMagnitude(d2));
     }
 }

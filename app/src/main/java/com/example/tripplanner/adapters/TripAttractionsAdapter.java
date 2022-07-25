@@ -77,7 +77,7 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
         notifyItemInserted(attractionsList.size() - 1);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivTripAtrPic;
         TextView tvTripAtrName;
 
@@ -135,12 +135,6 @@ public class TripAttractionsAdapter extends RecyclerView.Adapter<TripAttractions
                 });
             });
             return atr;
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-
         }
     }
 

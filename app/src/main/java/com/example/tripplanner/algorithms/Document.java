@@ -35,7 +35,6 @@ public class Document implements Comparable<Document> {
         for (int i = 0; i < words.length; i++) {
             String filteredWord = words[i].replaceAll("[^A-Za-z0-9]", "").toLowerCase();
             words[i] = filteredWord;
-//            Log.i(TAG, "filteredword " + filteredWord);
             if (!(filteredWord.equalsIgnoreCase(""))) {
                 if (termFrequency.containsKey(filteredWord)) {
                     int oldCount = termFrequency.get(filteredWord);
@@ -71,11 +70,6 @@ public class Document implements Comparable<Document> {
     public String toString() {
         return combinedAtrsDocument;
     }
-
-//    @Override
-//    public int compareTo(Document o) {
-//        return 0;
-//    }
 
     @Override
     public int compareTo(Document other) {

@@ -62,6 +62,5 @@ public class RestaurantReviewsHelper extends AsyncTask<Object, String, String> {
         super.onPostExecute(s);
 
         Log.i(TAG, "Restaurant Reviews fetched" + s);
-        // TODO parse JSON to add reviews to the
     }
 }

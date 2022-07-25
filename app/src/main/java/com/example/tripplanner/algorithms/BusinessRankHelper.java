@@ -36,7 +36,6 @@ public class BusinessRankHelper {
     }
 
     public static PriorityQueue<Restaurant> sortWithNewRating() {
-        //List<Restaurant> restaurantsWithAverageRating = new LinkedList<>();
         PriorityQueue<Restaurant> priorityQueue = new PriorityQueue<>(new Comparator<Restaurant>() {
             @Override
             public int compare(Restaurant o1, Restaurant o2) {

@@ -61,7 +61,7 @@ public class FriendRecAdapter extends RecyclerView.Adapter<FriendRecAdapter.View
         notifyItemInserted(recFriendList.size() - 1);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivFriendPic;
         TextView tvFriendName;
         TextView tvFriendUserName;
@@ -79,12 +79,6 @@ public class FriendRecAdapter extends RecyclerView.Adapter<FriendRecAdapter.View
             }
             tvFriendName.setText(friendRec.getFullName());
             tvFriendUserName.setText("@" + friendRec.getUsername());
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-
         }
     }
 }
