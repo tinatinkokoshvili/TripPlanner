@@ -86,8 +86,6 @@ public class RestaurantMatchHelper extends AsyncTask<Object, String, String> {
                 Object restaurantDetailsDataTransfer[] = new Object[1];
                 restaurantDetailsDataTransfer[0] = detailsUrl;
                 new RestaurantDetailsHelper(attraction, listener, totalNumOfRestaurants).execute(restaurantDetailsDataTransfer);
-                // Call Yelp Reviews API to get the reviews
-                //TODO
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -140,7 +140,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Log.i(TAG, "About to call createTripListAllUsers");
         // Creating friend recommendations
 
-        createTripListAllUsers();
+        generateFriendRecommendations();
 
     }
 
@@ -208,7 +208,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return rankedUserIds;
     }
 
-    private HashMap<String, List<Trip>> createTripListAllUsers() {
+    private HashMap<String, List<Trip>> generateFriendRecommendations() {
         Log.i(TAG, "Started createTripListAllUsers");
         HashMap<String, List<Trip>> userIdToTripsMap = new HashMap<>();
 
@@ -242,7 +242,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                                         List<Trip> list = (ArrayList) entry.getValue();
                                                         Log.i(TAG, "userID " + entry.getKey() + " tripsize " + list.size());
                                                     }
-                                                    getRankedUserId(userIdToTripsMap);
+                                                    rankAndDisplay(userIdToTripsMap);
                                                 }
                                             }
                                         } else {
@@ -259,7 +259,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return userIdToTripsMap;
     }
 
-    private ArrayList<String> getRankedUserId(HashMap<String, List<Trip>> map) {
+    private ArrayList<String> rankAndDisplay(HashMap<String, List<Trip>> map) {
         HashMap<String, List<Trip>> userTripMap = map;
         for (Map.Entry entry : userTripMap.entrySet()) {
             String curUserId = (String) entry.getKey();
