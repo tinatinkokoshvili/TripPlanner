@@ -21,7 +21,6 @@ public class RouteGenerator {
     private static LinkedList<Integer> atrIndexRouteWithDuplicates;
     private static LinkedList<Integer> atrIndexRoute;
     private static int numNodes;
-    //static Graph graph;
 
     public RouteGenerator(int numNodes) {
         atrRoute = new LinkedList<>();
