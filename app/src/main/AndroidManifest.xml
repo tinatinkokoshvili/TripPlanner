@@ -41,9 +41,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".PermissionActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.AttractionsActivity"
             android:exported="false" />
         <activity
