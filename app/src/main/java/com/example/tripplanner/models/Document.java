@@ -1,5 +1,4 @@
-package com.example.tripplanner.algorithms;
-import android.util.Log;
+package com.example.tripplanner.models;
 
 import java.util.HashMap;
 import java.util.Set;

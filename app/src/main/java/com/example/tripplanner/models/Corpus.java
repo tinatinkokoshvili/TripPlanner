@@ -1,4 +1,6 @@
-package com.example.tripplanner.algorithms;
+package com.example.tripplanner.models;
+
+import com.example.tripplanner.models.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;

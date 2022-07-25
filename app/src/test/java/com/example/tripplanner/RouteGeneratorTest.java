@@ -4,14 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.example.tripplanner.algorithms.Corpus;
-import com.example.tripplanner.algorithms.Document;
 import com.example.tripplanner.algorithms.RouteGenerator;
-import com.example.tripplanner.algorithms.VectorSpaceModel;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.TreeMap;
 
 public class RouteGeneratorTest {
     @Test
