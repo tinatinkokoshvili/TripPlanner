@@ -50,8 +50,6 @@ public class SignupActivity extends AppCompatActivity {
     UploadTask uploadTask;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //DocumentReference documentReference;
     ImageView ivPicture;
     ImageView ivUploadPic;
 
