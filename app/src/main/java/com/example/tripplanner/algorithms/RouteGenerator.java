@@ -28,7 +28,10 @@ public class RouteGenerator {
         this.numNodes = numNodes;
     }
 
-    public RouteGenerator(List<Attraction> pickedAtrList, int[][] durationMatrix) {
+    public RouteGenerator(List<Attraction> pickedAtrList, int[][] durationMatrix) throws Exception {
+        if (durationMatrix.length != durationMatrix[0].length) {
+            throw new Exception();
+        }
         this.pickedAtrList = pickedAtrList;
         this.durationMatrix = durationMatrix;
         atrRoute = new LinkedList<>();
@@ -129,7 +132,6 @@ public class RouteGenerator {
     public static LinkedList<Integer> dfsBuildAtrIndexRoute(LinkedList<Integer> atrIndexRouteWithDuplicatesInner,
                                                             int[][] graph, int curNode,
                                                             boolean[] visited, int visitedNum) {
-        Log.i(TAG, curNode + " ");
         if (visitedNum == visited.length) {
             return atrIndexRouteWithDuplicatesInner;
         }

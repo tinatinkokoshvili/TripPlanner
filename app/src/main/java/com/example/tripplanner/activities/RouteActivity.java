@@ -285,10 +285,15 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     }
 
     @Override
-    public void onDurationTaskCompleted(int[][] durationMatrix) {
+    public void onDurationTaskCompleted(int[][] durationMatrix){
         this.durationMatrix = durationMatrix;
-        RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList, durationMatrix);
-        atrRoute = rtGenerator.getRouteList();
+        try {
+            RouteGenerator rtGenerator = new RouteGenerator(pickedAtrList, durationMatrix);
+            atrRoute = rtGenerator.getRouteList();
+        } catch (Exception ex){
+            Log.e(TAG, "Error while creating route");
+        }
+
         // Add markers to the map
         addMarkers();
         // Add routes to the map
