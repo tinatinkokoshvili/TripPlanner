@@ -91,46 +91,7 @@ public class SignupActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-
-        if (email.isEmpty()) {
-            etEmail.setError("Email is required");
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Invalid email format");
-            etEmail.requestFocus();
-            return;
-        }
-
-        if (fullName.isEmpty()) {
-            etFullName.setError("Full name is required");
-            etFullName.requestFocus();
-            return;
-        }
-
-        if (username.isEmpty()) {
-            etUsername.setError("Username is required");
-            etUsername.requestFocus();
-            return;
-        }
-
-        if (password.isEmpty()) {
-            etPassword.setError("Password is required");
-            etPassword.requestFocus();
-            return;
-        }
-
-        if (password.length() < 6) {
-            etPassword.setError("Password must be at least 6 characters");
-            etPassword.requestFocus();
-            return;
-        }
-
-        if (imageUri == null) {
-            Toast.makeText(SignupActivity.this, "Please, upload image!",
-                    Toast.LENGTH_SHORT).show();
+        if (!isValidInput(email, fullName, username, password)) {
             return;
         }
 
@@ -188,6 +149,51 @@ public class SignupActivity extends AppCompatActivity {
                 Log.e(TAG, "picture upload failed");
             }
         });
+    }
+
+    private boolean isValidInput(String email, String fullName, String username, String password) {
+        if (email.isEmpty()) {
+            etEmail.setError("Email is required");
+            etEmail.requestFocus();
+            return false;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Invalid email format");
+            etEmail.requestFocus();
+            return false;
+        }
+
+        if (fullName.isEmpty()) {
+            etFullName.setError("Full name is required");
+            etFullName.requestFocus();
+            return false;
+        }
+
+        if (username.isEmpty()) {
+            etUsername.setError("Username is required");
+            etUsername.requestFocus();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            etPassword.setError("Password is required");
+            etPassword.requestFocus();
+            return false;
+        }
+
+        if (password.length() < 6) {
+            etPassword.setError("Password must be at least 6 characters");
+            etPassword.requestFocus();
+            return false;
+        }
+
+        if (imageUri == null) {
+            Toast.makeText(SignupActivity.this, "Please, upload image!",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     public void chooseImage(View view) {
