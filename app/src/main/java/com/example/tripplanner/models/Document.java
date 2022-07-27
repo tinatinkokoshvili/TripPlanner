@@ -72,6 +72,6 @@ public class Document implements Comparable<Document> {
 
     @Override
     public int compareTo(Document other) {
-        return userId.compareTo(other.userId);
+        return combinedAtrsDocument.compareTo(other.combinedAtrsDocument);
     }
 }

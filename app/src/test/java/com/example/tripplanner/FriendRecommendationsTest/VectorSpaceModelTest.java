@@ -1,4 +1,4 @@
-package com.example.tripplanner;
+package com.example.tripplanner.FriendRecommendationsTest;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import com.example.tripplanner.algorithms.VectorSpaceModel;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class CosineSimilarityTest {
+public class VectorSpaceModelTest {
 
     @Test
     public void twoVerySimilarStrings() {
@@ -92,17 +92,9 @@ public class CosineSimilarityTest {
             Document doc1 = testDocuments.get(0);
             Document doc2 = testDocuments.get(i);
             cosineSimilarity.put(vectorSpace.cosineSimilarity(doc1, doc2), "text" + (i));
-            System.out.println("doc" + i + " val " + vectorSpace.cosineSimilarity(doc1, doc2));
         }
         assertEquals(1.0, cosineSimilarity.lastKey(), 0.001);
         cosineSimilarity.pollLastEntry();
         assertEquals(0.0, cosineSimilarity.lastKey(), 0.001);
     }
-
-
-
-
-
-
-
 }
