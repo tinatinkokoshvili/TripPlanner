@@ -6,12 +6,10 @@ import static org.junit.Assert.*;
 
 import com.example.tripplanner.models.Corpus;
 import com.example.tripplanner.models.Document;
-import com.example.tripplanner.algorithms.VectorSpaceModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class CorpusTest {
 
