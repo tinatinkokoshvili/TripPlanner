@@ -3,14 +3,10 @@ package com.example.tripplanner.algorithms;
 import android.util.Log;
 
 import com.example.tripplanner.models.Attraction;
-import com.example.tripplanner.models.Graph;
 
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 public class RouteGenerator {

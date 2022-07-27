@@ -27,11 +27,9 @@ public class BusinessRankHelper {
         List<Restaurant> rankedRestaurants = new LinkedList<>();
         PriorityQueue<Restaurant> sortedRestaurantsQueue = sortWithNewRating();
         while(!sortedRestaurantsQueue.isEmpty()){
-            Log.i(TAG, "adding restaurant to sorted list " + sortedRestaurantsQueue.peek());
             // Adding at index 0 because queue is ascending order
             rankedRestaurants.add(0, sortedRestaurantsQueue.poll());
         }
-        Log.i(TAG, "list size in sortWithNewRating " + rankedRestaurants.size());
         return rankedRestaurants;
     }
 
@@ -47,11 +45,8 @@ public class BusinessRankHelper {
                 return 0;
             }
         });
-        Log.i(TAG, "yelp size " + yelpRestaurants.size() + " google size " + googleRestaurants.size());
         for (int i = 0; i < yelpRestaurants.size(); i++) {
-            Log.i(TAG, "about to calculate rank of " + yelpRestaurants.get(i));
             if (yelpRestaurants.get(i) != null) {
-                Log.i(TAG, "calculating new rating");
                 double googleRating = googleRestaurants.get(i).rating;
                 double yelpRating = Double.parseDouble(yelpRestaurants.get(i).rating);
                 int googleNumReviews = googleRestaurants.get(i).user_ratings_total;
@@ -63,7 +58,6 @@ public class BusinessRankHelper {
                 priorityQueue.add(yelpRestaurants.get(i));
             }
         }
-        Log.i(TAG, "pq size in sortWithNewRating " + priorityQueue.size());
         return priorityQueue;
     }
 }
