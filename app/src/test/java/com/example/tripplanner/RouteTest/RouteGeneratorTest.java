@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import android.util.Log;
-
 import com.example.tripplanner.algorithms.RouteGenerator;
 import com.example.tripplanner.models.Attraction;
 

@@ -1,10 +1,22 @@
 package com.example.tripplanner.activities.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +55,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -63,6 +79,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView tvProfValFullName;
     private TextView tvProfValUsername;
     private FloatingActionButton fbtnUpdateProfile;
+    private ImageButton ibUpdateProfile;
     private Button btnLogout;
 
     private RecyclerView rvFriendRecs;
@@ -99,8 +116,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ivProfPagePic = view.findViewById(R.id.ivProfPagePic);
         tvProfValFullName = view.findViewById(R.id.tvProfValFullName);
         tvProfValUsername = view.findViewById(R.id.tvProfValUsername);
-        fbtnUpdateProfile = view.findViewById(R.id.fbtnUpdateProfile);
-        fbtnUpdateProfile.setOnClickListener(this);
+        ibUpdateProfile = view.findViewById(R.id.ibUpdateProfile);
+        ibUpdateProfile.setOnClickListener(this);
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
 
@@ -145,7 +162,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.fbtnUpdateProfile) {
+        if (v.getId() == R.id.ibUpdateProfile) {
             Intent updateInfoIntent = new Intent(getContext(), UpdateActivity.class);
             startActivity(updateInfoIntent);
         }

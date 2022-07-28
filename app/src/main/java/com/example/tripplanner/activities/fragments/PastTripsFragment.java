@@ -25,8 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class PastTripsFragment extends Fragment {
     private static final String TAG = "PastTripsFragment";
@@ -65,22 +67,37 @@ public class PastTripsFragment extends Fragment {
 
         // Populate the past trip recycler view
         pastTripAdapter.clear();
-        firestore.collection("testUsers").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                Trip trip = queryDocumentSnapshot.toObject(Trip.class);
-                                Log.i(TAG, "Trip Name" + trip.getTripName() + " user latitude " + trip.getUserLatitude());
+        List<Trip> trips = new ArrayList<>();
 
-                                Log.i(TAG, "atr " + trip.getAttractionsInTrip().get(2).getPlaceId());
-                                pastTripAdapter.add(trip);
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting trips: ", task.getException());
-                        }
+        firestore.collection("testUsers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    for (QueryDocumentSnapshot userDocumentSnapshot : task.getResult()) {
+
+                        String curUserId = userDocumentSnapshot.getId();
+                        Log.i(TAG, curUserId);
+                        firestore.collection("testUsers")
+                                .document(curUserId)
+                                .collection("trips").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> tripTask) {
+                                        if (tripTask.isSuccessful() && tripTask.getResult() != null) {
+                                            for (QueryDocumentSnapshot queryDocumentSnapshot : tripTask.getResult()) {
+                                                Trip currTrip = queryDocumentSnapshot.toObject(Trip.class);
+                                                trips.add(currTrip);
+                                                pastTripAdapter.add(currTrip);
+                                            }
+                                        } else {
+                                            Log.e(TAG, "Error getting trips: ", tripTask.getException());
+                                        }
+                                    }
+                                });
                     }
-                });
+                } else {
+                    Log.e(TAG, "Error while getting userIDs from firebase: ", task.getException());
+                }
+            }
+        });
     }
 }

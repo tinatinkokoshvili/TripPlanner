@@ -1,7 +1,6 @@
 package com.example.tripplanner.models;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -35,10 +34,8 @@ public abstract class DoubleClickListener implements GoogleMap.OnMarkerClickList
         if((SystemClock.elapsedRealtime() - timestampLastClick) < doubleClickQualificationSpanInMillis) {
             markerId = marker.getId();
             markerPosition = marker.getPosition();
-            Log.i(TAG, "marker latitude " +  markerPosition.latitude);
             onDoubleClick();
         }
-        Log.i(TAG, "marker clicked");
         timestampLastClick = SystemClock.elapsedRealtime();
         return false;
     }

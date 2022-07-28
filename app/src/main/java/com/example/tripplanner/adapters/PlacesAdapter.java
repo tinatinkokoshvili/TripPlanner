@@ -70,14 +70,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
         notifyItemInserted(attractionsList.size() - 1);
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
         MaterialCardView cdAttraction;
         ImageView ivAtrPicture;
         TextView tvName;
         TextView tvAddress;
-        TextView tvDescription;
         TextView tvRating;
         MaterialButton btnLearnMore;
         RatingBar rbAtrRating;

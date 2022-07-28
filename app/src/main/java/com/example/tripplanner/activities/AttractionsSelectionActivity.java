@@ -72,8 +72,6 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         rvPlaces.setLayoutManager(linearLayoutManager);
         rvPlaces.setAdapter(placesAdapter);
 
-
-        Log.i(TAG, "latlang " + latitude + " long " + longitude);
         fetchPlaces(latitude, longitude);
     }
 
@@ -106,10 +104,9 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
         Log.i(TAG, "finalizedList Size " + pickedAttractionsList.size());
     }
 
-    void fetchPlaces(double latitude, double longitude) {
+    public void fetchPlaces(double latitude, double longitude) {
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
-        Log.i(TAG, "new radius is " + Integer.parseInt(radius));
         stringBuilder.append("&radius=" + Integer.parseInt(radius));
         stringBuilder.append("&type=" + "tourist_attraction");
         //ranks by prominence by default
@@ -125,7 +122,6 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
 
     @Override
     public void onTaskCompleted(Attraction atr) {
-        Log.i(TAG, "Task completed " + atr.name + " adapter size " + placesAdapter.getItemCount());
         try {
             Attraction atrWithPhoto = getPhotoBitmap(atr);
             placesAdapter.add(atr);
@@ -179,5 +175,4 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
     public void addNullToYelpList() {
         return;
     }
-
 }
