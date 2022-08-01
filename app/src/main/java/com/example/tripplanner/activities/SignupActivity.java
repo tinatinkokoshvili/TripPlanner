@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    private EditText etEmail, etFullName, etUsername, etPassword;
+    private EditText etEmail, etFullName, etSignUpUsername, etSignUpPassword;
     private Button btnSignup;
     private ProgressBar progressBar;
     private TextView tvUploadPic;
@@ -70,8 +71,8 @@ public class SignupActivity extends AppCompatActivity {
         ivUploadPic = findViewById(R.id.ivUploadPic);
         etEmail = findViewById(R.id.etEmail);
         etFullName = findViewById(R.id.etFullName);
-        etUsername = findViewById(R.id.etUpdateUsername);
-        etPassword = findViewById(R.id.etPassword);
+        etSignUpUsername = findViewById(R.id.etSignUpUsername);
+        etSignUpPassword = findViewById(R.id.etSignUpPassword);
         btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +89,8 @@ public class SignupActivity extends AppCompatActivity {
     private void registerUser() {
         String email = etEmail.getText().toString().trim();
         String fullName = etFullName.getText().toString().trim();
-        String username = etUsername.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+        String username = etSignUpUsername.getText().toString().trim();
+        String password = etSignUpPassword.getText().toString().trim();
 
         if (!isValidInput(email, fullName, username, password)) {
             return;
@@ -171,20 +172,20 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if (username.isEmpty()) {
-            etUsername.setError("Username is required");
-            etUsername.requestFocus();
+            etSignUpUsername.setError("Username is required");
+            etSignUpUsername.requestFocus();
             return false;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("Password is required");
-            etPassword.requestFocus();
+            etSignUpPassword.setError("Password is required");
+            etSignUpPassword.requestFocus();
             return false;
         }
 
         if (password.length() < 6) {
-            etPassword.setError("Password must be at least 6 characters");
-            etPassword.requestFocus();
+            etSignUpPassword.setError("Password must be at least 6 characters");
+            etSignUpPassword.requestFocus();
             return false;
         }
 
@@ -199,7 +200,7 @@ public class SignupActivity extends AppCompatActivity {
     public void chooseImage(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(intent, PICK_IMAGE);
     }
 

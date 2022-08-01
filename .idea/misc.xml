@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/ic_lock_solid.xml" value="0.2445" />
         <entry key="app/src/main/res/drawable/ic_pen_solid.xml" value="0.269" />
         <entry key="app/src/main/res/drawable/ic_route_solid.xml" value="0.246" />
+        <entry key="app/src/main/res/drawable/ic_trip_planner_logos_transparent.xml" value="0.2405" />
         <entry key="app/src/main/res/drawable/ic_user_solid.xml" value="0.237" />
         <entry key="app/src/main/res/layout/activity_atr_details.xml" value="0.560715429333673" />
         <entry key="app/src/main/res/layout/activity_attractions.xml" value="0.2859375" />
@@ -33,7 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_compose.xml" value="0.35597826086956524" />
         <entry key="app/src/main/res/layout/fragment_past_trips.xml" value="0.34646739130434784" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.44976023798403536" />
-        <entry key="app/src/main/res/layout/item_attraction.xml" value="0.3542709350585938" />
+        <entry key="app/src/main/res/layout/item_attraction.xml" value="0.5559890747070313" />
         <entry key="app/src/main/res/layout/item_friend_recommendation.xml" value="0.5429716469585032" />
         <entry key="app/src/main/res/layout/item_past_trip.xml" value="0.41829071044921884" />
         <entry key="app/src/main/res/layout/item_restaurant.xml" value="0.49535827636718754" />

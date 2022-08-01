@@ -157,7 +157,7 @@ public class UpdateActivity extends AppCompatActivity implements View.OnClickLis
     public void chooseNewImage(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(intent, PICK_IMAGE);
     }
 

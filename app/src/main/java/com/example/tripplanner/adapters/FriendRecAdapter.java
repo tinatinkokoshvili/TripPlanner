@@ -77,6 +77,7 @@ public class FriendRecAdapter extends RecyclerView.Adapter<FriendRecAdapter.View
             if (friendRec.getPicUrl() != null && !friendRec.getPicUrl().isEmpty()) {
                 Glide.with(context).load(friendRec.getPicUrl()).into(ivFriendPic);
             }
+            Log.i(TAG, "name " + friendRec.getFullName());
             tvFriendName.setText(friendRec.getFullName());
             tvFriendUserName.setText("@" + friendRec.getUsername());
         }
