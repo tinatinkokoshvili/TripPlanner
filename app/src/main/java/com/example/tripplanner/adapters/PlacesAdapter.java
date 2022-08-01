@@ -3,6 +3,8 @@ import com.bumptech.glide.Glide;
 import com.example.tripplanner.R;
 import android.content.Context;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -101,8 +103,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
             cdAttraction = itemView.findViewById(R.id.cdAttraction);
             itemView.setOnClickListener(this);
             rbAtrRating = itemView.findViewById(R.id.rbAtrRating);
-
-
         }
 
         public void bind(Attraction attraction) {
@@ -164,7 +164,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
                     ivDetailsPicture.setImageBitmap(atr.getPhoto());
                 } else {
                     Glide.with(context)
-                            .load(noPhotoAvailableUrl).into(ivAtrPicture);
+                            .load(noPhotoAvailableUrl).into(ivDetailsPicture);
                 }
                 if (atr.getIcon() != null && !atr.getIcon().isEmpty()) {
                     Glide.with(context).load(atr.getIcon()).into(ivDetailsIcon);
@@ -189,7 +189,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.setFocusable(true);
+                popupWindow.setElevation(50);
+                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 // dismiss the popup window when touched
                 popupView.setOnTouchListener(new View.OnTouchListener() {
                     @Override

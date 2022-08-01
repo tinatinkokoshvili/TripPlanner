@@ -124,7 +124,7 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
     public void onTaskCompleted(Attraction atr) {
         try {
             Attraction atrWithPhoto = getPhotoBitmap(atr);
-            placesAdapter.add(atr);
+
         } catch (Exception e) {
             Log.e(TAG, "Json exception", e);
         }
@@ -151,6 +151,7 @@ public class AttractionsSelectionActivity extends AppCompatActivity implements O
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();
                 atr.photo = bitmap;
+                placesAdapter.add(atr);
             }).addOnFailureListener((exception) -> {
                 if (exception instanceof ApiException) {
                     final ApiException apiException = (ApiException) exception;

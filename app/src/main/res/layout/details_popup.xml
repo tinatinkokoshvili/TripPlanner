@@ -6,14 +6,15 @@
     android:layout_height="450dp"
     android:gravity="center"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingRight="10dp"
+    tools:context=".activities.AttractionsSelectionActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
         app:cardBackgroundColor="#e0e0e0"
-        app:cardElevation="30dp">
+        app:cardElevation="50dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

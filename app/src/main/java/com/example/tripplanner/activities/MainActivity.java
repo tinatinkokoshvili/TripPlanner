@@ -35,15 +35,12 @@ public class MainActivity extends AppCompatActivity  {
                 Fragment fragment;
                 switch (menuItem.getItemId()) {
                     case R.id.action_past_trips:
-                        Toast.makeText(MainActivity.this, "Trips", Toast.LENGTH_SHORT).show();
                         fragment = new PastTripsFragment();
                         break;
                     case R.id.action_compose:
-                        Toast.makeText(MainActivity.this, "Compose", Toast.LENGTH_SHORT).show();
                         fragment = new ComposeFragment();
                         break;
                     case R.id.action_profile:
-                        Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_SHORT).show();
                         fragment = new ProfileFragment();
                         break;
                     default:

@@ -97,7 +97,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
     private GoogleMap mMap;
     private Polyline currentPolyline;
     private Button btnOpenInMaps;
-    private Button btnAddRestaurants;
     private Button btnSaveTrip;
     private CircularProgressIndicator cSaveProgressIndicator;
     ProgressDialog progressDialog;
@@ -147,13 +146,6 @@ public class RouteActivity extends AppCompatActivity implements OnTaskCompleted,
             @Override
             public void onClick(View v) {
                     goToMaps();
-            }
-        });
-        btnAddRestaurants = findViewById(R.id.btnAddRestaurants);
-        btnAddRestaurants.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToRestaurantSelection();
             }
         });
         btnSaveTrip = findViewById(R.id.btnSaveTrip);

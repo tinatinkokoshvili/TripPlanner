@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.example.tripplanner.algorithms.BusinessRankHelper;
 import com.example.tripplanner.interfaces.OnTaskCompleted;
 import com.example.tripplanner.R;
@@ -22,14 +23,18 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPhotoRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import org.parceler.Parcels;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +43,9 @@ import java.util.List;
 
 public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompleted {
     private static final String TAG = "AtrDetailsActivity";
+    private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private String placesBaseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    private static final String noPhotoAvailableUrl = "https://archive.org/download/no-photo-available/no-photo-available.png";
     private static final String API_KEY = "AIzaSyCe2kjKuINrKzh9bvmGa-ToZiEvluGRzwU";
     private Attraction attraction;
 
@@ -58,6 +65,18 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     private String radius;
     private String totalTime;
     private String avgStayTime;
+
+    ImageView ivDetailsPicture;
+    ImageView ivDetailsIcon;
+    TextView tvDetailsName;
+    RatingBar rbDetailsRating;
+    TextView tvDetailsRatingNum;
+    TextView tvDetailsAddress;
+    TextView tvDetailsPhoneNumber;
+    TextView tvDetailsUrl;
+    TextView tvDetailsWebsite;
+
+    private CircularProgressIndicator cRestaurantsProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +112,44 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvRestaurants.setLayoutManager(linearLayoutManager);
         rvRestaurants.setAdapter(restaurantsAdapter);
+
+        ivDetailsPicture = findViewById(R.id.ivDetailsPicture);
+        ivDetailsIcon = findViewById(R.id.ivDetailsIcon);
+        tvDetailsName = findViewById(R.id.tvDetailsName);
+
+        rbDetailsRating = findViewById(R.id.rbDetailsRating);
+        tvDetailsRatingNum = findViewById(R.id.tvDetailsRatingNum);
+        tvDetailsAddress = findViewById(R.id.tvDetailsAddress);
+
+        tvDetailsPhoneNumber = findViewById(R.id.tvDetailsPhoneNumber);
+        tvDetailsUrl = findViewById(R.id.tvDetailsUrl);
+        tvDetailsWebsite = findViewById(R.id.tvDetailsWebsite);
+
+        getPhotoBitmap(null, attraction);
+        Log.i(TAG, "det photo " + attraction.photo);
+
+        if (attraction.getIcon() != null && !attraction.getIcon().isEmpty()) {
+            Glide.with(this).load(attraction.getIcon()).into(ivDetailsIcon);
+        }
+        if (attraction.getName() != null && !attraction.getName().isEmpty()) {
+            tvDetailsName.setText(attraction.getName());
+        }
+        float voteAverage = (float) attraction.getRating();
+        Log.i(TAG, attraction.getName() + voteAverage);
+        rbDetailsRating.setRating(voteAverage);
+        tvDetailsRatingNum.setText(decimalFormat.format(attraction.getRating()));
+
+        if (attraction.getFormattedAddress() != null && !attraction.getFormattedAddress().isEmpty())
+            tvDetailsAddress.setText(attraction.getFormattedAddress());
+        if (attraction.getFormattedPhoneNumber() != null && !attraction.getFormattedPhoneNumber().isEmpty())
+            tvDetailsPhoneNumber.setText(attraction.getFormattedPhoneNumber());
+        if (attraction.getUrl() != null && !attraction.getUrl().isEmpty())
+            tvDetailsUrl.setText(attraction.getUrl());
+        if (attraction.getWebsite() != null && !attraction.getWebsite().isEmpty())
+            tvDetailsWebsite.setText(attraction.getWebsite());
+
+        cRestaurantsProgressIndicator = findViewById(R.id.cRestaurantsProgressIndicator);
+        cRestaurantsProgressIndicator.show();
         fetchRestaurants(Double.parseDouble(attraction.getLat()), Double.parseDouble(attraction.getLon()));
     }
 
@@ -112,6 +169,8 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     }
 
     private void fetchRestaurants(double latitude, double longitude) {
+        rvRestaurants.setVisibility(View.GONE);
+        cRestaurantsProgressIndicator.show();
         StringBuilder stringBuilder = new StringBuilder(placesBaseUrl);
         stringBuilder.append("location=" + latitude + "%2C" + longitude);
         // radius for restaurants are much less because we want restaurants close to attraction
@@ -144,18 +203,18 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
     public void onRestaurantTaskCompleted(Attraction attraction, Restaurant restaurant, int totalNumOfRestaurants) {
         allYelpRestaurants.add(restaurant);
         allGoogleRestaurants.add(attraction);
-        Log.i(TAG, "yelp size " + allYelpRestaurants.size() + " total num " + totalNumOfRestaurants);
         if (allYelpRestaurants.size() == totalNumOfRestaurants) {
-            Log.i(TAG, "about to rank");
+            rvRestaurants.setVisibility(View.VISIBLE);
+            cRestaurantsProgressIndicator.hide();
             BusinessRankHelper restaurantRanker = new BusinessRankHelper(allGoogleRestaurants, allYelpRestaurants);
             List<Restaurant> rankedRestaurants = restaurantRanker.getRankedBusinesses();
-            Log.i(TAG, "ranked restaurant size " + rankedRestaurants.size());
             for (int i = 0; i < rankedRestaurants.size(); i++) {
                 for (int j = 0; j < allGoogleRestaurants.size(); j++) {
                     if (allGoogleRestaurants.get(j) != null
                             && allGoogleRestaurants.get(j).name.equals(rankedRestaurants.get(i).name)) {
-                        getPhotoBitmap(allGoogleRestaurants.get(j));
-                        restaurantsAdapter.add(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
+                        getPhotoBitmap(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
+
+
                         //Build a hashmap for later reference when starting routeActivity intent
                         resToAtrMap.put(rankedRestaurants.get(i), allGoogleRestaurants.get(j));
                     }
@@ -184,7 +243,7 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
         return;
     }
 
-    public Attraction getPhotoBitmap(Attraction atr) {
+    public Attraction getPhotoBitmap(Restaurant res, Attraction atr) {
         //API calls to get photo of the place
         PlacesClient placesClient = Places.createClient(this);
         final String placeId = atr.placeId;
@@ -206,7 +265,15 @@ public class AtrDetailsActivity extends AppCompatActivity implements OnTaskCompl
                     .build();
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                Log.i(TAG, "bitmap fetched " + bitmap);
                 atr.photo = bitmap;
+                if (atr.equals(attraction)) {
+                    if (attraction.getPhoto() != null) {
+                        ivDetailsPicture.setImageBitmap(bitmap);
+                    }
+                } else {
+                    restaurantsAdapter.add(res, atr);
+                }
             }).addOnFailureListener((exception) -> {
                 if (exception instanceof ApiException) {
                     final ApiException apiException = (ApiException) exception;
