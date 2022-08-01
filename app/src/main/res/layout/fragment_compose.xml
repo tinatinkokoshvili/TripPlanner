@@ -6,67 +6,118 @@
     android:layout_height="match_parent"
     tools:context=".activities.fragments.ComposeFragment">
 
-    <EditText
-        android:id="@+id/etTripName"
-        android:layout_width="371dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="148dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/material_dynamic_primary30"
-        android:ems="10"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
         android:hint="Trip Name"
+        app:endIconMode="clear_text"
         android:inputType="textPersonName"
-        android:visibility="visible"
+        app:endIconTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:shapeAppearance="@style/Rounded">
 
-    <EditText
-        android:id="@+id/etRadius"
-        android:layout_width="371dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/material_dynamic_primary30"
-        android:ems="10"
-        android:hint="Maximum Distance"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTripName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/etToTalTime"
-        android:layout_width="371dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="252dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/material_dynamic_primary30"
-        android:ems="10"
-        android:hint="Total Trip Time"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etAvgStayTime"
-        android:layout_width="371dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="304dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/material_dynamic_primary30"
-        android:ems="10"
-        android:hint="Average Stay Time per Location"
+        android:layout_marginTop="210dp"
+        android:hint="Maximum Distance (m)"
+        app:endIconMode="clear_text"
         android:inputType="textPersonName"
+        app:endIconTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:shapeAppearance="@style/Rounded">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etRadius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
+        android:hint="Total Trip Time (hr)"
+        app:endIconMode="clear_text"
+        android:inputType="textPersonName"
+        app:endIconTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etToTalTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout4"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:hint="Average Stay Time per Location (hr)"
+        app:endIconMode="clear_text"
+        android:inputType="textPersonName"
+        app:endIconTint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAvgStayTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnCreateTrip"
-        android:layout_width="317dp"
+        android:layout_width="370dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="308dp"
+        android:layout_marginBottom="148dp"
+        android:backgroundTint="#5864ac"
         android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="72dp"
+        android:text="New Trip"
+        android:textColor="#5864ac"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
