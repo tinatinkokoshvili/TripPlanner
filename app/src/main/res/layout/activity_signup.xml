@@ -141,8 +141,7 @@
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:visibility="invisible"
-        android:id="@+id/progressbar_cp"
-    />
+        android:id="@+id/progressbar_cp" />
 
     <ImageView
         android:id="@+id/ivPicture"
@@ -155,7 +154,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvUploadPic"
         android:layout_width="143dp"
         android:layout_height="20dp"
         android:layout_marginStart="20dp"
